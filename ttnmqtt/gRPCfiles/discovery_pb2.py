@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-import .gogo_pb2 as github__com_dot_gogo_dot_protobuf_dot_gogoproto_dot_gogo__pb2
+from . import gogo_pb2 as github__com_dot_gogo_dot_protobuf_dot_gogoproto_dot_gogo__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
