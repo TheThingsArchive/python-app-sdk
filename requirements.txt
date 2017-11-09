@@ -11,3 +11,4 @@ pep8
 grpcio
 protobuf
 google-api-python-client
+google-cloud

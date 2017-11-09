@@ -18,5 +18,9 @@ setup(name='ttnmqtt',
           'paho-mqtt',
           'events',
           'pypandoc',
+          'grpcio',
+          'protobuf',
+          'google-api-python-client',
+          'google-cloud'
       ],
       zip_safe=False)
