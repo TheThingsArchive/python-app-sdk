@@ -3,8 +3,8 @@ from events import Events
 import json
 import base64
 from collections import namedtuple
-import gRPCfiles.discovery_pb2_grpc as discovery_pb2_grpc
-import gRPCfiles.discovery_pb2 as discovery_pb2
+from .gRPCfiles import discovery_pb2_grpc
+from .gRPCfiles import discovery_pb2
 import grpc
 
 
