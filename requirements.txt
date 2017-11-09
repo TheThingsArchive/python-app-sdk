@@ -1,0 +1,13 @@
+#
+#######requirements.txt#######
+#
+paho-mqtt
+events
+pytest
+codecov
+coverage
+pytest-cov
+pep8
+grpcio
+protobuf
+google-api-python-client
