@@ -36,11 +36,11 @@ uplink = {
 def test_connect_disconnect():
 
     def connectcallback(rc, client):
-        print rc
+        print(rc)
         assert rc == 0
 
     def closecallback(rc, client):
-        print rc
+        print(rc)
         assert rc == 0
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
@@ -53,7 +53,7 @@ def test_connect_disconnect():
 def test_uplink():
 
     def uplinkcallback(message, client):
-        print message
+        print(message)
         assert message.payload_raw == 'AQ=='
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
@@ -70,14 +70,14 @@ def test_connect_error():
 
     ttn_client = mqtt(appID, accessKey, 'badAddress:5555')
     ttn_client.close()
-    print ttn_client._MQTTClient__ErrorMsg
+    print(ttn_client._MQTTClient__ErrorMsg)
     assert ttn_client._MQTTClient__ErrorMsg == "Connection failed"
 
 
 def test_downlink_payloadraw():
 
     def downlinkcallback(mid, client):
-        print mid
+        print(mid)
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
@@ -91,7 +91,7 @@ def test_downlink_payloadraw():
 def test_downlink_payloadfields():
 
     def downlinkcallback(mid, client):
-        print mid
+        print(mid)
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
@@ -105,7 +105,7 @@ def test_downlink_payloadfields():
 def test_providing_all_downlink_options():
 
     def downlinkcallback(mid, client):
-        print mid
+        print(mid)
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
