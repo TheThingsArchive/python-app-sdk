@@ -50,20 +50,6 @@ def test_connect_disconnect():
     ttn_client.stop()
 
 
-def test_connect_discovery():
-
-    def connectcallback(rc, client):
-        print rc
-        assert rc == 0
-
-    ttn_client = mqtt(
-        'office-app',
-        'ttn-account-v2.OfuuW9smtu33PjpPtVAs54Bmc2dcgHEOywtuAT1oqzk')
-    ttn_client.setConnectCallback(connectcallback)
-    time.sleep(2)
-    ttn_client.stop()
-
-
 def test_uplink():
 
     def uplinkcallback(message, client):
