@@ -37,11 +37,11 @@ The class constructor can be called following this scheme:
 ```python
 mqtt(appID, appAccessKey, [mqttAddress])
 ```
-- `appID`: *string*, this the name you gave your application when you created it.
-- `appAccessKey`: *string*, it can be found at the bottom of your application page under **ACCESS KEYS**.
-- `mqttAddress`: *string*, this the address of the handler to which your application was registered. If you registered to a personnal or private handler, please provide the address, if not you don't need to provide this argument. Please make sure you also give the port number when providing the mqttAddress.
+- `appID`: **string**  this the name you gave your application when you created it.
+- `appAccessKey`: **string**  it can be found at the bottom of your application page under **ACCESS KEYS**.
+- `mqttAddress`: **string**  this the address of the handler to which your application was registered. If you registered to a personnal or private handler, please provide the address, if not you don't need to provide this argument. Please make sure you also give the port number when providing the mqttAddress.
 All the above informations can be found in your The Things Network console.
-The constructor returns an *MQTTClient object* set up with your application informations, ready for connection.
+The constructor returns an **MQTTClient object** set up with your application informations, ready for connection.
 
 ### connect
 This function connect your client, in case you closed it and which to open the connection once again.
@@ -86,8 +86,8 @@ client.setUplinkCallback(uplinkCallback)
 ##### uplinkCallback
 The callback function must be declared in your script following this structure:
 * `uplinkCallback(msg, client)`
-  * `msg`: *JSON object*, the message received by the client
-  * `client`: *object*, the client from which the callback is executed are calling
+  * `msg`: **JSON object**  the message received by the client
+  * `client`: **object**  the client from which the callback is executed are calling
 
 On each message reception, you should see **receving message from** in the console, and the callback will be executed.
 
@@ -98,8 +98,8 @@ client.setConnectCallback(connectCallback)
 ```
 ##### connectCallback
 - `connectCallback(res, client)`: the function which will be executed on connection to the broker.
-  - `res`: *int*, the result of the connection. If it's 0, it went well. If not, it means the connection failed.
-  - `client`: *object*, the TTN client from which we call the callback.
+  - `res`: **int**  the result of the connection. If it's 0, it went well. If not, it means the connection failed.
+  - `client`: **object**  the TTN client from which we call the callback.
 
 #### setDownlinkCallback
 Set the downlink callback function, with actions to execute when a downlink message is sent.
@@ -108,8 +108,8 @@ client.setDownlinkCallback(downlinkCallback)
 ```
 ##### downlinkCallback
 - `downlinkCallback(mid, client)`: the function which will be the new publish behavior for our MQTT client.
-  - `mid`: *int*, it matches the mid variable returned from the publish call to allow sent messages to be tracked.
-  - `client`: *object*, the TTN client from which we call the callback.
+  - `mid`: **int**  it matches the mid variable returned from the publish call to allow sent messages to be tracked.
+  - `client`: **object**  the TTN client from which we call the callback.
 
 #### setCloseCallback
 Set the callback to be executed when the connection to the TTN broker is closed.
@@ -118,19 +118,19 @@ client.setCloseCallback(closeCallback)
 ```
 ##### closeCallback
 - `closeCallback(res, client)`: the function which will be executed when the connection is closed.
-  - `res`: *int*, the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
-  - `client`: *object*, the TTN client from which we call the callback.
+  - `res`: **int**  the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
+  - `client`: **object**  the TTN client from which we call the callback.
 
 ### send
 Publishes a message to the MQTT broker.
 ```python
 client.send(deviceID, payload, [port], [confirmation], [schedule])
 ```
-- `deviceID`: *string*, the ID of the device you wish to send the message to.
-- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal *string* like `AQ==` (this will send the raw payload `00` to your device) or an object with several fields following the *JSON* standard.
-- `port`: *int*, the port of the device to which you wish to send the message. Default value to 1.
-- `confirmation`: *boolean*, this boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
-- `schedule`: *string*, this string provide the type of schedule on which the message should be sent it can take values such as `first` or `last`. Default value to `replace`.
+- `deviceID`: **string**  the ID of the device you wish to send the message to.
+- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string** like `AQ==` (this will send the raw payload `00` to your device) or an object with several fields following the **JSON** standard.
+- `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
+- `confirmation`: **boolean**  this boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
+- `schedule`: **string**  this string provide the type of schedule on which the message should be sent it can take values such as `first` or `last`. Default value to `replace`.
 
 ## License
 
