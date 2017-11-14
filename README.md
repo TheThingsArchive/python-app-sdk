@@ -4,18 +4,16 @@
 
 ![The Things Network](https://thethings.blob.core.windows.net/ttn/logo.svg)
 
-## Usage
-
 This is the Python Application SDK for [The Things Network](https://www.thethingsnetwork.org/) to receive messages from IoT devices via The Things Network and sen messages as well.
 
-### Installation
+## Installation
 ```
 $ pip install ttnmqtt
 ```
-### Documentation
+## Documentation
 * [API Reference](./DOCUMENTATION.md)
 
-### Example
+## Example
 ```python
 import time
 from ttnmqtt import MQTTClient as mqttclient
