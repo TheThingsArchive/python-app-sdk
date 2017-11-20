@@ -14,6 +14,7 @@ from .gRPCfiles import discovery_pb2
 import grpc
 import os
 
+# Necessary to make gRPC work
 os.environ['GRPC_SSL_CIPHER_SUITES'] = ("ECDHE-ECDSA-AES256-"
                                         "GCM-SHA384:ECDHE-RSA-AES256-"
                                         "GCM-SHA384:ECDHE-ECDSA-CHACHA20-"
