@@ -19,10 +19,7 @@
 
 ## Description
 
-This package provides you an easy way to connect to The Things Network via MQTT. First include the package in your file like this:
-```python
-from ttnmqtt import MQTTClient as mqtt
-```
+This package provides you an easy way to connect to The Things Network via MQTT.
 
 ### MQTTClient
 
@@ -30,12 +27,12 @@ The class constructor can be called following this scheme:
 ```python
 mqtt(appID, appAccessKey, [mqttAddress])
 ```
-- `appID`: **string**  this the name you gave your application when you created it.
+- `appID`: **string**  this the name given to the application when it was created.
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
-- `appAccessKey`: **string**  it can be found at the bottom of your application page under **ACCESS KEYS**.
+- `appAccessKey`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
-- `mqttAddress`: **string**  this the address of the handler to which your application was registered.
-The constructor returns an **MQTTClient object** set up with your application informations, ready for connection.
+- `mqttAddress`: **string**  this  is the address of the handler to which the application was registered.
+The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
 This function connect your client, in case you closed it and which to open the connection once again.
@@ -47,12 +44,6 @@ client.connect()
 Disconnects the MQTT client from which we call the method. Also able to stop a forever loop in case the client was running on a loop launched by the `startForever()` method.
 ```python
 client.close()
-```
-
-### startForever
-A background loop is started by default when creating an MQTT client but in in case you wish to start a loop as the main loop of your process. You can start a forever loop with this method. You wont be able to run anything else at the same time on this script.
-```python
-client.startForever()
 ```
 
 ### start
@@ -69,7 +60,7 @@ client.stop()
 
 ### Using Callbacks
 
-The callback functions are functions which are executed when a trigger event happens. They should be set right after the MQTT client creation so that they don't miss any event.
+The callback functions are functions which are executed when a trigger event happens.
 
 #### setUplinkCallback
 Set the callback function, to be called when an uplink message is received.
@@ -83,8 +74,6 @@ The callback function must be declared in your script following this structure:
   * `msg`: **JSON object**  the message received by the client
   * `client`: **object**  the client from which the callback is executed are calling
 
-On each message reception, you should see **receving message from** in the console, and the callback will be executed.
-
 #### setConnectCallback
 Set the connection callback function to be executed when the client connect to the broker.
 ```python
@@ -92,7 +81,7 @@ client.setConnectCallback(connectCallback)
 ```
 ##### connectCallback
 - `connectCallback(res, client)`: the function which will be executed on connection to the broker.
-  - `res`: **int**  the result of the connection. If it's 0, it went well. If not, it means the connection failed.
+  - `res`: **boolean**  the result of the connection. If it's 0, it went well. If not, it means the connection failed.
   - `client`: **object**  the TTN client from which we call the callback.
 
 #### setDownlinkCallback
@@ -112,16 +101,17 @@ client.setCloseCallback(closeCallback)
 ```
 ##### closeCallback
 - `closeCallback(res, client)`: the function which will be executed when the connection is closed.
-  - `res`: **int**  the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
+  - `res`: **boolean**  the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
   - `client`: **object**  the TTN client from which we call the callback.
 
 ### send
-Publishes a message to the MQTT broker.
+Sends a downlink to the device.
 ```python
 client.send(deviceID, payload, [port], [confirmation], [schedule])
 ```
 - `deviceID`: **string**  the ID of the device you wish to send the message to.
-- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string** like `AQ==` (this will send the raw payload `00` to your device) or an object with several fields following the **JSON** standard.
+- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or an object with several fields following the **JSON** standard. In case it's a **JSON** object with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
+![Screenshot of an encoder function in the console](./images/encoder-function.png?raw=true)
 - `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
-- `confirmation`: **boolean**  this boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
-- `schedule`: **string**  this string provide the type of schedule on which the message should be sent it can take values such as `first` or `last`. Default value to `replace`.
+- `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
+- `schedule`: **string**  this string provide the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
