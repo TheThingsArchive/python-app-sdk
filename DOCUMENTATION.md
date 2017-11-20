@@ -19,8 +19,7 @@
 
 ## Description
 
-This package provides you an easy way to connect to The Things Network via MQTT. Take note that, you'll first need to create an application with a device to run the constructor of the MQTT client because you need to provide, an applicationID and a deviceID.
-First include the package in your file like this:
+This package provides you an easy way to connect to The Things Network via MQTT. First include the package in your file like this:
 ```python
 from ttnmqtt import MQTTClient as mqtt
 ```
@@ -32,9 +31,10 @@ The class constructor can be called following this scheme:
 mqtt(appID, appAccessKey, [mqttAddress])
 ```
 - `appID`: **string**  this the name you gave your application when you created it.
+![Screenshot of the console with app section](./images/app-console.png?raw=true)
 - `appAccessKey`: **string**  it can be found at the bottom of your application page under **ACCESS KEYS**.
-- `mqttAddress`: **string**  this the address of the handler to which your application was registered. If you registered to a personnal or private handler, please provide the address, if not you don't need to provide this argument. Please make sure you also give the port number when providing the mqttAddress.
-All the above informations can be found in your The Things Network console.
+![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
+- `mqttAddress`: **string**  this the address of the handler to which your application was registered.
 The constructor returns an **MQTTClient object** set up with your application informations, ready for connection.
 
 ### connect
