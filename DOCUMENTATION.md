@@ -3,7 +3,6 @@
 * [MQTTClient](#mqttclient)
 * [connect](#connect)
 * [close](#close)
-* [startForever](#startforever)
 * [start](#start)
 * [stop](#stop)
 * [setUplinkCallback](#setuplinkcallback)

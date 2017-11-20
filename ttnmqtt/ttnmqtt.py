@@ -65,9 +65,8 @@ class MQTTClient:
         self.__events = MyEvents()
         self.__mqttAddress = mqttAddress
         self.__ErrorMsg = ""
-        self.connectFlag = 2
-        self.disconnectFlag = 2
-        self.midCounter = 0
+        self.connectFlag = False
+        self.disconnectFlag = True
         try:
             self.connect()
             self.start()
@@ -105,7 +104,6 @@ class MQTTClient:
         def on_connect(client, userdata, flags, rc):
             if(rc == 0):
                 client.subscribe(self.__appID+'/devices/+/up')
-                print('MQTT client connected and subscribed')
                 self.connectFlag = 1
             if self.__events.connect:
                 self.__events.connect(rc, client=self)
@@ -115,11 +113,9 @@ class MQTTClient:
         def on_disconnect(client, userdata, rc):
             if rc != 0:
                 self.__ErrorMsg = "Unexpected Disconnection"
-                print('Unexpected Disconnection')
                 self.disconnectFlag = 0
             else:
                 self.disconnectFlag = 1
-                print('MQTT client disconnected')
             if self.__events.close:
                 self.__events.close(rc, client=self)
         return on_disconnect
@@ -128,14 +124,12 @@ class MQTTClient:
         def on_message(client, userdata, msg):
             j_msg = str(json.dumps(json.loads(msg.payload.decode('utf-8'))))
             obj = json2obj(j_msg)
-            print("received message from "+str(obj.dev_id))
             if self.__events.uplink_msg:
                 self.__events.uplink_msg(obj, client=self)
         return on_message
 
     def _onDownlink(self):
         def on_publish(client, userdata, mid):
-            print('message published')
             self.midCounter = mid
             if self.__events.downlink_msg:
                 self.__events.downlink_msg(mid, client=self)
@@ -153,16 +147,10 @@ class MQTTClient:
     def setCloseCallback(self, callback):
         self.__events.close += callback
 
-    def startForever(self):
-        print('Loop Started Forever')
-        self.__client.loop_forever()
-
     def start(self):
-        print('Loop Started')
         self.__client.loop_start()
 
     def stop(self):
-        print('Loop Stopped')
         self.__client.loop_stop()
         self.close()
 
@@ -178,7 +166,6 @@ class MQTTClient:
             message.payload_fields = pay
 
         msg = message.obj2json()
-        print("publishing message to "+devID+": "+msg)
         self.__client.publish(
             self.__appID+'/devices/'+devID+'/down',
             msg)
