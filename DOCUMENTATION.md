@@ -35,19 +35,19 @@ mqtt(appID, appAccessKey, [mqttAddress])
 The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
-This function connect your client, in case you closed it and which to open the connection once again.
+This function connect your client, in case it was closed and need to be openned once again.
 ```python
 client.connect()
 ```
 
 ### close
-Disconnects the MQTT client from which we call the method. Also able to stop a forever loop in case the client was running on a loop launched by the `startForever()` method.
+Disconnects the MQTT client from which we call the method..
 ```python
 client.close()
 ```
 
 ### start
-Starts a loop for the client in the background so that it's possible to run another process (such as a web server) in the same script. This loop is started by default when creating the MQTT client. So it should only be used in case the client was stopped and you wish to start it again after re-connecting.
+Starts an asynchronous loop for the client so that it's possible to run another process (such as a web server) in the same script. This loop is started by default when creating the MQTT client. So it should only be used in case the client was stopped and need to be started again, after re-connecting.
 ```python
 client.start()
 ```
@@ -81,8 +81,8 @@ client.setConnectCallback(connectCallback)
 ```
 ##### connectCallback
 - `connectCallback(res, client)`: the function which will be executed on connection to the broker.
-  - `res`: **boolean**  the result of the connection. If it's 0, it went well. If not, it means the connection failed.
-  - `client`: **object**  the TTN client from which we call the callback.
+  - `res`: **boolean**  the result of the connection. If it's true, the connection succeeded went well. If not, it means the connection failed.
+  - `client`: **object**  the TTN client from which the callback is called.
 
 #### setDownlinkCallback
 Set the downlink callback function, with actions to execute when a downlink message is sent.
@@ -91,8 +91,8 @@ client.setDownlinkCallback(downlinkCallback)
 ```
 ##### downlinkCallback
 - `downlinkCallback(mid, client)`: the function which will be the new publish behavior for our MQTT client.
-  - `mid`: **int**  it matches the mid variable returned from the publish call to allow sent messages to be tracked.
-  - `client`: **object**  the TTN client from which we call the callback.
+  - `mid`: **int**  this is the message ID for the downlink request. It can be used to track the request.
+  - `client`: **object**  the TTN client from which the callback is called.
 
 #### setCloseCallback
 Set the callback to be executed when the connection to the TTN broker is closed.
