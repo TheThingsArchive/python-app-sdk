@@ -37,11 +37,11 @@ def test_connect_disconnect():
 
     def connectcallback(res, client):
         print(res)
-        assert res == True
+        assert res
 
     def closecallback(res, client):
         print(res)
-        assert res == True
+        assert res
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
     ttn_client.set_connect_callback(connectcallback)
@@ -71,8 +71,8 @@ def test_connect_error():
     ttn_client = mqtt(appID, accessKey, 'badAddress:5555')
     ttn_client.close()
     print(ttn_client.ErrorMsg)
-    assert ttn_client.ErrorMsg == ("Connection failed:"
-                      "wrong appID, accessKey or mqttAddress")
+    assert ttn_client.ErrorMsg == ("Connection failed: wrong appID,"
+                                   "accessKey or mqttAddress")
 
 
 def test_downlink_payloadraw():

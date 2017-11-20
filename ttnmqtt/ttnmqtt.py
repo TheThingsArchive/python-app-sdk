@@ -69,8 +69,8 @@ class MQTTClient:
             self.connect()
             self.start()
         except:
-            self.ErrorMsg = ("Connection failed:"
-                              "wrong appID, accessKey or mqttAddress")
+            self.ErrorMsg = ("Connection failed: wrong appID,"
+                             "accessKey or mqttAddress")
 
     def connect(self):
         self.__client.on_connect = self._onConnect()
