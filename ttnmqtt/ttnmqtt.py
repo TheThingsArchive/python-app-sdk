@@ -1,3 +1,7 @@
+# Copyright 2017 The Things Network
+# Use of this source code is governed by the
+# MIT license that can be found in the LICENSE file.
+
 import paho.mqtt.client as mqtt
 from events import Events
 import json
@@ -6,6 +10,19 @@ from collections import namedtuple
 from .gRPCfiles import discovery_pb2_grpc
 from .gRPCfiles import discovery_pb2
 import grpc
+import os
+
+os.environ['GRPC_SSL_CIPHER_SUITES'] = ("ECDHE-ECDSA-AES256-"
+                                        "GCM-SHA384:ECDHE-RSA-AES256-"
+                                        "GCM-SHA384:ECDHE-ECDSA-CHACHA20-"
+                                        "POLY1305:"
+                                        "ECDHE-RSA-CHACHA20-POLY1305:"
+                                        "ECDHE-ECDSA-AES128-GCM-SHA256:"
+                                        "ECDHE-RSA-AES128-GCM-SHA256:"
+                                        "ECDHE-ECDSA-AES256-SHA384:"
+                                        "ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-"
+                                        "AES128-SHA256:"
+                                        "ECDHE-RSA-AES128-SHA256")
 
 
 def _json_object_hook(d):
