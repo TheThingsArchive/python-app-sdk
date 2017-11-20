@@ -70,8 +70,9 @@ def test_connect_error():
 
     ttn_client = mqtt(appID, accessKey, 'badAddress:5555')
     ttn_client.close()
-    print(ttn_client._MQTTClient__ErrorMsg)
-    assert ttn_client._MQTTClient__ErrorMsg == "Connection failed"
+    print(ttn_client.ErrorMsg)
+    assert ttn_client.ErrorMsg == ("Connection failed:"
+                      "wrong appID, accessKey or mqttAddress")
 
 
 def test_downlink_payloadraw():

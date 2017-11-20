@@ -64,12 +64,13 @@ class MQTTClient:
         self.__accessKey = appAccessKey
         self.__events = MyEvents()
         self.__mqttAddress = mqttAddress
-        self.__ErrorMsg = ""
+        self.ErrorMsg = ""
         try:
             self.connect()
             self.start()
         except:
-            self.__ErrorMsg = "Connection failed"
+            self.ErrorMsg = ("Connection failed:"
+                              "wrong appID, accessKey or mqttAddress")
 
     def connect(self):
         self.__client.on_connect = self._onConnect()
@@ -101,7 +102,7 @@ class MQTTClient:
     def _onConnect(self):
         def on_connect(client, userdata, flags, rc):
             if(rc == 0):
-                client.subscribe(self.__appID+'/devices/+/up')
+                client.subscribe('{}/devices/+/up'.format(self.__appID))
                 res = True
             else:
                 res = False
@@ -112,7 +113,7 @@ class MQTTClient:
     def _onClose(self):
         def on_disconnect(client, userdata, rc):
             if rc != 0:
-                self.__ErrorMsg = "Unexpected Disconnection"
+                self.ErrorMsg = "Unexpected Disconnection"
                 res = False
             else:
                 res = True
@@ -167,5 +168,5 @@ class MQTTClient:
 
         msg = message.obj2json()
         self.__client.publish(
-            self.__appID+'/devices/'+devID+'/down',
+            '{}/devices/{}/down'.format(self.__appID, devID),
             msg)
