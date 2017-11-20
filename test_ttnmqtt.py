@@ -35,13 +35,13 @@ uplink = {
 
 def test_connect_disconnect():
 
-    def connectcallback(rc, client):
-        print(rc)
-        assert rc == 0
+    def connectcallback(res, client):
+        print(res)
+        assert res == True
 
-    def closecallback(rc, client):
-        print(rc)
-        assert rc == 0
+    def closecallback(res, client):
+        print(res)
+        assert res == True
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
     ttn_client.set_connect_callback(connectcallback)

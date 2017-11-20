@@ -65,8 +65,6 @@ class MQTTClient:
         self.__events = MyEvents()
         self.__mqttAddress = mqttAddress
         self.__ErrorMsg = ""
-        self.connectFlag = False
-        self.disconnectFlag = True
         try:
             self.connect()
             self.start()
@@ -104,20 +102,22 @@ class MQTTClient:
         def on_connect(client, userdata, flags, rc):
             if(rc == 0):
                 client.subscribe(self.__appID+'/devices/+/up')
-                self.connectFlag = 1
+                res = True
+            else:
+                res = False
             if self.__events.connect:
-                self.__events.connect(rc, client=self)
+                self.__events.connect(res, client=self)
         return on_connect
 
     def _onClose(self):
         def on_disconnect(client, userdata, rc):
             if rc != 0:
                 self.__ErrorMsg = "Unexpected Disconnection"
-                self.disconnectFlag = 0
+                res = False
             else:
-                self.disconnectFlag = 1
+                res = True
             if self.__events.close:
-                self.__events.close(rc, client=self)
+                self.__events.close(res, client=self)
         return on_disconnect
 
     def _onMessage(self):
