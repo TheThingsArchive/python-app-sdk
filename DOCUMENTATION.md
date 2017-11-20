@@ -24,13 +24,14 @@ This package provides you an easy way to connect to The Things Network via MQTT.
 
 The class constructor can be called following this scheme:
 ```python
-mqtt(appID, appAccessKey, [mqttAddress])
+MQTTClient(appID, appAccessKey, [mqttAddress], [discoveryAddress])
 ```
 - `appID`: **string**  this the name given to the application when it was created.
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 - `appAccessKey`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
-- `mqttAddress`: **string**  this  is the address of the handler to which the application was registered.
+- `mqttAddress`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `mqttAddress=value` argument when calling the constructor.
+- `discoveryAddress`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discoveryAddress=value` argument when calling the constructor.
 The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
