@@ -44,8 +44,8 @@ def test_connect_disconnect():
         assert rc == 0
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
-    ttn_client.setConnectCallback(connectcallback)
-    ttn_client.setCloseCallback(closecallback)
+    ttn_client.set_connect_callback(connectcallback)
+    ttn_client.set_close_callback(closecallback)
     time.sleep(2)
     ttn_client.stop()
 
@@ -57,7 +57,7 @@ def test_uplink():
         assert message.payload_raw == 'AQ=='
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
-    ttn_client.setUplinkCallback(uplinkcallback)
+    ttn_client.set_uplink_callback(uplinkcallback)
     time.sleep(2)
     ttn_client._MQTTClient__client.publish(
         'guest/devices/guest/up',
@@ -81,7 +81,7 @@ def test_downlink_payloadraw():
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
-    ttn_client.setDownlinkCallback(downlinkcallback)
+    ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', "AQ==")
     time.sleep(2)
@@ -95,7 +95,7 @@ def test_downlink_payloadfields():
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
-    ttn_client.setDownlinkCallback(downlinkcallback)
+    ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', {"field1": 1, "field2": 2})
     time.sleep(2)
@@ -109,7 +109,7 @@ def test_providing_all_downlink_options():
         assert mid == 2
 
     ttn_client = mqtt(appID, accessKey, mqttAddress)
-    ttn_client.setDownlinkCallback(downlinkcallback)
+    ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', "AQ==", 2, True, "first")
     time.sleep(2)

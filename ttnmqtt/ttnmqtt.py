@@ -135,16 +135,16 @@ class MQTTClient:
                 self.__events.downlink_msg(mid, client=self)
         return on_publish
 
-    def setUplinkCallback(self, callback):
+    def set_uplink_callback(self, callback):
         self.__events.uplink_msg += callback
 
-    def setDownlinkCallback(self, callback):
+    def set_downlink_callback(self, callback):
         self.__events.downlink_msg += callback
 
-    def setConnectCallback(self, callback):
+    def set_connect_callback(self, callback):
         self.__events.connect += callback
 
-    def setCloseCallback(self, callback):
+    def set_close_callback(self, callback):
         self.__events.close += callback
 
     def start(self):
