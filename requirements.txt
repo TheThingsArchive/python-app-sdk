@@ -1,6 +1,3 @@
-#
-#######requirements.txt#######
-#
 paho-mqtt
 events
 pytest
@@ -12,3 +9,4 @@ grpcio
 protobuf
 google-api-python-client
 google-cloud
+os
