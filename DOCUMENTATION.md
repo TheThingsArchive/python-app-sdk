@@ -115,3 +115,9 @@ client.send(deviceID, payload, [port], [confirmation], [schedule])
 - `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
 - `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
 - `schedule`: **string**  this string provide the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
+
+### Errors
+At any given moment it's possible to access a **string** attribute of your client containing the last error message. If no error was ever registered since the client was registered it sends back an empty **string**.
+```python
+client.ErrorMsg
+```
