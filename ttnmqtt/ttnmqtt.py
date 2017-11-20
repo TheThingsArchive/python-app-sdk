@@ -65,7 +65,7 @@ class MQTTClient:
         self.__events = MyEvents()
         self.__mqttAddress = ""
         self.__discoveryAddress = ""
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             if k == "mqttAddress":
                 self.__mqttAddress = v
             if k == "discoveryAddress":
