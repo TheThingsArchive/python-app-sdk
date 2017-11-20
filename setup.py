@@ -5,7 +5,7 @@
 from setuptools import setup
 
 import io
-    # pandoc is not installed, fallback to using raw contents
+
 with io.open('README.rst', encoding="utf-8") as f:
     long_description = f.read()
 
@@ -21,7 +21,6 @@ setup(name='ttnmqtt',
       install_requires=[
           'paho-mqtt',
           'events',
-          'pypandoc',
           'grpcio',
           'protobuf',
           'google-api-python-client',
