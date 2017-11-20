@@ -58,12 +58,18 @@ class MyEvents(Events):
 
 class MQTTClient:
 
-    def __init__(self, appID, appAccessKey, mqttAddress=""):
+    def __init__(self, appID, appAccessKey, **kwargs):
         self.__client = mqtt.Client()
         self.__appID = appID
         self.__accessKey = appAccessKey
         self.__events = MyEvents()
-        self.__mqttAddress = mqttAddress
+        self.__mqttAddress = ""
+        self.__discoveryAddress = ""
+        for k, v in kwargs.iteritems():
+            if k == "mqttAddress":
+                self.__mqttAddress = v
+            if k == "discoveryAddress":
+                self.__discoveryAddress = v
         self.ErrorMsg = ""
         try:
             self.connect()
@@ -81,9 +87,12 @@ class MQTTClient:
         self.__client.username_pw_set(self.__appID, self.__accessKey)
         if self.__mqttAddress == "":
             creds = grpc.ssl_channel_credentials()
-            channel = grpc.secure_channel(
-                'discovery.thethings.network:1900',
-                creds)
+            if self.__discoveryAddress == "":
+                channel = grpc.secure_channel(
+                    'discovery.thethings.network:1900',
+                    creds)
+            else:
+                channel = grpc.secure_channel(self.__discoveryAddress, creds)
             stub = discovery_pb2_grpc.DiscoveryStub(channel)
             req = discovery_pb2.GetByAppIDRequest()
             req.app_id = self.__appID
@@ -94,10 +103,13 @@ class MQTTClient:
             port = int(split[1])
             self.__client.connect(address, port, 60)
         else:
-            split = self.__mqttAddress.split(':')
-            address = split[0]
-            port = int(split[1])
-            self.__client.connect(address, port, 60)
+            if ':' in self.__mqttAddress:
+                split = self.__mqttAddress.split(':')
+                address = split[0]
+                port = int(split[1])
+            else:
+                address = self.__mqttAddress
+        self.__client.connect(address, port, 60)
 
     def _onConnect(self):
         def on_connect(client, userdata, flags, rc):
