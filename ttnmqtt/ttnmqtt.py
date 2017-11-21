@@ -88,10 +88,7 @@ class MQTTClient:
     def _connect(self):
         mqtt_addr = split_address(self.__mqtt_address)
         addr = mqtt_addr['address']
-        if mqtt_addr['port']:
-            port = mqtt_addr['port']
-        else:
-            port = 1883
+        port = mqtt_addr['port'] if 'port' in mqtt_addr else 1883
         self.__client.connect(addr, port, 60)
 
     def connect(self):
