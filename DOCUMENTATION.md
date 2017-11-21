@@ -49,7 +49,7 @@ client.close()
 The callback functions are functions which are executed when a trigger event happens.
 
 #### set_uplink_callback
-Set a callback function, to be called when an uplink message is received. It's possible to add more than one callback function.
+Add a callback function, to be called when an uplink message is received.
 ```python
 client.set_uplink_callback(uplink_callback)
 ```
@@ -57,11 +57,11 @@ client.set_uplink_callback(uplink_callback)
 ##### uplink_callback
 The callback function must be declared in the script following this structure:
 * `uplink_callback(msg, client)`
-  * `msg`: **JSON**  the message received by the client
-  * `client`: **object**  the client from which the callback is executed are calling
+  * `msg`: **object**  the message received by the client.
+  * `client`: **object**  the client from which the callback is executed are calling.
 
 #### set_connect_callback
-Set a connection callback function to be executed when the client connects to the broker. It's possible to add more than one callback function.
+Add a connection callback function to be executed when the client connects to the broker.
 ```python
 client.set_connect_callback(connect_callback)
 ```
@@ -71,7 +71,7 @@ client.set_connect_callback(connect_callback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_downlink_callback
-Set a downlink callback function, with actions to execute when a downlink message is sent. It's possible to add more than one callback function.
+Add a downlink callback function, with actions to execute when a downlink message is sent.
 ```python
 client.set_downlink_callback(downlinkCallback)
 ```
@@ -81,13 +81,13 @@ client.set_downlink_callback(downlinkCallback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_close_callback
-Set a callback to be executed when the connection to the TTN broker is closed. It's possible to add more than one callback function.
+Add a callback to be executed when the connection to the TTN broker is closed.
 ```python
 client.set_close_callback(close_callback)
 ```
 ##### close_callback
 - `close_callback(res, client)`: the function which will be executed when the connection is closed.
-  - `res`: **boolean**  the result of the disconnection. If it's true, it went well. If not, it means the disconnection was unexpected.
+  - `res`: **boolean**  the result of the disconnection. If it's true, it went all as expected. If not, it means the disconnection was unexpected.
   - `client`: **object**  the TTN client from which we call the callback.
 
 ### send
@@ -96,7 +96,7 @@ Sends a downlink to the device.
 client.send(dev_id, payload, [port], [confirmation], [schedule])
 ```
 - `dev_id`: **string**  the ID of the device you wish to send the message to.
-- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or an object in **JSON**. Here is an example of a **JSON** argument that could be passed to the method:
+- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or a **dictionary** of JSON nature. Here is an example of a **dictionary** argument that could be passed to the method:
 ```json
 {"led_state": "on", "counter": 1}
 ```
@@ -108,7 +108,7 @@ In case it's a **JSON** object with fields, please make sure the **encoder** fun
 
 ### Errors
 Errors can happen on connection for different reasons:
-* Wrong, `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
+* Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
 * The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection
 * The client process doesn't have system capabilities to open a socket
 * The MQTT server uses MQTTS, but the client won't accept the TLS certificate
