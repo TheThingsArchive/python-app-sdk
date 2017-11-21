@@ -49,7 +49,7 @@ def test_connect_disconnect():
         print(res)
         assert res
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress=mqttAddress)
+    ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_connect_callback(connectcallback)
     ttn_client.set_close_callback(closecallback)
     time.sleep(2)
@@ -62,7 +62,7 @@ def test_uplink():
         print(message)
         assert message.payload_raw == 'AQ=='
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress=mqttAddress)
+    ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_uplink_callback(uplinkcallback)
     time.sleep(2)
     ttn_client._MQTTClient__client.publish(
@@ -74,7 +74,7 @@ def test_uplink():
 
 def test_connect_error():
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress='badAddress:5555')
+    ttn_client = mqtt(appID, accessKey, mqtt_address='badAddress:5555')
     ttn_client.close()
     print(ttn_client.ErrorMsg)
     assert ttn_client.ErrorMsg == ("Connection failed: wrong appID,"
@@ -87,7 +87,7 @@ def test_downlink_payloadraw():
         print(mid)
         assert mid == 2
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress=mqttAddress)
+    ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', "AQ==")
@@ -101,7 +101,7 @@ def test_downlink_payloadfields():
         print(mid)
         assert mid == 2
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress=mqttAddress)
+    ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', {"field1": 1, "field2": 2})
@@ -115,7 +115,7 @@ def test_providing_all_downlink_options():
         print(mid)
         assert mid == 2
 
-    ttn_client = mqtt(appID, accessKey, mqttAddress=mqttAddress)
+    ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     time.sleep(2)
     ttn_client.send('guest', "AQ==", 2, True, "first")
