@@ -5,14 +5,14 @@
 * [close](#close)
 * [start](#start)
 * [stop](#stop)
-* [setUplinkCallback](#setuplinkcallback)
-  * [uplinkCallback](#uplinkcallback)
-* [setConnectCallback](#setconnectcallback)
-  * [connectCallback](#connectcallback)
-* [setDownlinkCallback](#setpublishcallback)
-  * [downlinkCallback](#publishcallback)
-* [setCloseCallback](#setclosecallback)
-  * [closeCallback](#closecallback)
+* [set_uplink_callback](#set_uplink_callback)
+  * [uplink_callback](#uplink_callback)
+* [set_connect_callback](#set_connect_callback)
+  * [connect_callback](#connect_callback)
+* [set_downlink_callback](#set_downlink_callback)
+  * [downlink_callback](#downlink_callback)
+* [set_close_callback](#set_close_callback)
+  * [close_callback](#close_callback)
 * [send](#send)
 * [License](#license)
 
@@ -62,62 +62,56 @@ client.stop()
 
 The callback functions are functions which are executed when a trigger event happens.
 
-#### setUplinkCallback
+#### set_uplink_callback
 Set the callback function, to be called when an uplink message is received.
 ```python
-client.setUplinkCallback(uplinkCallback)
+client.set_uplink_callback(uplink_callback)
 ```
 
-##### uplinkCallback
+##### uplink_callback
 The callback function must be declared in your script following this structure:
-* `uplinkCallback(msg, client)`
+* `uplink_callback(msg, client)`
   * `msg`: **JSON object**  the message received by the client
   * `client`: **object**  the client from which the callback is executed are calling
 
-#### setConnectCallback
+#### set_connect_callback
 Set the connection callback function to be executed when the client connect to the broker.
 ```python
-client.setConnectCallback(connectCallback)
+client.set_connect_callback(connect_callback)
 ```
-##### connectCallback
-- `connectCallback(res, client)`: the function which will be executed on connection to the broker.
+##### connect_callback
+- `connect_callback(res, client)`: the function which will be executed on connection to the broker.
   - `res`: **boolean**  the result of the connection. If it's true, the connection succeeded went well. If not, it means the connection failed.
   - `client`: **object**  the TTN client from which the callback is called.
 
-#### setDownlinkCallback
+#### set_downlink_callback
 Set the downlink callback function, with actions to execute when a downlink message is sent.
 ```python
-client.setDownlinkCallback(downlinkCallback)
+client.set_downlink_callback(downlinkCallback)
 ```
-##### downlinkCallback
-- `downlinkCallback(mid, client)`: the function which will be the new publish behavior for our MQTT client.
+##### downlink_callback
+- `downlink_callback(mid, client)`: the function which will be the new publish behavior for our MQTT client.
   - `mid`: **int**  this is the message ID for the downlink request. It can be used to track the request.
   - `client`: **object**  the TTN client from which the callback is called.
 
-#### setCloseCallback
+#### set_close_callback
 Set the callback to be executed when the connection to the TTN broker is closed.
 ```python
-client.setCloseCallback(closeCallback)
+client.set_close_callback(close_callback)
 ```
-##### closeCallback
-- `closeCallback(res, client)`: the function which will be executed when the connection is closed.
+##### close_callback
+- `close_callback(res, client)`: the function which will be executed when the connection is closed.
   - `res`: **boolean**  the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
   - `client`: **object**  the TTN client from which we call the callback.
 
 ### send
 Sends a downlink to the device.
 ```python
-client.send(deviceID, payload, [port], [confirmation], [schedule])
+client.send(dev_id, payload, [port], [confirmation], [schedule])
 ```
-- `deviceID`: **string**  the ID of the device you wish to send the message to.
+- `dev_id`: **string**  the ID of the device you wish to send the message to.
 - `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or an object with several fields following the **JSON** standard. In case it's a **JSON** object with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
 ![Screenshot of an encoder function in the console](./images/encoder-function.png?raw=true)
 - `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
 - `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
 - `schedule`: **string**  this string provide the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
-
-### Errors
-At any given moment it's possible to access a **string** attribute of your client containing the last error message. If no error was ever registered since the client was registered it sends back an empty **string**.
-```python
-client.ErrorMsg
-```
