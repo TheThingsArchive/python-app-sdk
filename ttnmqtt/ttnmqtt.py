@@ -77,8 +77,8 @@ class MQTTClient:
         self.__appID = app_id
         self.__accessKey = app_access_key
         self.__events = MyEvents()
-        self.__mqttAddress = ""
-        self.__discoveryAddress = ""
+        self.__mqttAddress = None
+        self.__discoveryAddress = None
         for k, v in kwargs.items():
             if k == "mqtt_address":
                 self.__mqttAddress = v
@@ -103,14 +103,11 @@ class MQTTClient:
 
         self.__client.username_pw_set(self.__appID, self.__accessKey)
 
-        if self.__mqttAddress == "":
+        if self.__mqttAddress is None:
             creds = grpc.ssl_channel_credentials()
-            if self.__discoveryAddress == "":
-                channel = grpc.secure_channel(
-                    'discovery.thethings.network:1900',
-                    creds)
-            else:
-                channel = grpc.secure_channel(self.__discoveryAddress, creds)
+            if self.__discoveryAddress is None:
+                self.__discoveryAddress = 'discovery.thethings.network:1900'
+            channel = grpc.secure_channel(self.__discoveryAddress, creds)
             stub = discovery_pb2_grpc.DiscoveryStub(channel)
             req = discovery_pb2.GetByAppIDRequest()
             req.app_id = self.__appID
