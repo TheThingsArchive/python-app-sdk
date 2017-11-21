@@ -123,18 +123,16 @@ class MQTTClient:
 
     def _on_connect(self):
         def on_connect(client, userdata, flags, rc):
-            if(rc == 0):
+            if rc == 0:
                 client.subscribe('{}/devices/+/up'.format(self.__appID))
-            res = rc == 0
             if self.__events.connect:
-                self.__events.connect(res, client=self)
+                self.__events.connect(rc == 0, client=self)
         return on_connect
 
     def _on_close(self):
         def on_disconnect(client, userdata, rc):
-            res = rc == 0
             if self.__events.close:
-                self.__events.close(res, client=self)
+                self.__events.close(rc == 0, client=self)
         return on_disconnect
 
     def _on_message(self):
