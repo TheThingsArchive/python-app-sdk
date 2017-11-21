@@ -33,7 +33,7 @@ MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
 The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
-Connects and starts the client in the background. This function also re-established the client's connection in case it was closed.
+Connects and starts the client in the background. This function also re-establishes the client's connection in case it was closed.
 ```python
 client.connect()
 ```
@@ -49,7 +49,7 @@ client.close()
 The callback functions are functions which are executed when a trigger event happens.
 
 #### set_uplink_callback
-Set the callback function, to be called when an uplink message is received.
+Set the callback function, to be called when an uplink message is received. It's possible to add more than one callback function.
 ```python
 client.set_uplink_callback(uplink_callback)
 ```
@@ -57,11 +57,11 @@ client.set_uplink_callback(uplink_callback)
 ##### uplink_callback
 The callback function must be declared in your script following this structure:
 * `uplink_callback(msg, client)`
-  * `msg`: **JSON ob**  the message received by the client
+  * `msg`: **JSON**  the message received by the client
   * `client`: **object**  the client from which the callback is executed are calling
 
 #### set_connect_callback
-Set the connection callback function to be executed when the client connect to the broker.
+Set the connection callback function to be executed when the client connects to the broker. It's possible to add more than one callback function.
 ```python
 client.set_connect_callback(connect_callback)
 ```
@@ -71,7 +71,7 @@ client.set_connect_callback(connect_callback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_downlink_callback
-Set the downlink callback function, with actions to execute when a downlink message is sent.
+Set the downlink callback function, with actions to execute when a downlink message is sent. It's possible to add more than one callback function.
 ```python
 client.set_downlink_callback(downlinkCallback)
 ```
@@ -81,13 +81,13 @@ client.set_downlink_callback(downlinkCallback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_close_callback
-Set the callback to be executed when the connection to the TTN broker is closed.
+Set the callback to be executed when the connection to the TTN broker is closed. It's possible to add more than one callback function.
 ```python
 client.set_close_callback(close_callback)
 ```
 ##### close_callback
 - `close_callback(res, client)`: the function which will be executed when the connection is closed.
-  - `res`: **boolean**  the result of the disconnection. If it's 0, it went well. If not, it means the disconnection was unexpected.
+  - `res`: **boolean**  the result of the disconnection. If it's true, it went well. If not, it means the disconnection was unexpected.
   - `client`: **object**  the TTN client from which we call the callback.
 
 ### send
@@ -96,7 +96,11 @@ Sends a downlink to the device.
 client.send(dev_id, payload, [port], [confirmation], [schedule])
 ```
 - `dev_id`: **string**  the ID of the device you wish to send the message to.
-- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or an object with several fields following the **JSON** standard. In case it's a **JSON** object with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
+- `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or an object in **JSON**. Here is an example of a **JSON** argument that could be passed to the method:
+```json
+{"led_state": "on", "counter": 1}
+```
+In case it's a **JSON** object with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
 ![Screenshot of an encoder function in the console](./images/encoder-function.png?raw=true)
 - `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
 - `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
