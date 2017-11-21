@@ -22,18 +22,18 @@ This package provides you an easy way to connect to The Things Network via MQTT.
 
 The class constructor can be called following this scheme:
 ```python
-MQTTClient(appID, appAccessKey, [mqttAddress], [discoveryAddress])
+MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
 ```
-- `appID`: **string**  this the name given to the application when it was created.
+- `app_id`: **string**  this the name given to the application when it was created.
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
-- `appAccessKey`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
+- `app_access_key`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
-- `mqttAddress`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `mqttAddress=value` argument when calling the constructor.
-- `discoveryAddress`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discoveryAddress=value` argument when calling the constructor.
+- `mqtt_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `mqtt_address=value` argument when calling the constructor.
+- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
 The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
-Connects and start the client in the background. This function also re-established the client's connection in case it was closed.
+Connects and starts the client in the background. This function also re-established the client's connection in case it was closed.
 ```python
 client.connect()
 ```
