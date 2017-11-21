@@ -115,10 +115,8 @@ class MQTTClient:
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
             self.__mqttAddress = res.mqtt_address
-            self._connect()
-        else:
-            self._connect()
 
+        self._connect()
         self.start()
 
     def _on_connect(self):
