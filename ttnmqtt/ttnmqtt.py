@@ -74,19 +74,19 @@ class MQTTClient:
 
     def __init__(self, app_id, app_access_key, **kwargs):
         self.__client = mqtt.Client()
-        self.__appID = app_id
-        self.__accessKey = app_access_key
+        self.__app_id = app_id
+        self.__access_key = app_access_key
         self.__events = MyEvents()
-        self.__mqttAddress = None
-        self.__discoveryAddress = None
+        self.__mqtt_address = None
+        self.__discovery_address = None
         for k, v in kwargs.items():
             if k == "mqtt_address":
-                self.__mqttAddress = v
+                self.__mqtt_address = v
             if k == "discovery_address":
-                self.__discoveryAddress = v
+                self.__discovery_address = v
 
     def _connect(self):
-        mqtt_addr = split_address(self.__mqttAddress)
+        mqtt_addr = split_address(self.__mqtt_address)
         addr = mqtt_addr['address']
         if mqtt_addr['port']:
             port = mqtt_addr['port']
@@ -100,18 +100,18 @@ class MQTTClient:
         self.__client.on_message = self._on_message()
         self.__client.on_disconnect = self._on_close()
 
-        self.__client.username_pw_set(self.__appID, self.__accessKey)
+        self.__client.username_pw_set(self.__app_id, self.__access_key)
 
-        if self.__mqttAddress is None:
+        if self.__mqtt_address is None:
             creds = grpc.ssl_channel_credentials()
-            if self.__discoveryAddress is None:
-                self.__discoveryAddress = 'discovery.thethings.network:1900'
-            channel = grpc.secure_channel(self.__discoveryAddress, creds)
+            if self.__discovery_address is None:
+                self.__discovery_address = 'discovery.thethings.network:1900'
+            channel = grpc.secure_channel(self.__discovery_address, creds)
             stub = discovery_pb2_grpc.DiscoveryStub(channel)
             req = discovery_pb2.GetByAppIDRequest()
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
-            self.__mqttAddress = res.mqtt_address
+            self.__mqtt_address = res.mqtt_address
 
         self._connect()
         self.start()
@@ -119,7 +119,7 @@ class MQTTClient:
     def _on_connect(self):
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
-                client.subscribe('{}/devices/+/up'.format(self.__appID))
+                client.subscribe('{}/devices/+/up'.format(self.__app_id))
             if self.__events.connect:
                 self.__events.connect(rc == 0, client=self)
         return on_connect
@@ -140,7 +140,6 @@ class MQTTClient:
 
     def _on_downlink(self):
         def on_publish(client, userdata, mid):
-            self.midCounter = mid
             if self.__events.downlink_msg:
                 self.__events.downlink_msg(mid, client=self)
         return on_publish
@@ -164,7 +163,7 @@ class MQTTClient:
         self.__client.loop_stop()
         self.__client.disconnect()
 
-    def send(self, devID, pay, port=1, conf=False, sched="replace"):
+    def send(self, dev_id, pay, port=1, conf=False, sched="replace"):
         message = DownlinkMessage(port, conf, sched)
         if isinstance(pay, str):
             message.payload_raw = pay
@@ -173,5 +172,5 @@ class MQTTClient:
 
         msg = message.obj2json()
         self.__client.publish(
-            '{}/devices/{}/down'.format(self.__appID, devID),
+            '{}/devices/{}/down'.format(self.__app_id, dev_id),
             msg)
