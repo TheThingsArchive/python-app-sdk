@@ -12,7 +12,7 @@
 * [set_close_callback](#set_close_callback)
   * [close_callback](#close_callback)
 * [send](#send)
-* [License](#license)
+* [Errors](#errors)
 
 ## Description
 
