@@ -30,7 +30,7 @@ MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 - `mqtt_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `mqtt_address=value` argument when calling the constructor.
 - `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
-The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
+The constructor returns an **MQTTClient object** set up with the application informations, ready to be connected to The Things Network.
 
 ### connect
 Connects and starts the client in the background. This function also re-establishes the client's connection in case it was closed.
@@ -39,7 +39,7 @@ client.connect()
 ```
 
 ### close
-Disconnects and stop the client from which the method is called.
+Disconnects and stops the client from which the method is called.
 ```python
 client.close()
 ```
@@ -58,7 +58,7 @@ client.set_uplink_callback(uplink_callback)
 The callback function must be declared in the script following this structure:
 * `uplink_callback(msg, client)`
   * `msg`: **object**  the message received by the client.
-  * `client`: **object**  the client from which the callback is executed are calling.
+  * `client`: **object**  the client from which the callback is executed.
 
 #### set_connect_callback
 Add a connection callback function to be executed when the client connects to the broker.
@@ -67,7 +67,7 @@ client.set_connect_callback(connect_callback)
 ```
 ##### connect_callback
 - `connect_callback(res, client)`: the function which will be executed on connection to the broker.
-  - `res`: **boolean**  the result of the connection. If it's true, the connection succeeded went well. If not, it means the connection failed.
+  - `res`: **boolean**  the result of the connection. If it's true, the connection succeeded. If not, it means the connection failed.
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_downlink_callback
@@ -76,7 +76,7 @@ Add a downlink callback function, with actions to execute when a downlink messag
 client.set_downlink_callback(downlinkCallback)
 ```
 ##### downlink_callback
-- `downlink_callback(mid, client)`: the function which will be the new publish behavior for our MQTT client.
+- `downlink_callback(mid, client)`: the function which will be a new publish behavior for our MQTT client.
   - `mid`: **int**  this is the message ID for the downlink request. It can be used to track the request.
   - `client`: **object**  the TTN client from which the callback is called.
 
@@ -95,16 +95,16 @@ Sends a downlink to the device.
 ```python
 client.send(dev_id, payload, [port], [confirmation], [schedule])
 ```
-- `dev_id`: **string**  the ID of the device you wish to send the message to.
+- `dev_id`: **string**  the ID of the device which will receive the message.
 - `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or a **dictionary** of JSON nature. Here is an example of a **dictionary** argument that could be passed to the method:
 ```json
 {"led_state": "on", "counter": 1}
 ```
-In case it's a **JSON** object with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
+In case it's a **dictionary** with fields, please make sure the **encoder** function (Payload Formats section) of the application is set to make sense of the informations transmitted in each field.
 ![Screenshot of an encoder function in the console](./images/encoder-function.png?raw=true)
-- `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
-- `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
-- `schedule`: **string**  this string provide the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
+- `port`: **int**  the port of the device to which the message will be sent. Default value to 1.
+- `confirmation`: **boolean**  this boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
+- `schedule`: **string**  this string provides the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
 
 ### Errors
 Errors can happen on connection for different reasons:
