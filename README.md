@@ -16,20 +16,21 @@ $ pip install ttnmqtt
 ## Example
 ```python
 import time
-from ttnmqtt import MQTTClient as mqttclient
+from ttnmqtt import MQTTClient as mqtt_client
 
-appID = "foo"
-accessKey = "ttn-account.eiPq8mEeYRL_PNBZsOpPy-O3ABJXYWulODmQGR5PZzg"
+app_id = "foo"
+access_key = "ttn-account.eiPq8mEeYRL_PNBZsOpPy-O3ABJXYWulODmQGR5PZzg"
 
-def uplinkcallback(msg, client):
+def uplink_callback(msg, client):
   print("Received uplink from ", msg.dev_id)
   print(msg)
 
 
-myclient = mqttclient(appID, accessKey)
-myclient.setUplinkCallback(uplinkcallback)
+my_client = mqtt_client(app_id, access_key)
+my_client.set_uplink_callback(uplink_callback)
+my_client.connect()
 time.sleep(60)
-myclient.stop()
+my_client.close()
 ```
 
 ## License
