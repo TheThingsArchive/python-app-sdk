@@ -78,7 +78,7 @@ def test_connect_error():
 
     def connectcallback(res, client):
         print(res)
-        assert res == False
+        assert res is False
 
     ttn_client = mqtt(appID, accessKey, mqtt_address='badAddress:5555')
     ttn_client.set_connect_callback(connectcallback)
