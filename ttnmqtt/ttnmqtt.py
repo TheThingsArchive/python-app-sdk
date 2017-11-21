@@ -15,32 +15,22 @@ import grpc
 import os
 
 # Necessary to make gRPC work
+MODERN_CIPHER_SUITES = ("ECDHE-ECDSA-AES256-GCM-SHA384:"
+                        "ECDHE-RSA-AES256-GCM-SHA384:"
+                        "ECDHE-ECDSA-CHACHA20-POLY1305:"
+                        "ECDHE-RSA-CHACHA20-POLY1305:"
+                        "ECDHE-ECDSA-AES128-GCM-SHA256:"
+                        "ECDHE-RSA-AES128-GCM-SHA256:"
+                        "ECDHE-ECDSA-AES256-SHA384:"
+                        "ECDHE-RSA-AES256-SHA384:"
+                        "ECDHE-ECDSA-AES128-SHA256:"
+                        "ECDHE-RSA-AES128-SHA256")
+
 if os.getenv('GRPC_SSL_CIPHER_SUITES'):
     os.environ['GRPC_SSL_CIPHER_SUITES'] += os.pathsep + os.pathsep.join(
-                                                ("ECDHE-ECDSA-AES256-"
-                                                 "GCM-SHA384:ECDHE-RSA-AES256-"
-                                                 "GCM-SHA384:ECDHE-ECDSA-"
-                                                 "CHACHA20-POLY1305:"
-                                                 "ECDHE-RSA-CHACHA20-POLY1305:"
-                                                 "ECDHE-ECDSA-AES128-"
-                                                 "GCM-SHA256:"
-                                                 "ECDHE-RSA-AES128-GCM-SHA256:"
-                                                 "ECDHE-ECDSA-AES256-SHA384:"
-                                                 "ECDHE-RSA-AES256-SHA384:"
-                                                 "ECDHE-ECDSA-AES128-SHA256:"
-                                                 "ECDHE-RSA-AES128-SHA256"))
+                                                MODERN_CIPHER_SUITES)
 else:
-    os.environ['GRPC_SSL_CIPHER_SUITES'] = ("ECDHE-ECDSA-AES256-"
-                                            "GCM-SHA384:ECDHE-RSA-AES256-"
-                                            "GCM-SHA384:ECDHE-ECDSA-CHACHA20-"
-                                            "POLY1305:"
-                                            "ECDHE-RSA-CHACHA20-POLY1305:"
-                                            "ECDHE-ECDSA-AES128-GCM-SHA256:"
-                                            "ECDHE-RSA-AES128-GCM-SHA256:"
-                                            "ECDHE-ECDSA-AES256-SHA384:"
-                                            "ECDHE-RSA-AES256-SHA384:"
-                                            "ECDHE-ECDSA-AES128-SHA256:"
-                                            "ECDHE-RSA-AES128-SHA256")
+    os.environ['GRPC_SSL_CIPHER_SUITES'] = MODERN_CIPHER_SUITES
 
 
 def _json_object_hook(d):
@@ -139,19 +129,14 @@ class MQTTClient:
         def on_connect(client, userdata, flags, rc):
             if(rc == 0):
                 client.subscribe('{}/devices/+/up'.format(self.__appID))
-                res = True
-            else:
-                res = False
+            res = rc == 0
             if self.__events.connect:
                 self.__events.connect(res, client=self)
         return on_connect
 
     def _on_close(self):
         def on_disconnect(client, userdata, rc):
-            if rc != 0:
-                res = False
-            else:
-                res = True
+            res = rc == 0
             if self.__events.close:
                 self.__events.close(res, client=self)
         return on_disconnect
