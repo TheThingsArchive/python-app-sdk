@@ -52,6 +52,7 @@ def test_connect_disconnect():
     ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_connect_callback(connectcallback)
     ttn_client.set_close_callback(closecallback)
+    ttn_client.connect()
     time.sleep(2)
     ttn_client.close()
 
@@ -64,6 +65,7 @@ def test_uplink():
 
     ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_uplink_callback(uplinkcallback)
+    ttn_client.connect()
     time.sleep(2)
     ttn_client._MQTTClient__client.publish(
         'guest/devices/guest/up',
@@ -74,11 +76,16 @@ def test_uplink():
 
 def test_connect_error():
 
+    def connectcallback(res, client):
+        print(res)
+        assert res == False
+
     ttn_client = mqtt(appID, accessKey, mqtt_address='badAddress:5555')
-    ttn_client.close()
-    print(ttn_client.ErrorMsg)
-    assert ttn_client.ErrorMsg == ("Connection failed: wrong appID,"
-                                   "accessKey or mqttAddress")
+    ttn_client.set_connect_callback(connectcallback)
+    try:
+        ttn_client.connect()
+    except:
+        ttn_client.close()
 
 
 def test_downlink_payloadraw():
@@ -89,6 +96,7 @@ def test_downlink_payloadraw():
 
     ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
+    ttn_client.connect()
     time.sleep(2)
     ttn_client.send('guest', "AQ==")
     time.sleep(2)
@@ -103,6 +111,7 @@ def test_downlink_payloadfields():
 
     ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
+    ttn_client.connect()
     time.sleep(2)
     ttn_client.send('guest', {"field1": 1, "field2": 2})
     time.sleep(2)
@@ -117,6 +126,7 @@ def test_providing_all_downlink_options():
 
     ttn_client = mqtt(appID, accessKey, mqtt_address=mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
+    ttn_client.connect()
     time.sleep(2)
     ttn_client.send('guest', "AQ==", 2, True, "first")
     time.sleep(2)
