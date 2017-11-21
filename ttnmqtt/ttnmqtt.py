@@ -87,13 +87,13 @@ class MQTTClient:
 
     def _connect(self):
         mqtt_addr = split_address(self.__mqttAddress)
-        if mqtt_addr['port']:
-            self.__client.connect(
-                mqtt_addr['address'],
-                mqtt_addr['port'],
-                60)
-        else:
-            self.__client.connect(mqtt_addr['address'], 1883, 60)
+        self.__client.connect(
+            mqtt_addr['address'],
+            mqtt_addr['port'],
+            60) if mqtt_addr['port'] else self.__client.connect(
+                                            mqtt_addr['address'],
+                                            1883,
+                                            60)
 
     def connect(self):
         self.__client.on_connect = self._on_connect()
@@ -102,6 +102,7 @@ class MQTTClient:
         self.__client.on_disconnect = self._on_close()
 
         self.__client.username_pw_set(self.__appID, self.__accessKey)
+
         if self.__mqttAddress == "":
             creds = grpc.ssl_channel_credentials()
             if self.__discoveryAddress == "":
