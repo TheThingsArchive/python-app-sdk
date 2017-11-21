@@ -53,7 +53,7 @@ def test_connect_disconnect():
     ttn_client.set_connect_callback(connectcallback)
     ttn_client.set_close_callback(closecallback)
     time.sleep(2)
-    ttn_client.stop()
+    ttn_client.close()
 
 
 def test_uplink():
@@ -69,7 +69,7 @@ def test_uplink():
         'guest/devices/guest/up',
         json.dumps(uplink))
     time.sleep(2)
-    ttn_client.stop()
+    ttn_client.close()
 
 
 def test_connect_error():
@@ -92,7 +92,7 @@ def test_downlink_payloadraw():
     time.sleep(2)
     ttn_client.send('guest', "AQ==")
     time.sleep(2)
-    ttn_client.stop()
+    ttn_client.close()
 
 
 def test_downlink_payloadfields():
@@ -106,7 +106,7 @@ def test_downlink_payloadfields():
     time.sleep(2)
     ttn_client.send('guest', {"field1": 1, "field2": 2})
     time.sleep(2)
-    ttn_client.stop()
+    ttn_client.close()
 
 
 def test_providing_all_downlink_options():
@@ -120,4 +120,4 @@ def test_providing_all_downlink_options():
     time.sleep(2)
     ttn_client.send('guest', "AQ==", 2, True, "first")
     time.sleep(2)
-    ttn_client.stop()
+    ttn_client.close()
