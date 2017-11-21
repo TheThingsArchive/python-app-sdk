@@ -101,3 +101,11 @@ client.send(dev_id, payload, [port], [confirmation], [schedule])
 - `port`: **int**  the port of the device to which you wish to send the message. Default value to 1.
 - `confirmation`: **boolean**  This boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
 - `schedule`: **string**  this string provide the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
+
+### Errors
+Errors can happen on connection for different reasons:
+* Wrong, `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
+* The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection
+* The client process doesn't have system capabilities to open a socket
+* The MQTT server uses MQTTS, but the client won't accept the TLS certificate
+Errors could also happen when closing connection, in case the disconnection is unexpected.
