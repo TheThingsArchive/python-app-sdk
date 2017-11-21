@@ -43,8 +43,8 @@ The class constructor can be called following this scheme:
    discovery server to use in order to find back the address of the MQTT
    handler. It needs to be provided as an ``discovery_address=value``
    argument when calling the constructor. The constructor returns an
-   **MQTTClient object** set up with the application informations,
-   connected to The Things Network.
+   **MQTTClient object** set up with the application informations, ready
+   to be connected to The Things Network.
 
 connect
 ~~~~~~~
@@ -59,7 +59,7 @@ re-establishes the client's connection in case it was closed.
 close
 ~~~~~
 
-Disconnects and stop the client from which the method is called.
+Disconnects and stops the client from which the method is called.
 
 .. code:: python
 
@@ -87,7 +87,7 @@ uplink\_callback
 The callback function must be declared in the script following this
 structure: \* ``uplink_callback(msg, client)`` \* ``msg``: **object**
 the message received by the client. \* ``client``: **object** the client
-from which the callback is executed are calling.
+from which the callback is executed.
 
 set\_connect\_callback
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -105,8 +105,7 @@ connect\_callback
 -  ``connect_callback(res, client)``: the function which will be
    executed on connection to the broker.
 -  ``res``: **boolean** the result of the connection. If it's true, the
-   connection succeeded went well. If not, it means the connection
-   failed.
+   connection succeeded. If not, it means the connection failed.
 -  ``client``: **object** the TTN client from which the callback is
    called.
 
@@ -123,8 +122,8 @@ downlink message is sent.
 downlink\_callback
 ''''''''''''''''''
 
--  ``downlink_callback(mid, client)``: the function which will be the
-   new publish behavior for our MQTT client.
+-  ``downlink_callback(mid, client)``: the function which will be a new
+   publish behavior for our MQTT client.
 -  ``mid``: **int** this is the message ID for the downlink request. It
    can be used to track the request.
 -  ``client``: **object** the TTN client from which the callback is
@@ -160,8 +159,8 @@ Sends a downlink to the device.
 
     client.send(dev_id, payload, [port], [confirmation], [schedule])
 
--  ``dev_id``: **string** the ID of the device you wish to send the
-   message to.
+-  ``dev_id``: **string** the ID of the device which will receive the
+   message.
 -  ``payload``: the payload of the message to be published to the
    broker. It can be an hexadecimal **string**, a base64 **string** like
    ``AQ==`` (this will send the raw payload ``01`` to your device) or a
@@ -172,16 +171,16 @@ Sends a downlink to the device.
 
        {"led_state": "on", "counter": 1}
 
-   In case it's a **JSON** object with fields, please make sure the
+   In case it's a **dictionary** with fields, please make sure the
    **encoder** function (Payload Formats section) of the application is
    set to make sense of the informations transmitted in each field.
    |Screenshot of an encoder function in the console|
--  ``port``: **int** the port of the device to which you wish to send
-   the message. Default value to 1.
--  ``confirmation``: **boolean** This boolean indicates if you wish to
+-  ``port``: **int** the port of the device to which the message will be
+   sent. Default value to 1.
+-  ``confirmation``: **boolean** this boolean indicates if you wish to
    receive a confirmation after sending the downlink message. Default
    value to False.
--  ``schedule``: **string** this string provide the type of schedule on
+-  ``schedule``: **string** this string provides the type of schedule on
    which the message should be sent. It can take values such as
    ``first`` or ``last``. Default value to ``replace``.
 
