@@ -3,8 +3,6 @@
 * [MQTTClient](#mqttclient)
 * [connect](#connect)
 * [close](#close)
-* [start](#start)
-* [stop](#stop)
 * [set_uplink_callback](#set_uplink_callback)
   * [uplink_callback](#uplink_callback)
 * [set_connect_callback](#set_connect_callback)
@@ -35,27 +33,15 @@ MQTTClient(appID, appAccessKey, [mqttAddress], [discoveryAddress])
 The constructor returns an **MQTTClient object** set up with the application informations, connected to The Things Network.
 
 ### connect
-This function connect your client, in case it was closed and need to be openned once again.
+Connects and start the client in the background. This function also re-established the client's connection in case it was closed.
 ```python
 client.connect()
 ```
 
 ### close
-Disconnects the MQTT client from which we call the method..
+Disconnects and stop the client from which the method is called.
 ```python
 client.close()
-```
-
-### start
-Starts an asynchronous loop for the client so that it's possible to run another process (such as a web server) in the same script. This loop is started by default when creating the MQTT client. So it should only be used in case the client was stopped and need to be started again, after re-connecting.
-```python
-client.start()
-```
-
-### stop
-Stops the MQTT client and also disconnect it.
-```python
-client.stop()
 ```
 
 ### Using Callbacks
@@ -71,7 +57,7 @@ client.set_uplink_callback(uplink_callback)
 ##### uplink_callback
 The callback function must be declared in your script following this structure:
 * `uplink_callback(msg, client)`
-  * `msg`: **JSON object**  the message received by the client
+  * `msg`: **JSON ob**  the message received by the client
   * `client`: **object**  the client from which the callback is executed are calling
 
 #### set_connect_callback
