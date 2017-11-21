@@ -15,17 +15,32 @@ import grpc
 import os
 
 # Necessary to make gRPC work
-os.environ['GRPC_SSL_CIPHER_SUITES'] = ("ECDHE-ECDSA-AES256-"
-                                        "GCM-SHA384:ECDHE-RSA-AES256-"
-                                        "GCM-SHA384:ECDHE-ECDSA-CHACHA20-"
-                                        "POLY1305:"
-                                        "ECDHE-RSA-CHACHA20-POLY1305:"
-                                        "ECDHE-ECDSA-AES128-GCM-SHA256:"
-                                        "ECDHE-RSA-AES128-GCM-SHA256:"
-                                        "ECDHE-ECDSA-AES256-SHA384:"
-                                        "ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-"
-                                        "AES128-SHA256:"
-                                        "ECDHE-RSA-AES128-SHA256")
+if os.getenv('GRPC_SSL_CIPHER_SUITES'):
+    os.environ['GRPC_SSL_CIPHER_SUITES'] += os.pathsep + os.pathsep.join(
+                                                ("ECDHE-ECDSA-AES256-"
+                                                 "GCM-SHA384:ECDHE-RSA-AES256-"
+                                                 "GCM-SHA384:ECDHE-ECDSA-"
+                                                 "CHACHA20-POLY1305:"
+                                                 "ECDHE-RSA-CHACHA20-POLY1305:"
+                                                 "ECDHE-ECDSA-AES128-"
+                                                 "GCM-SHA256:"
+                                                 "ECDHE-RSA-AES128-GCM-SHA256:"
+                                                 "ECDHE-ECDSA-AES256-SHA384:"
+                                                 "ECDHE-RSA-AES256-SHA384:"
+                                                 "ECDHE-ECDSA-AES128-SHA256:"
+                                                 "ECDHE-RSA-AES128-SHA256"))
+else:
+    os.environ['GRPC_SSL_CIPHER_SUITES'] = ("ECDHE-ECDSA-AES256-"
+                                            "GCM-SHA384:ECDHE-RSA-AES256-"
+                                            "GCM-SHA384:ECDHE-ECDSA-CHACHA20-"
+                                            "POLY1305:"
+                                            "ECDHE-RSA-CHACHA20-POLY1305:"
+                                            "ECDHE-ECDSA-AES128-GCM-SHA256:"
+                                            "ECDHE-RSA-AES128-GCM-SHA256:"
+                                            "ECDHE-ECDSA-AES256-SHA384:"
+                                            "ECDHE-RSA-AES256-SHA384:"
+                                            "ECDHE-ECDSA-AES128-SHA256:"
+                                            "ECDHE-RSA-AES128-SHA256")
 
 
 def _json_object_hook(d):
@@ -36,13 +51,21 @@ def json2obj(data):
     return json.loads(data, object_hook=_json_object_hook)
 
 
+def split_address(address):
+    if ':' in address:
+        split = address.split(':')
+        address = split[0]
+        port = int(split[1])
+        return {"address": address, "port": port}
+    else:
+        return {"address": address}
+
+
 class DownlinkMessage:
     def __init__(self, port, confirmed=False, schedule=None):
         self.port = port
-        if confirmed:
-            self.confirmed = confirmed
-        if schedule:
-            self.schedule = schedule
+        self.confirmed = confirmed
+        self.schedule = schedule
 
     def obj2json(self):
         json_msg = json.dumps(self.__dict__)
@@ -59,31 +82,24 @@ class MyEvents(Events):
 
 class MQTTClient:
 
-    def __init__(self, appID, appAccessKey, **kwargs):
+    def __init__(self, app_id, app_access_key, **kwargs):
         self.__client = mqtt.Client()
-        self.__appID = appID
-        self.__accessKey = appAccessKey
+        self.__appID = app_id
+        self.__accessKey = app_access_key
         self.__events = MyEvents()
         self.__mqttAddress = ""
         self.__discoveryAddress = ""
         for k, v in kwargs.items():
-            if k == "mqttAddress":
+            if k == "mqtt_address":
                 self.__mqttAddress = v
-            if k == "discoveryAddress":
+            if k == "discovery_address":
                 self.__discoveryAddress = v
-        self.ErrorMsg = ""
-        try:
-            self.connect()
-            self.start()
-        except:
-            self.ErrorMsg = ("Connection failed: wrong appID,"
-                             "accessKey or mqttAddress")
 
     def connect(self):
-        self.__client.on_connect = self._onConnect()
-        self.__client.on_publish = self._onDownlink()
-        self.__client.on_message = self._onMessage()
-        self.__client.on_disconnect = self._onClose()
+        self.__client.on_connect = self._on_connect()
+        self.__client.on_publish = self._on_downlink()
+        self.__client.on_message = self._on_message()
+        self.__client.on_disconnect = self._on_close()
 
         self.__client.username_pw_set(self.__appID, self.__accessKey)
         if self.__mqttAddress == "":
@@ -99,20 +115,27 @@ class MQTTClient:
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
             self.__mqttAddress = res.mqtt_address
-            split = self.__mqttAddress.split(':')
-            address = split[0]
-            port = int(split[1])
-            self.__client.connect(address, port, 60)
-        else:
-            if ':' in self.__mqttAddress:
-                split = self.__mqttAddress.split(':')
-                address = split[0]
-                port = int(split[1])
+            mqtt_addr = split_address(self.__mqttAddress)
+            if mqtt_addr['port']:
+                self.__client.connect(
+                    mqtt_addr['address'],
+                    mqtt_addr['port'],
+                    60)
             else:
-                address = self.__mqttAddress
-        self.__client.connect(address, port, 60)
+                self.__client.connect(mqtt_addr['address'], 1883, 60)
+        else:
+            mqtt_addr = split_address(self.__mqttAddress)
+            if mqtt_addr['port']:
+                self.__client.connect(
+                    mqtt_addr['address'],
+                    mqtt_addr['port'],
+                    60)
+            else:
+                self.__client.connect(mqtt_addr['address'], 1883, 60)
 
-    def _onConnect(self):
+        self.start()
+
+    def _on_connect(self):
         def on_connect(client, userdata, flags, rc):
             if(rc == 0):
                 client.subscribe('{}/devices/+/up'.format(self.__appID))
@@ -123,10 +146,9 @@ class MQTTClient:
                 self.__events.connect(res, client=self)
         return on_connect
 
-    def _onClose(self):
+    def _on_close(self):
         def on_disconnect(client, userdata, rc):
             if rc != 0:
-                self.ErrorMsg = "Unexpected Disconnection"
                 res = False
             else:
                 res = True
@@ -134,7 +156,7 @@ class MQTTClient:
                 self.__events.close(res, client=self)
         return on_disconnect
 
-    def _onMessage(self):
+    def _on_message(self):
         def on_message(client, userdata, msg):
             j_msg = str(json.dumps(json.loads(msg.payload.decode('utf-8'))))
             obj = json2obj(j_msg)
@@ -142,7 +164,7 @@ class MQTTClient:
                 self.__events.uplink_msg(obj, client=self)
         return on_message
 
-    def _onDownlink(self):
+    def _on_downlink(self):
         def on_publish(client, userdata, mid):
             self.midCounter = mid
             if self.__events.downlink_msg:
@@ -164,13 +186,9 @@ class MQTTClient:
     def start(self):
         self.__client.loop_start()
 
-    def stop(self):
-        self.__client.loop_stop()
-        self.close()
-
     def close(self):
+        self.__client.loop_stop()
         self.__client.disconnect()
-        self.connectFlag = 0
 
     def send(self, devID, pay, port=1, conf=False, sched="replace"):
         message = DownlinkMessage(port, conf, sched)
