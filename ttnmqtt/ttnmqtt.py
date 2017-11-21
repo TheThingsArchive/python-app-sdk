@@ -85,6 +85,16 @@ class MQTTClient:
             if k == "discovery_address":
                 self.__discoveryAddress = v
 
+    def _connect(self):
+        mqtt_addr = split_address(self.__mqttAddress)
+        if mqtt_addr['port']:
+            self.__client.connect(
+                mqtt_addr['address'],
+                mqtt_addr['port'],
+                60)
+        else:
+            self.__client.connect(mqtt_addr['address'], 1883, 60)
+
     def connect(self):
         self.__client.on_connect = self._on_connect()
         self.__client.on_publish = self._on_downlink()
@@ -105,23 +115,9 @@ class MQTTClient:
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
             self.__mqttAddress = res.mqtt_address
-            mqtt_addr = split_address(self.__mqttAddress)
-            if mqtt_addr['port']:
-                self.__client.connect(
-                    mqtt_addr['address'],
-                    mqtt_addr['port'],
-                    60)
-            else:
-                self.__client.connect(mqtt_addr['address'], 1883, 60)
+            self._connect()
         else:
-            mqtt_addr = split_address(self.__mqttAddress)
-            if mqtt_addr['port']:
-                self.__client.connect(
-                    mqtt_addr['address'],
-                    mqtt_addr['port'],
-                    60)
-            else:
-                self.__client.connect(mqtt_addr['address'], 1883, 60)
+            self._connect()
 
         self.start()
 
