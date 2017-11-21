@@ -49,19 +49,19 @@ client.close()
 The callback functions are functions which are executed when a trigger event happens.
 
 #### set_uplink_callback
-Set the callback function, to be called when an uplink message is received. It's possible to add more than one callback function.
+Set a callback function, to be called when an uplink message is received. It's possible to add more than one callback function.
 ```python
 client.set_uplink_callback(uplink_callback)
 ```
 
 ##### uplink_callback
-The callback function must be declared in your script following this structure:
+The callback function must be declared in the script following this structure:
 * `uplink_callback(msg, client)`
   * `msg`: **JSON**  the message received by the client
   * `client`: **object**  the client from which the callback is executed are calling
 
 #### set_connect_callback
-Set the connection callback function to be executed when the client connects to the broker. It's possible to add more than one callback function.
+Set a connection callback function to be executed when the client connects to the broker. It's possible to add more than one callback function.
 ```python
 client.set_connect_callback(connect_callback)
 ```
@@ -71,7 +71,7 @@ client.set_connect_callback(connect_callback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_downlink_callback
-Set the downlink callback function, with actions to execute when a downlink message is sent. It's possible to add more than one callback function.
+Set a downlink callback function, with actions to execute when a downlink message is sent. It's possible to add more than one callback function.
 ```python
 client.set_downlink_callback(downlinkCallback)
 ```
@@ -81,7 +81,7 @@ client.set_downlink_callback(downlinkCallback)
   - `client`: **object**  the TTN client from which the callback is called.
 
 #### set_close_callback
-Set the callback to be executed when the connection to the TTN broker is closed. It's possible to add more than one callback function.
+Set a callback to be executed when the connection to the TTN broker is closed. It's possible to add more than one callback function.
 ```python
 client.set_close_callback(close_callback)
 ```

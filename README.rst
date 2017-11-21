@@ -50,7 +50,7 @@ connect
 ~~~~~~~
 
 Connects and starts the client in the background. This function also
-re-established the client's connection in case it was closed.
+re-establishes the client's connection in case it was closed.
 
 .. code:: python
 
@@ -74,8 +74,8 @@ event happens.
 set\_uplink\_callback
 ^^^^^^^^^^^^^^^^^^^^^
 
-Set the callback function, to be called when an uplink message is
-received.
+Set a callback function, to be called when an uplink message is
+received. It's possible to add more than one callback function.
 
 .. code:: python
 
@@ -84,16 +84,17 @@ received.
 uplink\_callback
 ''''''''''''''''
 
-The callback function must be declared in your script following this
-structure: \* ``uplink_callback(msg, client)`` \* ``msg``: **JSON ob**
-the message received by the client \* ``client``: **object** the client
-from which the callback is executed are calling
+The callback function must be declared in the script following this
+structure: \* ``uplink_callback(msg, client)`` \* ``msg``: **JSON** the
+message received by the client \* ``client``: **object** the client from
+which the callback is executed are calling
 
 set\_connect\_callback
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Set the connection callback function to be executed when the client
-connect to the broker.
+Set a connection callback function to be executed when the client
+connects to the broker. It's possible to add more than one callback
+function.
 
 .. code:: python
 
@@ -113,8 +114,9 @@ connect\_callback
 set\_downlink\_callback
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Set the downlink callback function, with actions to execute when a
-downlink message is sent.
+Set a downlink callback function, with actions to execute when a
+downlink message is sent. It's possible to add more than one callback
+function.
 
 .. code:: python
 
@@ -133,8 +135,8 @@ downlink\_callback
 set\_close\_callback
 ^^^^^^^^^^^^^^^^^^^^
 
-Set the callback to be executed when the connection to the TTN broker is
-closed.
+Set a callback to be executed when the connection to the TTN broker is
+closed. It's possible to add more than one callback function.
 
 .. code:: python
 
@@ -145,8 +147,8 @@ close\_callback
 
 -  ``close_callback(res, client)``: the function which will be executed
    when the connection is closed.
--  ``res``: **boolean** the result of the disconnection. If it's 0, it
-   went well. If not, it means the disconnection was unexpected.
+-  ``res``: **boolean** the result of the disconnection. If it's true,
+   it went well. If not, it means the disconnection was unexpected.
 -  ``client``: **object** the TTN client from which we call the
    callback.
 
@@ -164,11 +166,17 @@ Sends a downlink to the device.
 -  ``payload``: the payload of the message to be published to the
    broker. It can be an hexadecimal **string**, a base64 **string** like
    ``AQ==`` (this will send the raw payload ``01`` to your device) or an
-   object with several fields following the **JSON** standard. In case
-   it's a **JSON** object with fields, please make sure the **encoder**
-   function (Payload Formats section) of the application is set to make
-   sense of the informations transmitted in each field. |Screenshot of
-   an encoder function in the console|
+   object in **JSON**. Here is an example of a **JSON** argument that
+   could be passed to the method:
+
+   .. code:: json
+
+       {"led_state": "on", "counter": 1}
+
+   In case it's a **JSON** object with fields, please make sure the
+   **encoder** function (Payload Formats section) of the application is
+   set to make sense of the informations transmitted in each field.
+   |Screenshot of an encoder function in the console|
 -  ``port``: **int** the port of the device to which you wish to send
    the message. Default value to 1.
 -  ``confirmation``: **boolean** This boolean indicates if you wish to
