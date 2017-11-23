@@ -109,20 +109,33 @@ class MQTTClient:
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
             self.__mqtt_address = res.mqtt_address
-
         self._connect()
         self.start()
 
     def _on_connect(self):
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
-                client.subscribe('{}/devices/+/up'.format(self.__app_id))
+                res = client.subscribe('{}/devices/+/up'.format(self.__app_id))
+                if res[0] == "MQTT_ERR_NO_CONN"
+                    raise RuntimeError("the client is not connected")
+            if rc == 1:
+                raise RuntimeError("connection refused - incorrect protocol version")
+            if rc == 2:
+                raise RuntimeError("connection refused - invalid client identifier")
+            if rc == 3:
+                raise RuntimeError("connection refused - server unavailable")
+            if rc == 4:
+                raise RuntimeError("connection refused - bad app_id or access_key")
+            if rc == 5:
+                raise RuntimeError("connection refused - not authorised 6-255: currently unused")
             if self.__events.connect:
                 self.__events.connect(rc == 0, client=self)
         return on_connect
 
     def _on_close(self):
         def on_disconnect(client, userdata, rc):
+            if rc != 0:
+                raise RuntimeError("unexpected disconnection")
             if self.__events.close:
                 self.__events.close(rc == 0, client=self)
         return on_disconnect
@@ -168,6 +181,8 @@ class MQTTClient:
             message.payload_fields = pay
 
         msg = message.obj2json()
-        self.__client.publish(
+        res = self.__client.publish(
             '{}/devices/{}/down'.format(self.__app_id, dev_id),
             msg)
+        if res[0] == "MQTT_ERR_NO_CONN"
+            raise RuntimeError("client not connected")
