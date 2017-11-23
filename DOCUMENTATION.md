@@ -114,6 +114,7 @@ Errors can happen on connection for different reasons:
 * The client process doesn't have system capabilities to open a socket
 * The MQTT server uses MQTTS, but the client won't accept the TLS certificate
 Errors could also happen when closing connection, in case the disconnection is unexpected.
+It's possible to catch those exceptions using `except RuntimeError as` and print the error.
 
 ### UplinkMessage
 This type of object is constructed dynamically from the message received by the client, so this means some attributes can change from one message to another. However here are some constant attributes usually found in UplinkMessage objects:
