@@ -119,15 +119,20 @@ class MQTTClient:
                 if res[0] == "MQTT_ERR_NO_CONN":
                     raise RuntimeError("the client is not connected")
             if rc == 1:
-                raise RuntimeError("connection refused - incorrect protocol version")
+                raise RuntimeError("connection refused"
+                                   "- incorrect protocol version")
             if rc == 2:
-                raise RuntimeError("connection refused - invalid client identifier")
+                raise RuntimeError("connection refused -"
+                                   "invalid client identifier")
             if rc == 3:
-                raise RuntimeError("connection refused - server unavailable")
+                raise RuntimeError("connection refused -"
+                                   "server unavailable")
             if rc == 4:
-                raise RuntimeError("connection refused - bad app_id or access_key")
+                raise RuntimeError("connection refused -"
+                                   "bad app_id or access_key")
             if rc == 5:
-                raise RuntimeError("connection refused - not authorised 6-255: currently unused")
+                raise RuntimeError("connection refused -"
+                                   "not authorised 6-255: currently unused")
             if self.__events.connect:
                 self.__events.connect(rc == 0, client=self)
         return on_connect
