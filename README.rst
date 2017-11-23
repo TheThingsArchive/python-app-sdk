@@ -196,7 +196,8 @@ server could be down/Firewall restrictions could prevent connection \*
 The client process doesn't have system capabilities to open a socket \*
 The MQTT server uses MQTTS, but the client won't accept the TLS
 certificate Errors could also happen when closing connection, in case
-the disconnection is unexpected.
+the disconnection is unexpected. It's possible to catch those exceptions
+using ``except RuntimeError as`` and print the error.
 
 UplinkMessage
 ~~~~~~~~~~~~~
