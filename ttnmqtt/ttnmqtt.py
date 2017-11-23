@@ -116,7 +116,7 @@ class MQTTClient:
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
                 res = client.subscribe('{}/devices/+/up'.format(self.__app_id))
-                if res[0] == "MQTT_ERR_NO_CONN"
+                if res[0] == "MQTT_ERR_NO_CONN":
                     raise RuntimeError("the client is not connected")
             if rc == 1:
                 raise RuntimeError("connection refused - incorrect protocol version")
