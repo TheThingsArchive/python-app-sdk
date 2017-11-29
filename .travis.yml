@@ -20,3 +20,15 @@ script:
   - pep8 --first ttn/ttnmqtt.py
   - pep8 --first test_ttnmqtt.py
   - pytest test_*.py
+
+before_deploy:
+  - python setup.py sdist
+  - python setup.py bdist_wheel --universal
+
+deploy:
+  provider: pypi
+  user: "emmlejeail"
+  password:
+      secure: btPNtswCa1ZWKlHVxfEspps+BehKXsz1xdpkW8VWNcaNjfo8dmEzbe3aBw7y/W5m27Sz/IvX6mpYxSfCCkgbq5pwXVE9qkB+IU3w59abXnAGID38YHldTcMoWhhnD67vmdYZHjyM0Q6QIr79+bJxG3jGCDABKd/aafBTLI/VfBDRdMXLwBL2k8b64WcnRStIb6m/4aEL0wk8MDTQF+46jG53UVJKkXRCaEQZnZeSTGrUcdxoor0ZW/h9if0nhTwDNmm07YzqblcvVyfiq0Fmup2sgP0+kZpFr5wpyI8HDuOa0VcM3WnZupCJY8c3J/HD1uy8Sn6el6nWxjWRlHzZFuI4z6U19nmVZY/0cu0Ns3dyJUv3bN0+9Du0NzSEm6sCfEXqaKa6yQLEmqDtGyLOs4odENYOlJ+SEp333is+FXidn03VLXCnxR9wu7ik928KponMlawV/40sRx+Dj5ZdT6eYJrHGiCf3aU60Zr4KvF+vI//qlk+SuN/BfHSOM6654K4aXYNxxcKfdFb5TzN15W75MRAPe40D+59ohnw6+1Y9w+ulaogwej1rAMhQukeGB5OY/J1mjkTbEkYMZE7TKbKP/YDQvW0MRvS+BchH931Tv2QmkF4schxliVYl8ynnORkkeA666MNyrfJhTPe6jHuDyhKRvEoD1O2UFQf1I7o=
+  branch: master
+  tags: true
