@@ -9,15 +9,15 @@ import io
 with io.open('README.rst', encoding="utf-8") as f:
     long_description = f.read()
 
-setup(name='ttnmqtt',
-      version='0.9.4',
-      description='small package to make mqtt connection to ttn',
+setup(name='ttn',
+      version='2.0.0',
+      description='The Things Network Client',
       long_description = long_description,
       url = 'https://github.com/TheThingsNetwork/python-app-sdk',
       author='Emmanuelle Lejeail',
       author_email='emmanuelle@thethingsindustries.com',
       license='MIT',
-      packages=['ttnmqtt'],
+      packages=['ttn'],
       install_requires=[
           'paho-mqtt',
           'events',
