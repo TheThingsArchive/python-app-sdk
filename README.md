@@ -16,7 +16,7 @@ $ pip install ttnmqtt
 ## Example
 ```python
 import time
-from ttnmqtt import MQTTClient as mqtt_client
+from ttn import MQTTClient as mqtt_client
 
 app_id = "foo"
 access_key = "ttn-account.eiPq8mEeYRL_PNBZsOpPy-O3ABJXYWulODmQGR5PZzg"
