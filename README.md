@@ -4,9 +4,34 @@
 
 ![The Things Network](https://thethings.blob.core.windows.net/ttn/logo.svg)
 
-## Usage
+This is the Python Application SDK for [The Things Network](https://www.thethingsnetwork.org/) to receive messages from IoT devices via The Things Network and sen messages as well.
 
-> TODO
+## Installation
+```
+$ pip install ttnmqtt
+```
+## Documentation
+* [API Reference](./DOCUMENTATION.md)
+
+## Example
+```python
+import time
+from ttnmqtt import MQTTClient as mqtt_client
+
+app_id = "foo"
+access_key = "ttn-account.eiPq8mEeYRL_PNBZsOpPy-O3ABJXYWulODmQGR5PZzg"
+
+def uplink_callback(msg, client):
+  print("Received uplink from ", msg.dev_id)
+  print(msg)
+
+
+my_client = mqtt_client(app_id, access_key)
+my_client.set_uplink_callback(uplink_callback)
+my_client.connect()
+time.sleep(60)
+my_client.close()
+```
 
 ## License
 
