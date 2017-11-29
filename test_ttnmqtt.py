@@ -7,7 +7,7 @@
 import os
 import time
 import json
-from ttnmqtt import MQTTClient as mqtt
+from ttn import MQTTClient as mqtt
 
 appID = "guest"
 accessKey = "guest"
