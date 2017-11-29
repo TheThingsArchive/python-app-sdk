@@ -17,6 +17,6 @@ before_script:
   - docker run -d -p 127.0.0.1:1883:1883 thethingsnetwork/rabbitmq
 
 script:
-  - pep8 --first ttnmqtt/ttnmqtt.py
+  - pep8 --first ttn/ttnmqtt.py
   - pep8 --first test_ttnmqtt.py
   - pytest test_*.py
