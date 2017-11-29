@@ -8,7 +8,7 @@ This is the Python Application SDK for [The Things Network](https://www.thething
 
 ## Installation
 ```
-$ pip install ttnmqtt
+$ pip install ttn
 ```
 ## Documentation
 * [API Reference](./DOCUMENTATION.md)
