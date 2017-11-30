@@ -24,6 +24,7 @@ install:
 
 before_script:
   - docker-compose up -d
+  - python set_env.py
 
 script:
   - pep8 --first ttn/ttnmqtt.py
