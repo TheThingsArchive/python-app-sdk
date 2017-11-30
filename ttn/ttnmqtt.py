@@ -9,8 +9,8 @@ from events import Events
 import json
 import base64
 
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as discovery_pb2_grpc
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
 
 import grpc
 import os
@@ -77,8 +77,8 @@ class MQTTClient:
             if self.__discovery_address is None:
                 self.__discovery_address = 'discovery.thethings.network:1900'
             channel = grpc.secure_channel(self.__discovery_address, creds)
-            stub = discovery_pb2_grpc.DiscoveryStub(channel)
-            req = discovery_pb2.GetByAppIDRequest()
+            stub = disco.DiscoveryStub(channel)
+            req = proto.GetByAppIDRequest()
             req.app_id = self.__appID
             res = stub.GetByAppID(req)
             self.__mqtt_address = res.mqtt_address
