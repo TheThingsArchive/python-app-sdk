@@ -27,7 +27,7 @@ def test_connect_disconnect():
     ttn_client.set_connect_callback(connectcallback)
     ttn_client.set_close_callback(closecallback)
     ttn_client.connect()
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.close()
 
 
@@ -42,11 +42,11 @@ def test_uplink():
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_uplink_callback(uplinkcallback)
     ttn_client.connect()
-    time.sleep(2)
+    time.sleep(1)
     ttn_client._MQTTClient__client.publish(
         '{}/devices/guest/up'.format(stubs.apptest['appId']),
         json.dumps(stubs.uplink))
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.close()
 
 
@@ -77,9 +77,9 @@ def test_downlink_payloadraw():
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.send('guest', "AQ==")
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.close()
 
 
@@ -94,9 +94,9 @@ def test_downlink_payloadfields():
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.send("guest", {"field1": 1, "field2": 2})
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.close()
 
 
@@ -111,7 +111,7 @@ def test_providing_all_downlink_options():
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.send('guest', "AQ==", 2, True, "first")
-    time.sleep(2)
+    time.sleep(1)
     ttn_client.close()
