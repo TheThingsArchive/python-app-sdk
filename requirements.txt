@@ -1,6 +1,8 @@
-twine
+redis
 paho-mqtt
 events
+binascii
+python-jose
 pytest
 codecov
 coverage
