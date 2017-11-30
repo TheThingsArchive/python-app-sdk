@@ -1,3 +1,9 @@
+# coding: Latin-1
+# Copyright © 2017 The Things Network
+# Use of this source code is governed by the
+# MIT license that can be found in the LICENSE file.
+
+
 from jose import jwt, jws
 from .read_key import read_key
 import math
@@ -89,6 +95,7 @@ handler = {
 }
 
 handlerAddress = "localhost:1904"
+mqttAddress = "localhost:1883"
 
 devicetest = {
     "description": "Description",
