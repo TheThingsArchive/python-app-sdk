@@ -8,47 +8,20 @@ import paho.mqtt.client as mqtt
 from events import Events
 import json
 import base64
-from collections import namedtuple
-from .gRPCfiles import discovery_pb2_grpc
-from .gRPCfiles import discovery_pb2
+
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as discovery_pb2_grpc
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
+
 import grpc
 import os
+from utils import stubs, json2obj, split_address
 
-# Necessary to make gRPC work
-MODERN_CIPHER_SUITES = ("ECDHE-ECDSA-AES256-GCM-SHA384:"
-                        "ECDHE-RSA-AES256-GCM-SHA384:"
-                        "ECDHE-ECDSA-CHACHA20-POLY1305:"
-                        "ECDHE-RSA-CHACHA20-POLY1305:"
-                        "ECDHE-ECDSA-AES128-GCM-SHA256:"
-                        "ECDHE-RSA-AES128-GCM-SHA256:"
-                        "ECDHE-ECDSA-AES256-SHA384:"
-                        "ECDHE-RSA-AES256-SHA384:"
-                        "ECDHE-ECDSA-AES128-SHA256:"
-                        "ECDHE-RSA-AES128-SHA256")
 
 if os.getenv('GRPC_SSL_CIPHER_SUITES'):
     os.environ['GRPC_SSL_CIPHER_SUITES'] += os.pathsep + os.pathsep.join(
-                                                MODERN_CIPHER_SUITES)
+                                                stubs.MODERN_CIPHER_SUITES)
 else:
-    os.environ['GRPC_SSL_CIPHER_SUITES'] = MODERN_CIPHER_SUITES
-
-
-def _json_object_hook(d):
-    return namedtuple('MSG', d.keys())(*d.values())
-
-
-def json2obj(data):
-    return json.loads(data, object_hook=_json_object_hook)
-
-
-def split_address(address):
-    if ':' in address:
-        split = address.split(':')
-        address = split[0]
-        port = int(split[1])
-        return {"address": address, "port": port}
-    else:
-        return {"address": address}
+    os.environ['GRPC_SSL_CIPHER_SUITES'] = stubs.MODERN_CIPHER_SUITES
 
 
 class DownlinkMessage:
