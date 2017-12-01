@@ -4,7 +4,11 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 import os
 from utils import stubs
 
-os.environ['GRPC_SSL_CIPHER_SUITES'] = "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256"
+if os.getenv('GRPC_SSL_CIPHER_SUITES'):
+    os.environ['GRPC_SSL_CIPHER_SUITES'] += os.pathsep + os.pathsep.join(
+                                                stubs.MODERN_CIPHER_SUITES)
+else:
+    os.environ['GRPC_SSL_CIPHER_SUITES'] = stubs.MODERN_CIPHER_SUITES
 
 credentials = grpc.ssl_channel_credentials(stubs.handler['certificate'])
 channel = grpc.secure_channel(stubs.handlerAddress, credentials)
