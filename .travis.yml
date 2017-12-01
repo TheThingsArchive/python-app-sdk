@@ -24,12 +24,12 @@ install:
 
 before_script:
   - docker-compose up -d
-  - python set_env.py
+  - docker-compose ps
 
 script:
   - pep8 --first ttn/ttnmqtt.py
   - pep8 --first test_ttnmqtt.py
-  - pytest
+  - pytest test_ttnmqtt.py
 
 before_deploy:
   - python setup.py sdist
