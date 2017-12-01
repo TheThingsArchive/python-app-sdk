@@ -1,9 +1,6 @@
 from ttn import ApplicationClient
 from utils import stubs
-import grpc
-import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
-import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
-
+import binascii
 
 def test_application_constructor():
     appclient = ApplicationClient(stubs.apptest['appId'], stubs.apptest['accessKey'], stubs.handlerAddress, stubs.handler['certificate'])
@@ -57,7 +54,7 @@ def test_update_device():
     }
     appclient.update_device('foo', update)
     dev = appclient.device('foo')
-    assert dev.lorawan_device.dev_eui == "1100223344556677".decode("hex")
+    assert dev.lorawan_device.dev_eui == binascii.unhexlify("1100223344556677")
 
 def test_delete_device():
     appclient = ApplicationClient('test-python-sdk', 'ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj_Na5O2Dm_IH8Up6BcrAY')
