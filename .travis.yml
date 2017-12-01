@@ -27,6 +27,7 @@ before_script:
   - docker-compose ps
 
 script:
+  - python set_env.py
   - pep8 --first ttn/ttnmqtt.py
   - pep8 --first test_ttnmqtt.py
   - pytest test_ttnmqtt.py
