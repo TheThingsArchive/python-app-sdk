@@ -51,7 +51,7 @@ class ApplicationClient:
         req.app_id = self.app_id
         meta = self.__create_metadata()
         try:
-            app = self.client.GetApplication(req, 10, meta)
+            app = self.client.GetApplication(req, 60, meta)
             return app
         except grpc.RpcError as err:
             raise RuntimeError("Error while getting the application: {}".format(err.code().name))
@@ -79,7 +79,7 @@ class ApplicationClient:
         req = proto.ApplicationIdentifier()
         req.app_id = self.app_id
         meta = self.__create_metadata()
-        return self.client.DeleteApplication(req, 1, meta)
+        return self.client.DeleteApplication(req, 60, meta)
 
     def __set(self, updates):
         req = proto.Application()
@@ -104,7 +104,7 @@ class ApplicationClient:
           req.validator = updates['validator']
 
         meta = self.__create_metadata()
-        return self.client.SetApplication(req, 1, meta)
+        return self.client.SetApplication(req, 60, meta)
 
     def register_device(self, devID, device):
         return self.__setDevice(devID, device)
@@ -112,13 +112,13 @@ class ApplicationClient:
     def __setDevice(self, devID, device):
         req = self.__deviceRequest(devID, device)
         meta = self.__create_metadata()
-        return self.client.SetDevice(req, 10, meta)
+        return self.client.SetDevice(req, 60, meta)
 
     def devices(self):
         req = proto.ApplicationIdentifier()
         req.app_id = self.app_id
         meta = self.__create_metadata()
-        res = self.client.GetDevicesForApplication(req, 10, meta)
+        res = self.client.GetDevicesForApplication(req, 60, meta)
         return res.devices
 
     def device(self, devID):
@@ -126,21 +126,21 @@ class ApplicationClient:
         req.app_id = self.app_id
         req.dev_id = devID
         meta = self.__create_metadata()
-        res = self.client.GetDevice(req, 10, meta)
+        res = self.client.GetDevice(req, 60, meta)
         return res
 
     def update_device(self, dev_id, updates):
         device = self.device(dev_id)
         req = self.__deviceRequest(dev_id, updates, True)
         meta = self.__create_metadata()
-        return self.client.SetDevice(req, 1, meta)
+        return self.client.SetDevice(req, 60, meta)
 
     def delete_device(self, dev_id):
         req = proto.DeviceIdentifier()
         req.app_id = self.app_id
         req.dev_id = dev_id
         meta = self.__create_metadata()
-        return self.client.DeleteDevice(req, 10, meta)
+        return self.client.DeleteDevice(req, 60, meta)
 
     def __deviceRequest(self, dev_id, device, update=False):
         if update:
