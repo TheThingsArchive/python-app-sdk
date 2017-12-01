@@ -1,5 +1,9 @@
 from ttn import ApplicationClient
 from utils import stubs
+import grpc
+import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
+import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
+
 
 def test_application_constructor():
     appclient = ApplicationClient(stubs.apptest['appId'], stubs.apptest['accessKey'], stubs.handlerAddress, stubs.handler['certificate'])
@@ -7,6 +11,10 @@ def test_application_constructor():
 
 def test__application_constructor_token():
     appclient = ApplicationClient(stubs.apptest['appId'], stubs.apptest['accessToken'], stubs.handlerAddress, stubs.handler['certificate'])
+    req = proto.ApplicationIdentifier()
+    req.app_id = appclient.app_id
+    meta = [('token', stubs.apptest['accessToken'])]
+    appclient.client.RegisterApplication(req, 1, meta)
     assert hasattr(appclient, 'app_access_token')
 
 def test_application_get():
