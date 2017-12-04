@@ -1,16 +1,19 @@
-import grpc, os, base64, json
-
+import grpc
+import os
+import base64
+import json
 import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
 import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
 import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as discovery_pb2_grpc
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
 import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
 
 from jose import jwt
 from utils import is_token, read_key, stubs
 
 os.environ['GRPC_SSL_CIPHER_SUITES'] = stubs.MODERN_CIPHER_SUITES
+
 
 class ApplicationClient:
 
@@ -38,7 +41,7 @@ class ApplicationClient:
         if self.net_address is None:
             discocreds = grpc.ssl_channel_credentials()
             channel = grpc.secure_channel(self.discovery_address, discocreds)
-            discoStub = discovery_pb2_grpc.DiscoveryStub(channel)
+            discoStub = disco.DiscoveryStub(channel)
             req = discovery_pb2.GetByAppIDRequest()
             req.app_id = self.app_id
             announcement = discoStub.GetByAppID(req)
@@ -65,7 +68,9 @@ class ApplicationClient:
             app = self.client.GetApplication(req, 60, meta)
             return app
         except grpc.RpcError as err:
-            raise RuntimeError("Error while getting the application: {}".format(err.code().name))
+            raise RuntimeError(
+                "Error while getting the",
+                " application: {}".format(err.code().name))
 
     def set_payload_format(self, payloadf):
         self.__set({
@@ -97,22 +102,23 @@ class ApplicationClient:
         req.app_id = self.app_id
 
         if "payload_format" in updates:
-          req.payload_format = updates['payload_format']
+            req.payload_format = updates['payload_format']
 
         if "register_on_join_access_key" in updates:
-          req.register_on_join_access_key = updates['register_on_join_access_key']
+            req.register_on_join_access_key = updates[('register_on_'
+                                                       'join_access_key')]
 
         if "decoder" in updates:
-          req.decoder = updates['decoder']
+            req.decoder = updates['decoder']
 
         if "converter" in updates:
-          req.converter = updates['converter']
+            req.converter = updates['converter']
 
         if "encoder" in updates:
-          req.encoder = updates['encoder']
+            req.encoder = updates['encoder']
 
         if "validator" in updates:
-          req.validator = updates['validator']
+            req.validator = updates['validator']
 
         meta = self.__create_metadata()
         return self.client.SetApplication(req, 60, meta)
@@ -156,24 +162,27 @@ class ApplicationClient:
     def __deviceRequest(self, dev_id, device, update=False):
         if update:
             req = self.device(dev_id)
-            req.lorawan_device.CopyFrom(self.__lorawanDeviceRequest(dev_id, device, True))
+            req.lorawan_device.CopyFrom(self.__lorawanDeviceRequest(dev_id,
+                                                                    device,
+                                                                    True))
         else:
             req = proto.Device()
-            req.lorawan_device.CopyFrom(self.__lorawanDeviceRequest(dev_id, device))
+            req.lorawan_device.CopyFrom(self.__lorawanDeviceRequest(dev_id,
+                                                                    device))
         req.app_id = self.app_id
         req.dev_id = dev_id
 
         if "description" in device:
-          req.description = device['description']
+            req.description = device['description']
 
         if "latitude" in device:
-          req.latitude = device['latitude']
+            req.latitude = device['latitude']
 
         if "longitude" in device:
-          req.longitude = device['longitude']
+            req.longitude = device['longitude']
 
         if "altitude" in device:
-          req.altitude = device['altitude']
+            req.altitude = device['altitude']
 
         if "attributes" in device:
             for k, v in device['attributes'].items():
@@ -190,33 +199,33 @@ class ApplicationClient:
         req.dev_id = dev_id
 
         if "appEui" in device:
-          req.app_eui = base64.b16decode(device["appEui"])
+            req.app_eui = base64.b16decode(device["appEui"])
 
         if "devEui" in device:
-          req.dev_eui = base64.b16decode(device["devEui"])
+            req.dev_eui = base64.b16decode(device["devEui"])
 
         if "devAddr" in device:
-          req.dev_addr = base64.b16decode(device["devAddr"])
+            req.dev_addr = base64.b16decode(device["devAddr"])
 
         if "nwkSKey" in device:
-          req.nwk_s_key = base64.b16decode(device["nwkSKey"])
+            req.nwk_s_key = base64.b16decode(device["nwkSKey"])
 
         if "appSKey" in device:
-          req.app_s_key = base64.b16decode(device["appSKey"])
+            req.app_s_key = base64.b16decode(device["appSKey"])
 
         if "appKey" in device:
-          req.app_key = base64.b16decode(device["appKey"])
+            req.app_key = base64.b16decode(device["appKey"])
 
         if "fCntUp" in device:
-          req.f_cnt_up = device["fCntUp"]
+            req.f_cnt_up = device["fCntUp"]
 
         if "fCntDown" in device:
-          req.f_cnt_down = device["fCntDown"]
+            req.f_cnt_down = device["fCntDown"]
 
         if "disableFCntCheck" in device:
-          req.disable_f_cnt_check = device["disableFCntCheck"]
+            req.disable_f_cnt_check = device["disableFCntCheck"]
 
         if "uses32BitFCnt" in device:
-          req.uses32_bit_f_cnt = device["uses32BitFCnt"]
+            req.uses32_bit_f_cnt = device["uses32BitFCnt"]
 
         return req
