@@ -1,26 +1,36 @@
-## Table of Contents
+# Table of Contents
 * [Description](#description)
 * [MQTTClient](#mqttclient)
-* [connect](#connect)
-* [close](#close)
-* [set_uplink_callback](#set_uplink_callback)
-  * [uplink_callback](#uplink_callback)
-* [set_connect_callback](#set_connect_callback)
-  * [connect_callback](#connect_callback)
-* [set_downlink_callback](#set_downlink_callback)
-  * [downlink_callback](#downlink_callback)
-* [set_close_callback](#set_close_callback)
-  * [close_callback](#close_callback)
-* [send](#send)
-* [Errors](#errors)
-* [UplinkMessage](#uplinkmessage)
+  * [connect](#connect)
+  * [close](#close)
+  * [set_uplink_callback](#set_uplink_callback)
+    * [uplink_callback](#uplink_callback)
+  * [set_connect_callback](#set_connect_callback)
+    * [connect_callback](#connect_callback)
+  * [set_downlink_callback](#set_downlink_callback)
+    * [downlink_callback](#downlink_callback)
+  * [set_close_callback](#set_close_callback)
+    * [close_callback](#close_callback)
+  * [send](#send)
+  * [Errors](#errors)
+  * [UplinkMessage](#uplinkmessage)
+* [ApplicationClient](#applicationclient)
+  * [get](#get)
+  * [set_payload_format](#set_payload_format)
+  * [set_custom_payload_functions](#set_custom_payload_functions)
+  * [set_register_on_join_access_key](#set_register_on_join_access_key)
+  * [unregister](#unregister)
+  * [device](#device)
+  * [devices](#devices)
+  * [update_device](#update_device)
+  * [delete_device](#delete_device)
+  * [Device](#device)
 
 ## Description
 
 This package provides you an easy way to connect to The Things Network via MQTT.
 
-### MQTTClient
-
+## MQTTClient
 The class constructor can be called following this scheme:
 ```python
 MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
@@ -123,3 +133,108 @@ This type of object is constructed dynamically from the message received by the 
 * port: the port number on which the message was sent
 * payload_raw: a buffer which contains the payload in hexadecimal
 * metadata: this field is another object which contains all the metadata of the message. Such as: the date, the frequency, the data rate and the list of gateways.
+
+## ApplicationClient
+The class constructor can be called following this scheme:
+```python
+ApplicationClient(app_id, access_key_or_token, [net_address], [certificate])
+```
+- `app_id`: **string**  this the name given to the application when it was created.
+![Screenshot of the console with app section](./images/app-console.png?raw=true)
+- `access_key_or_token`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
+![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
+- `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `net_address=value` argument when calling the constructor.
+- `certificate`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `certificate=value` argument when calling the constructor.
+- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
+The constructor returns an **ApplicationClient object** set up with the application informations, ready to get the application registered on The Things Network.
+
+### get
+Gives back the **Application object** with the id set in the constructor.
+```python
+client.get()
+```
+
+### set_payload_format
+Set the payload format of the application.
+```python
+client.set_payload_format(payload_format)
+```
+- payload_format: **string**  the payload format to be set.
+
+### set_custom_payload_functions
+Set the payload functions of the application.
+```python
+client.set_custom_payload_functions([decoder], [encoder], [validator], [converter])
+```
+- decoder: **string**  decoder function that must be written in javascript, it needs to be provided as a `decoder=value` argument when calling the method.
+- encoder: **string**  encoder function that must be written in javascript, it needs to be provided as a `encoder=value` argument when calling the method.
+- validator: **string**  validator function that must be written in javascript, it needs to be provided as a `validator=value` argument when calling the method.
+- converter: **string**  converter function that must be written in javascript, it needs to be provided as a `converter=value` argument when calling the method.
+
+### set_register_on_join_access_key
+Set the register on join access key of the application.
+```python
+client.set_register_on_join_access_key(register_on_join)
+```
+- register_on_join: **string**  the `register_on_join` access key.
+
+### unregister
+Unregister the application of the id provided to the constructor.
+```python
+client.unregister()
+```
+
+### register_device
+Register a new device to the application.
+```python
+client.register_device(dev_id, device)
+```
+- dev_id: **string**  the id of the device to be registered.
+- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device_object) section to now the structure of the dictionary.
+
+### device
+Gives back the **Device object** of the given id.
+```python
+client.device(dev_id)
+```
+- dev_id: **string**  the id of the device which is given back by the method.
+
+### devices
+Gives back the list of all the devices registered to the application.
+```python
+client.devices()
+```
+
+### update_device
+```python
+client.update_device(dev_id, updates)
+```
+- dev_id: **string** the id of the device to be updated.
+- updates: **dictionary** a dictionary with the fields to be updated in the device.
+
+### delete_device
+Delete the device with the given id.
+```python
+client.delete_device(dev_id)
+```
+- dev_id: **string**  the id of the device to be deleted.
+
+### Device
+* app_id: **string**
+* dev_id: **string**
+* latitude: **float**
+* longitude: **float**
+* altitude: **float**
+* description: **string**
+* attributes: **dictionary**
+* lorawan_device: **dictionary**
+    * app_eui: **string**  8 bytes in base64
+    * dev_eui: **string**  8 bytes in base64
+    * dev_addr: **string**  4 bytes in base64
+    * nwk_s_key: **string**  16 bytes in base64
+    * app_s_key: **string**  16 bytes in base64
+    * app_key: **string**  16 bytes in base64
+    * f_cnt_up: **int**
+    * f_cnt_down: **int**
+    * disable_f_cnt_check: **boolean**
+    * uses32_bit_f_cnt: **boolean**
