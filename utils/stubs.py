@@ -48,11 +48,11 @@ uplink = {
 }
 
 claims = {
-  "scope": [ "apps" ],
+  "scope": ["apps"],
 }
 
 appClaims = {
-  "scope": [ "apps:test" ],
+  "scope": ["apps:test"],
   "iss": "local",
   "iat": int(math.floor(time.time() / 1000) - 60),
   "apps": {
