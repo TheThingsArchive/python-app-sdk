@@ -3,7 +3,7 @@ from utils import stubs
 import binascii
 
 def test_application_constructor():
-    appclient = ApplicationClient(stubs.apptest['appId'], stubs.apptest['accessKey'], stubs.handlerAddress, stubs.handler['certificate'])
+    appclient = ApplicationClient('test-python-sdk', 'ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj_Na5O2Dm_IH8Up6BcrAY')
     assert hasattr(appclient, 'app_access_key')
 
 def test__application_constructor_token():
