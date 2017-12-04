@@ -137,19 +137,19 @@ This type of object is constructed dynamically from the message received by the 
 ## ApplicationClient
 The class constructor can be called following this scheme:
 ```python
-ApplicationClient(app_id, access_key_or_token, [net_address], [certificate])
+ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [discovery_address])
 ```
 - `app_id`: **string**  this the name given to the application when it was created.
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 - `access_key_or_token`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 - `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `net_address=value` argument when calling the constructor.
-- `certificate`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `certificate=value` argument when calling the constructor.
-- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
+- `certificate`: **string** this is the certificate used to connect in a secure way to the handler. It needs to be provided as an `certificate=value` argument when calling the constructor.
+- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
 The constructor returns an **ApplicationClient object** set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
-Gives back the **Application object** with the id set in the constructor.
+Gives back the **Application object** with the id given to the constructor.
 ```python
 client.get()
 ```
@@ -228,12 +228,12 @@ client.delete_device(dev_id)
 * description: **string**
 * attributes: **dictionary**
 * lorawan_device: **dictionary**
-    * app_eui: **string**  8 bytes in base64
-    * dev_eui: **string**  8 bytes in base64
-    * dev_addr: **string**  4 bytes in base64
-    * nwk_s_key: **string**  16 bytes in base64
-    * app_s_key: **string**  16 bytes in base64
-    * app_key: **string**  16 bytes in base64
+    * app_eui: **string**  8 bytes in hexadecimal
+    * dev_eui: **string**  8 bytes in hexadecimal
+    * dev_addr: **string**  4 bytes in hexadecimal
+    * nwk_s_key: **string**  16 bytes in hexadecimal
+    * app_s_key: **string**  16 bytes in hexadecimal
+    * app_key: **string**  16 bytes in hexadecimal
     * f_cnt_up: **int**
     * f_cnt_down: **int**
     * disable_f_cnt_check: **boolean**
