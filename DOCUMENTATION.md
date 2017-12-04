@@ -12,7 +12,6 @@
   * [set_close_callback](#set_close_callback)
     * [close_callback](#close_callback)
   * [send](#send)
-  * [Errors](#errors)
   * [UplinkMessage](#uplinkmessage)
 * [ApplicationClient](#applicationclient)
   * [get](#get)
@@ -25,10 +24,13 @@
   * [update_device](#update_device)
   * [delete_device](#delete_device)
   * [Device](#device)
+  * [Application](#application)
+* [Errors](#errors)
+
 
 ## Description
+This package provides you an easy way to connect to The Things Network via MQTT or manage your applications.
 
-This package provides you an easy way to connect to The Things Network via MQTT.
 
 ## MQTTClient
 The class constructor can be called following this scheme:
@@ -117,15 +119,6 @@ In case it's a **dictionary** with fields, please make sure the **encoder** func
 - `confirmation`: **boolean**  this boolean indicates if you wish to receive a confirmation after sending the downlink message. Default value to False.
 - `schedule`: **string**  this string provides the type of schedule on which the message should be sent. It can take values such as `first` or `last`. Default value to `replace`.
 
-### Errors
-Errors can happen on connection for different reasons:
-* Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
-* The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection
-* The client process doesn't have system capabilities to open a socket
-* The MQTT server uses MQTTS, but the client won't accept the TLS certificate
-Errors could also happen when closing connection, in case the disconnection is unexpected.
-It's possible to catch those exceptions using `except RuntimeError as` and print the error.
-
 ### UplinkMessage
 This type of object is constructed dynamically from the message received by the client, so this means some attributes can change from one message to another. However here are some constant attributes usually found in UplinkMessage objects:
 * app_id: the application ID to which the device is registered
@@ -133,6 +126,7 @@ This type of object is constructed dynamically from the message received by the 
 * port: the port number on which the message was sent
 * payload_raw: a buffer which contains the payload in hexadecimal
 * metadata: this field is another object which contains all the metadata of the message. Such as: the date, the frequency, the data rate and the list of gateways.
+
 
 ## ApplicationClient
 The class constructor can be called following this scheme:
@@ -148,7 +142,7 @@ ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [di
 The constructor returns an **ApplicationClient object** set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
-Gives back the **Application object** with the id given to the constructor.
+Gives back the **Application object** with the id given to the constructor. See the [Application](#application) section to get more information about its attributes.
 ```python
 client.get()
 ```
@@ -189,7 +183,7 @@ Register a new device to the application.
 client.register_device(dev_id, device)
 ```
 - dev_id: **string**  the id of the device to be registered.
-- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device_object) section to now the structure of the dictionary.
+- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device) section to now the structure of the dictionary.
 
 ### device
 Gives back the **Device object** of the given id.
@@ -246,3 +240,13 @@ client.delete_device(dev_id)
 * converter: **string**
 * validator: **string**
 * register_on_join_access_key: **string**
+
+
+## Errors
+Errors can happen on connection for different reasons:
+* Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
+* The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection
+* The client process doesn't have system capabilities to open a socket
+* The MQTT server uses MQTTS, but the client won't accept the TLS certificate
+Errors could also happen when closing connection, in case the disconnection is unexpected.
+It's possible to catch those exceptions using `except RuntimeError as` and print the error.
