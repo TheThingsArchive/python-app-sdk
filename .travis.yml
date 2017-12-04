@@ -25,6 +25,8 @@ before_script:
 
 script:
   - pep8 --first ttn/ttnmqtt.py
+  - pep8 --first ttn/application.py
+  - pep8 --first test_application.py
   - pep8 --first test_ttnmqtt.py
   - pytest
 
