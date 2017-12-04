@@ -14,10 +14,21 @@ os.environ['GRPC_SSL_CIPHER_SUITES'] = stubs.MODERN_CIPHER_SUITES
 
 class ApplicationClient:
 
-    def __init__(self, app_id, token_or_key, net_address=None, certificate=None):
+    def __init__(self, app_id, token_or_key, **kwargs):
         self.app_id = app_id
-        self.net_address = net_address
-        self.credentials = certificate
+        self.net_address = None
+        self.credentials = None
+        self.discovery_address = None
+        for k, v in kwargs.items():
+            if k == "net_address":
+                self.net_address = v
+            if k == "certificate":
+                self.credentials = v
+            if k == "discovery_address":
+                self.discovery_address = v
+
+        if self.discovery_address is None:
+            self.discovery_address = 'discovery.thethings.network:1900'
 
         if is_token(token_or_key):
             self.app_access_token = token_or_key
@@ -26,7 +37,7 @@ class ApplicationClient:
 
         if self.net_address is None:
             discocreds = grpc.ssl_channel_credentials()
-            channel = grpc.secure_channel('discovery.thethings.network:1900', discocreds)
+            channel = grpc.secure_channel(self.discovery_address, discocreds)
             discoStub = discovery_pb2_grpc.DiscoveryStub(channel)
             req = discovery_pb2.GetByAppIDRequest()
             req.app_id = self.app_id
