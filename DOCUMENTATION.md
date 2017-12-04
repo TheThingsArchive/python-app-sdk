@@ -237,3 +237,12 @@ client.delete_device(dev_id)
     * f_cnt_down: **int**
     * disable_f_cnt_check: **boolean**
     * uses32_bit_f_cnt: **boolean**
+
+### Application
+* app_id: **string**
+* payload_format: **string**
+* decoder: **string**
+* encoder: **string**
+* converter: **string**
+* validator: **string**
+* register_on_join_access_key: **string**
