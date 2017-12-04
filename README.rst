@@ -1,30 +1,50 @@
 Table of Contents
------------------
+=================
 
 -  `Description <#description>`__
 -  `MQTTClient <#mqttclient>`__
 -  `connect <#connect>`__
 -  `close <#close>`__
 -  `set\_uplink\_callback <#set_uplink_callback>`__
--  `uplink\_callback <#uplink_callback>`__
+
+   -  `uplink\_callback <#uplink_callback>`__
+
 -  `set\_connect\_callback <#set_connect_callback>`__
--  `connect\_callback <#connect_callback>`__
+
+   -  `connect\_callback <#connect_callback>`__
+
 -  `set\_downlink\_callback <#set_downlink_callback>`__
--  `downlink\_callback <#downlink_callback>`__
+
+   -  `downlink\_callback <#downlink_callback>`__
+
 -  `set\_close\_callback <#set_close_callback>`__
--  `close\_callback <#close_callback>`__
+
+   -  `close\_callback <#close_callback>`__
+
 -  `send <#send>`__
--  `Errors <#errors>`__
 -  `UplinkMessage <#uplinkmessage>`__
+-  `ApplicationClient <#applicationclient>`__
+-  `get <#get>`__
+-  `set\_payload\_format <#set_payload_format>`__
+-  `set\_custom\_payload\_functions <#set_custom_payload_functions>`__
+-  `set\_register\_on\_join\_access\_key <#set_register_on_join_access_key>`__
+-  `unregister <#unregister>`__
+-  `device <#device>`__
+-  `devices <#devices>`__
+-  `update\_device <#update_device>`__
+-  `delete\_device <#delete_device>`__
+-  `Device <#device>`__
+-  `Application <#application>`__
+-  `Errors <#errors>`__
 
 Description
 -----------
 
 This package provides you an easy way to connect to The Things Network
-via MQTT.
+via MQTT or manage your applications.
 
 MQTTClient
-~~~~~~~~~~
+----------
 
 The class constructor can be called following this scheme:
 
@@ -186,19 +206,6 @@ Sends a downlink to the device.
    which the message should be sent. It can take values such as
    ``first`` or ``last``. Default value to ``replace``.
 
-Errors
-~~~~~~
-
-Errors can happen on connection for different reasons: \* Wrong
-``app_id``, ``access_key`` or ``mqtt_address`` were provided to the
-constructor. \* The machine may not have access to the network/The MQTT
-server could be down/Firewall restrictions could prevent connection \*
-The client process doesn't have system capabilities to open a socket \*
-The MQTT server uses MQTTS, but the client won't accept the TLS
-certificate Errors could also happen when closing connection, in case
-the disconnection is unexpected. It's possible to catch those exceptions
-using ``except RuntimeError as`` and print the error.
-
 UplinkMessage
 ~~~~~~~~~~~~~
 
@@ -211,6 +218,203 @@ number on which the message was sent \* payload\_raw: a buffer which
 contains the payload in hexadecimal \* metadata: this field is another
 object which contains all the metadata of the message. Such as: the
 date, the frequency, the data rate and the list of gateways.
+
+ApplicationClient
+-----------------
+
+The class constructor can be called following this scheme:
+
+.. code:: python
+
+    ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [discovery_address])
+
+-  ``app_id``: **string** this the name given to the application when it
+   was created. |Screenshot of the console with app section|
+-  ``access_key_or_token``: **string** this can be found at the bottom
+   of the application page under **ACCESS KEYS**. You will need a key
+   allowing you to change the settings if you wish to update your
+   application.
+-  ``net_address``: **string** this is the address of the handler to
+   which the application was registered. It needs to be provided as an
+   ``net_address=value`` argument when calling the constructor.
+-  ``certificate``: **string** this is the certificate used to connect
+   in a secure way to the handler. It needs to be provided as an
+   ``certificate=value`` argument when calling the constructor.
+-  ``discovery_address``: **string** this is the address of the
+   discovery server to use in order to find back the address of the
+   handler to which the application in registered. It needs to be
+   provided as an ``discovery_address=value`` argument when calling the
+   constructor. The constructor returns an **ApplicationClient object**
+   set up with the application informations, ready to get the
+   application registered on The Things Network.
+
+get
+~~~
+
+Gives back the **Application object** with the id given to the
+constructor. See the `Application <#application>`__ section to get more
+information about its attributes.
+
+.. code:: python
+
+    client.get()
+
+set\_payload\_format
+~~~~~~~~~~~~~~~~~~~~
+
+Set the payload format of the application.
+
+.. code:: python
+
+    client.set_payload_format(payload_format)
+
+-  payload\_format: **string** the payload format to be set.
+
+set\_custom\_payload\_functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Set the payload functions of the application.
+
+.. code:: python
+
+    client.set_custom_payload_functions([decoder], [encoder], [validator], [converter])
+
+-  decoder: **string** decoder function that must be written in
+   javascript, it needs to be provided as a ``decoder=value`` argument
+   when calling the method.
+-  encoder: **string** encoder function that must be written in
+   javascript, it needs to be provided as a ``encoder=value`` argument
+   when calling the method.
+-  validator: **string** validator function that must be written in
+   javascript, it needs to be provided as a ``validator=value`` argument
+   when calling the method.
+-  converter: **string** converter function that must be written in
+   javascript, it needs to be provided as a ``converter=value`` argument
+   when calling the method.
+
+set\_register\_on\_join\_access\_key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Set the register on join access key of the application.
+
+.. code:: python
+
+    client.set_register_on_join_access_key(register_on_join)
+
+-  register\_on\_join: **string** the ``register_on_join`` access key.
+
+unregister
+~~~~~~~~~~
+
+Unregister the application of the id provided to the constructor.
+
+.. code:: python
+
+    client.unregister()
+
+register\_device
+~~~~~~~~~~~~~~~~
+
+Register a new device to the application.
+
+.. code:: python
+
+    client.register_device(dev_id, device)
+
+-  dev\_id: **string** the id of the device to be registered.
+-  device: **dictionary** the dictionary with fields to be set as a new
+   device of the application. See the `Device <#device>`__ section to
+   now the structure of the dictionary.
+
+device
+~~~~~~
+
+Gives back the **Device object** of the given id.
+
+.. code:: python
+
+    client.device(dev_id)
+
+-  dev\_id: **string** the id of the device which is given back by the
+   method.
+
+devices
+~~~~~~~
+
+Gives back the list of all the devices registered to the application.
+
+.. code:: python
+
+    client.devices()
+
+update\_device
+~~~~~~~~~~~~~~
+
+.. code:: python
+
+    client.update_device(dev_id, updates)
+
+-  dev\_id: **string** the id of the device to be updated.
+-  updates: **dictionary** a dictionary with the fields to be updated in
+   the device.
+
+delete\_device
+~~~~~~~~~~~~~~
+
+Delete the device with the given id.
+
+.. code:: python
+
+    client.delete_device(dev_id)
+
+-  dev\_id: **string** the id of the device to be deleted.
+
+Device
+~~~~~~
+
+-  app\_id: **string**
+-  dev\_id: **string**
+-  latitude: **float**
+-  longitude: **float**
+-  altitude: **float**
+-  description: **string**
+-  attributes: **dictionary**
+-  lorawan\_device: **dictionary**
+
+   -  app\_eui: **string** 8 bytes in hexadecimal
+   -  dev\_eui: **string** 8 bytes in hexadecimal
+   -  dev\_addr: **string** 4 bytes in hexadecimal
+   -  nwk\_s\_key: **string** 16 bytes in hexadecimal
+   -  app\_s\_key: **string** 16 bytes in hexadecimal
+   -  app\_key: **string** 16 bytes in hexadecimal
+   -  f\_cnt\_up: **int**
+   -  f\_cnt\_down: **int**
+   -  disable\_f\_cnt\_check: **boolean**
+   -  uses32\_bit\_f\_cnt: **boolean**
+
+Application
+~~~~~~~~~~~
+
+-  app\_id: **string**
+-  payload\_format: **string**
+-  decoder: **string**
+-  encoder: **string**
+-  converter: **string**
+-  validator: **string**
+-  register\_on\_join\_access\_key: **string**
+
+Errors
+------
+
+Errors can happen on connection for different reasons: \* Wrong
+``app_id``, ``access_key`` or ``mqtt_address`` were provided to the
+constructor. \* The machine may not have access to the network/The MQTT
+server could be down/Firewall restrictions could prevent connection \*
+The client process doesn't have system capabilities to open a socket \*
+The MQTT server uses MQTTS, but the client won't accept the TLS
+certificate Errors could also happen when closing connection, in case
+the disconnection is unexpected. It's possible to catch those exceptions
+using ``except RuntimeError as`` and print the error.
 
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true
