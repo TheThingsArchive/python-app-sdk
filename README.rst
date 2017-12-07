@@ -235,25 +235,25 @@ The class constructor can be called following this scheme:
    allowing you to change the settings if you wish to update your
    application.
 -  ``net_address``: **string** this is the address of the handler to
-   which the application was registered. It needs to be provided as an
+   which the application was registered. It needs to be provided as a
    ``net_address=value`` argument when calling the constructor.
 -  ``certificate``: **string** this is the certificate used to connect
-   in a secure way to the handler. It needs to be provided as an
+   in a secure way to the handler. It needs to be provided as a
    ``certificate=value`` argument when calling the constructor.
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
    handler to which the application in registered. It needs to be
-   provided as an ``discovery_address=value`` argument when calling the
-   constructor. The constructor returns an **ApplicationClient object**
+   provided as a ``discovery_address=value`` argument when calling the
+   constructor. The constructor returns an **ApplicationClient** object
    set up with the application informations, ready to get the
    application registered on The Things Network.
 
 get
 ~~~
 
-Gives back the **Application object** with the id given to the
+Gives back the **Application** object with the id given to the
 constructor. See the `Application <#application>`__ section to get more
-information about its attributes.
+informations about its attributes.
 
 .. code:: python
 
@@ -268,7 +268,7 @@ Set the payload format of the application.
 
     client.set_payload_format(payload_format)
 
--  payload\_format: **string** the payload format to be set.
+-  payload\_format: **string** the new payload format.
 
 set\_custom\_payload\_functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -306,7 +306,8 @@ Set the register on join access key of the application.
 unregister
 ~~~~~~~~~~
 
-Unregister the application of the id provided to the constructor.
+Unregisters the application of the id provided to the constructor on
+creation of the client.
 
 .. code:: python
 
@@ -315,7 +316,7 @@ Unregister the application of the id provided to the constructor.
 register\_device
 ~~~~~~~~~~~~~~~~
 
-Register a new device to the application.
+Registers a new device to the application.
 
 .. code:: python
 
@@ -324,12 +325,12 @@ Register a new device to the application.
 -  dev\_id: **string** the id of the device to be registered.
 -  device: **dictionary** the dictionary with fields to be set as a new
    device of the application. See the `Device <#device>`__ section to
-   now the structure of the dictionary.
+   know the structure of the dictionary.
 
 device
 ~~~~~~
 
-Gives back the **Device object** of the given id.
+Gives back the **Device** object of the given id.
 
 .. code:: python
 
@@ -350,6 +351,8 @@ Gives back the list of all the devices registered to the application.
 update\_device
 ~~~~~~~~~~~~~~
 
+Updates an already existing device of the application.
+
 .. code:: python
 
     client.update_device(dev_id, updates)
@@ -361,7 +364,7 @@ update\_device
 delete\_device
 ~~~~~~~~~~~~~~
 
-Delete the device with the given id.
+Deletes the device with the given id.
 
 .. code:: python
 
@@ -406,15 +409,17 @@ Application
 Errors
 ------
 
-Errors can happen on connection for different reasons: \* Wrong
-``app_id``, ``access_key`` or ``mqtt_address`` were provided to the
-constructor. \* The machine may not have access to the network/The MQTT
-server could be down/Firewall restrictions could prevent connection \*
-The client process doesn't have system capabilities to open a socket \*
-The MQTT server uses MQTTS, but the client won't accept the TLS
-certificate Errors could also happen when closing connection, in case
-the disconnection is unexpected. It's possible to catch those exceptions
-using ``except RuntimeError as`` and print the error.
+Errors can happen on connection or on some ApplicationClient actions,
+for different reasons: \* Wrong ``app_id``, ``access_key`` or
+``mqtt_address`` were provided to the constructor. \* The machine may
+not have access to the network/The MQTT server could be down/Firewall
+restrictions could prevent connection. \* The client process doesn't
+have system capabilities to open a socket \* The MQTT server uses MQTTS,
+but the client won't accept the TLS certificate. \* The Application
+client is not able to get the application or a device. Errors could also
+happen when closing connection, in case the disconnection is unexpected.
+It's possible to catch those exceptions using ``except RuntimeError as``
+and print the error.
 
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true
