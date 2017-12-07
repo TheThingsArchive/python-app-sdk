@@ -10,6 +10,6 @@ from jose import jwt, jws
 
 
 def test_is_token():
-    key = read_key('.env/discovery/server.key')
-    token = jws.sign({'hello': 'hello'}, key, algorithm='ES256')
+    key = read_key(".env/discovery/server.key")
+    token = jws.sign({"hello": "hello"}, key, algorithm="ES256")
     assert is_token(token)

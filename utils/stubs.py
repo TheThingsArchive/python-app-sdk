@@ -64,7 +64,7 @@ appClaims = {
   },
 }
 
-serverkey = read_key('.env/discovery/server.key')
+serverkey = read_key(".env/discovery/server.key")
 token = jws.sign(claims, serverkey, algorithm="ES256")
 
 apptest = {

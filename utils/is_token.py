@@ -7,7 +7,7 @@
 from jose import jwt
 import utils.read_key as rk
 
-key = rk.read_key('.env/discovery/server.pub')
+key = rk.read_key(".env/discovery/server.pub")
 
 
 def is_token(string):

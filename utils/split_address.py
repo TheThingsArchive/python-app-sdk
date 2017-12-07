@@ -5,8 +5,8 @@
 
 
 def split_address(address):
-    if ':' in address:
-        split = address.split(':')
+    if ":" in address:
+        split = address.split(":")
         address = split[0]
         port = int(split[1])
         return {"address": address, "port": port}
