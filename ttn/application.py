@@ -12,7 +12,7 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
 from jose import jwt
 from utils import is_token, read_key, stubs
 
-os.environ['GRPC_SSL_CIPHER_SUITES'] = stubs.MODERN_CIPHER_SUITES
+os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
 
 
 class ApplicationClient:
@@ -27,15 +27,15 @@ class ApplicationClient:
             if k == "discovery_address":
                 self.discovery_address = v
 
-        if not hasattr(self, 'discovery_address'):
-            self.discovery_address = 'discovery.thethings.network:1900'
+        if not hasattr(self, "discovery_address"):
+            self.discovery_address = "discovery.thethings.network:1900"
 
         if is_token(token_or_key):
             self.app_access_token = token_or_key
         else:
             self.app_access_key = token_or_key
 
-        if not hasattr(self, 'net_address'):
+        if not hasattr(self, "net_address"):
             discocreds = grpc.ssl_channel_credentials()
             channel = grpc.secure_channel(self.discovery_address, discocreds)
             discoStub = disco.DiscoveryStub(channel)
@@ -44,7 +44,7 @@ class ApplicationClient:
             announcement = discoStub.GetByAppID(req)
             self.net_address = announcement.net_address
             self.credentials = announcement.certificate
-        elif not hasattr(self, 'credentials'):
+        elif not hasattr(self, "credentials"):
             raise RuntimeError("You need to provide credentials")
 
         creds = grpc.ssl_channel_credentials(self.credentials)
@@ -52,10 +52,10 @@ class ApplicationClient:
         self.client = handler.ApplicationManagerStub(channel)
 
     def __create_metadata(self):
-        if hasattr(self, 'app_access_token'):
-            return [('token', self.app_access_token)]
-        elif hasattr(self, 'app_access_key'):
-            return [('key', self.app_access_key)]
+        if hasattr(self, "app_access_token"):
+            return [("token", self.app_access_token)]
+        elif hasattr(self, "app_access_key"):
+            return [("key", self.app_access_key)]
 
     def get(self):
         req = proto.ApplicationIdentifier()
@@ -104,23 +104,23 @@ class ApplicationClient:
         req.app_id = self.app_id
 
         if "payload_format" in updates:
-            req.payload_format = updates['payload_format']
+            req.payload_format = updates["payload_format"]
 
         if "register_on_join_access_key" in updates:
-            req.register_on_join_access_key = updates[('register_on_'
-                                                       'join_access_key')]
+            req.register_on_join_access_key = updates[("register_on_"
+                                                       "join_access_key")]
 
         if "decoder" in updates:
-            req.decoder = updates['decoder']
+            req.decoder = updates["decoder"]
 
         if "converter" in updates:
-            req.converter = updates['converter']
+            req.converter = updates["converter"]
 
         if "encoder" in updates:
-            req.encoder = updates['encoder']
+            req.encoder = updates["encoder"]
 
         if "validator" in updates:
-            req.validator = updates['validator']
+            req.validator = updates["validator"]
 
         meta = self.__create_metadata()
         try:
@@ -205,19 +205,19 @@ class ApplicationClient:
         req.dev_id = dev_id
 
         if "description" in device:
-            req.description = device['description']
+            req.description = device["description"]
 
         if "latitude" in device:
-            req.latitude = device['latitude']
+            req.latitude = device["latitude"]
 
         if "longitude" in device:
-            req.longitude = device['longitude']
+            req.longitude = device["longitude"]
 
         if "altitude" in device:
-            req.altitude = device['altitude']
+            req.altitude = device["altitude"]
 
         if "attributes" in device:
-            for k, v in device['attributes'].items():
+            for k, v in device["attributes"].items():
                 req.attributes[k] = v
 
         return req
