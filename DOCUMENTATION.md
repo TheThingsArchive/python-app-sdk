@@ -42,7 +42,7 @@ MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
 - `app_access_key`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**.
 ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 - `mqtt_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `mqtt_address=value` argument when calling the constructor.
-- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
+- `discovery_address`: **string**  this is the address of the discovery server to use in order to find back the address of the MQTT handler. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
 The constructor returns an **MQTTClient object** set up with the application informations, ready to be connected to The Things Network.
 
 ### connect
@@ -136,13 +136,13 @@ ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [di
 - `app_id`: **string**  this the name given to the application when it was created.
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 - `access_key_or_token`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**. You will need a key allowing you to change the settings if you wish to update your application.
-- `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as an `net_address=value` argument when calling the constructor.
-- `certificate`: **string** this is the certificate used to connect in a secure way to the handler. It needs to be provided as an `certificate=value` argument when calling the constructor.
-- `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. It needs to be provided as an `discovery_address=value` argument when calling the constructor.
-The constructor returns an **ApplicationClient object** set up with the application informations, ready to get the application registered on The Things Network.
+- `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as a `net_address=value` argument when calling the constructor.
+- `certificate`: **string**  this is the certificate used to connect in a secure way to the handler. It needs to be provided as a `certificate=value` argument when calling the constructor.
+- `discovery_address`: **string**  this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. It needs to be provided as a `discovery_address=value` argument when calling the constructor.
+The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
-Gives back the **Application object** with the id given to the constructor. See the [Application](#application) section to get more information about its attributes.
+Gives back the **Application** object with the id given to the constructor. See the [Application](#application) section to get more informations about its attributes.
 ```python
 client.get()
 ```
@@ -152,7 +152,7 @@ Set the payload format of the application.
 ```python
 client.set_payload_format(payload_format)
 ```
-- payload_format: **string**  the payload format to be set.
+- payload_format: **string**  the new payload format.
 
 ### set_custom_payload_functions
 Set the payload functions of the application.
@@ -172,21 +172,21 @@ client.set_register_on_join_access_key(register_on_join)
 - register_on_join: **string**  the `register_on_join` access key.
 
 ### unregister
-Unregister the application of the id provided to the constructor.
+Unregisters the application of the id provided to the constructor on creation of the client.
 ```python
 client.unregister()
 ```
 
 ### register_device
-Register a new device to the application.
+Registers a new device to the application.
 ```python
 client.register_device(dev_id, device)
 ```
 - dev_id: **string**  the id of the device to be registered.
-- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device) section to now the structure of the dictionary.
+- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device) section to know the structure of the dictionary.
 
 ### device
-Gives back the **Device object** of the given id.
+Gives back the **Device** object of the given id.
 ```python
 client.device(dev_id)
 ```
@@ -199,14 +199,15 @@ client.devices()
 ```
 
 ### update_device
+Updates an already existing device of the application.
 ```python
 client.update_device(dev_id, updates)
 ```
-- dev_id: **string** the id of the device to be updated.
-- updates: **dictionary** a dictionary with the fields to be updated in the device.
+- dev_id: **string**  the id of the device to be updated.
+- updates: **dictionary**  a dictionary with the fields to be updated in the device.
 
 ### delete_device
-Delete the device with the given id.
+Deletes the device with the given id.
 ```python
 client.delete_device(dev_id)
 ```
@@ -243,10 +244,11 @@ client.delete_device(dev_id)
 
 
 ## Errors
-Errors can happen on connection for different reasons:
+Errors can happen on connection or on some ApplicationClient actions, for different reasons:
 * Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
-* The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection
+* The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection.
 * The client process doesn't have system capabilities to open a socket
-* The MQTT server uses MQTTS, but the client won't accept the TLS certificate
+* The MQTT server uses MQTTS, but the client won't accept the TLS certificate.
+* The Application client is not able to get the application or a device.
 Errors could also happen when closing connection, in case the disconnection is unexpected.
 It's possible to catch those exceptions using `except RuntimeError as` and print the error.
