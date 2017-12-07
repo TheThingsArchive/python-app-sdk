@@ -19,9 +19,6 @@ class ApplicationClient:
 
     def __init__(self, app_id, token_or_key, **kwargs):
         self.app_id = app_id
-        self.net_address = None
-        self.credentials = None
-        self.discovery_address = None
         for k, v in kwargs.items():
             if k == "net_address":
                 self.net_address = v
@@ -30,7 +27,7 @@ class ApplicationClient:
             if k == "discovery_address":
                 self.discovery_address = v
 
-        if self.discovery_address is None:
+        if not hasattr(self, 'discovery_address'):
             self.discovery_address = 'discovery.thethings.network:1900'
 
         if is_token(token_or_key):
@@ -38,7 +35,7 @@ class ApplicationClient:
         else:
             self.app_access_key = token_or_key
 
-        if self.net_address is None:
+        if not hasattr(self, 'net_address'):
             discocreds = grpc.ssl_channel_credentials()
             channel = grpc.secure_channel(self.discovery_address, discocreds)
             discoStub = disco.DiscoveryStub(channel)
@@ -47,8 +44,8 @@ class ApplicationClient:
             announcement = discoStub.GetByAppID(req)
             self.net_address = announcement.net_address
             self.credentials = announcement.certificate
-        elif self.credentials is None:
-            raise ValueError("You need to provide credentials")
+        elif not hasattr(self, 'credentials'):
+            raise RuntimeError("You need to provide credentials")
 
         creds = grpc.ssl_channel_credentials(self.credentials)
         channel = grpc.secure_channel(self.net_address, creds)
@@ -95,7 +92,12 @@ class ApplicationClient:
         req = proto.ApplicationIdentifier()
         req.app_id = self.app_id
         meta = self.__create_metadata()
-        return self.client.DeleteApplication(req, 60, meta)
+        try:
+            return self.client.DeleteApplication(req, 60, meta)
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while deleting the",
+                " application: {}".format(err.code().name))
 
     def __set(self, updates):
         req = proto.Application()
@@ -121,7 +123,12 @@ class ApplicationClient:
             req.validator = updates['validator']
 
         meta = self.__create_metadata()
-        return self.client.SetApplication(req, 60, meta)
+        try:
+            return self.client.SetApplication(req, 60, meta)
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while setting the",
+                " application: {}".format(err.code().name))
 
     def register_device(self, devID, device):
         return self.__setDevice(devID, device)
@@ -129,35 +136,60 @@ class ApplicationClient:
     def __setDevice(self, devID, device):
         req = self.__deviceRequest(devID, device)
         meta = self.__create_metadata()
-        return self.client.SetDevice(req, 60, meta)
+        try:
+            return self.client.SetDevice(req, 60, meta)
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while setting the",
+                " device: {}".format(err.code().name))
 
     def devices(self):
         req = proto.ApplicationIdentifier()
         req.app_id = self.app_id
         meta = self.__create_metadata()
-        res = self.client.GetDevicesForApplication(req, 60, meta)
-        return res.devices
+        try:
+            res = self.client.GetDevicesForApplication(req, 60, meta)
+            return res.devices
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while getting the",
+                " list of devices: {}".format(err.code().name))
 
     def device(self, devID):
         req = proto.DeviceIdentifier()
         req.app_id = self.app_id
         req.dev_id = devID
         meta = self.__create_metadata()
-        res = self.client.GetDevice(req, 60, meta)
-        return res
+        try:
+            res = self.client.GetDevice(req, 60, meta)
+            return res
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while getting the",
+                " device: {}".format(err.code().name))
 
     def update_device(self, dev_id, updates):
         device = self.device(dev_id)
         req = self.__deviceRequest(dev_id, updates, True)
         meta = self.__create_metadata()
-        return self.client.SetDevice(req, 60, meta)
+        try:
+            return self.client.SetDevice(req, 60, meta)
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while updating the",
+                " device: {}".format(err.code().name))
 
     def delete_device(self, dev_id):
         req = proto.DeviceIdentifier()
         req.app_id = self.app_id
         req.dev_id = dev_id
         meta = self.__create_metadata()
-        return self.client.DeleteDevice(req, 60, meta)
+        try:
+            return self.client.DeleteDevice(req, 60, meta)
+        except grpc.RpcError as err:
+            raise RuntimeError(
+                "Error while deleting the",
+                " device: {}".format(err.code().name))
 
     def __deviceRequest(self, dev_id, device, update=False):
         if update:
