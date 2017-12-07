@@ -78,7 +78,7 @@ def test_downlink_payloadraw():
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
     time.sleep(1)
-    ttn_client.send("guest"', "AQ==")
+    ttn_client.send("guest", "AQ==")
     time.sleep(1)
     ttn_client.close()
 
