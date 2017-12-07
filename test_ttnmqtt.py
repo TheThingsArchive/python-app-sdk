@@ -21,8 +21,8 @@ def test_connect_disconnect():
         print(res)
         assert res
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_connect_callback(connectcallback)
     ttn_client.set_close_callback(closecallback)
@@ -35,16 +35,16 @@ def test_uplink():
 
     def uplinkcallback(message, client):
         print(message)
-        assert message.payload_raw == 'AQ=='
+        assert message.payload_raw == "AQ=="
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_uplink_callback(uplinkcallback)
     ttn_client.connect()
     time.sleep(1)
     ttn_client._MQTTClient__client.publish(
-        '{}/devices/guest/up'.format(stubs.apptest['appId']),
+        "{}/devices/guest/up".format(stubs.apptest["appId"]),
         json.dumps(stubs.uplink))
     time.sleep(1)
     ttn_client.close()
@@ -56,9 +56,9 @@ def test_connect_error():
         print(res)
         assert res is False
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
-                      mqtt_address='badAddress:5555')
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
+                      mqtt_address="badAddress:5555")
     ttn_client.set_connect_callback(connectcallback)
     try:
         ttn_client.connect()
@@ -72,13 +72,13 @@ def test_downlink_payloadraw():
         print(mid)
         assert mid == 1
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
     time.sleep(1)
-    ttn_client.send('guest', "AQ==")
+    ttn_client.send("guest"', "AQ==")
     time.sleep(1)
     ttn_client.close()
 
@@ -89,8 +89,8 @@ def test_downlink_payloadfields():
         print(mid)
         assert mid == 1
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
@@ -106,12 +106,12 @@ def test_providing_all_downlink_options():
         print(mid)
         assert mid == 1
 
-    ttn_client = mqtt(stubs.apptest['appId'],
-                      stubs.apptest['accessKey'],
+    ttn_client = mqtt(stubs.apptest["appId"],
+                      stubs.apptest["accessKey"],
                       mqtt_address=stubs.mqttAddress)
     ttn_client.set_downlink_callback(downlinkcallback)
     ttn_client.connect()
     time.sleep(1)
-    ttn_client.send('guest', "AQ==", 2, True, "first")
+    ttn_client.send("guest", "AQ==", 2, True, "first")
     time.sleep(1)
     ttn_client.close()
