@@ -121,11 +121,11 @@ In case it's a **dictionary** with fields, please make sure the **encoder** func
 
 ### UplinkMessage
 This type of object is constructed dynamically from the message received by the client, so this means some attributes can change from one message to another. However here are some constant attributes usually found in UplinkMessage objects:
-* app_id: the application ID to which the device is registered
-* dev_id: the ID of the device
-* port: the port number on which the message was sent
-* payload_raw: a buffer which contains the payload in hexadecimal
-* metadata: this field is another object which contains all the metadata of the message. Such as: the date, the frequency, the data rate and the list of gateways.
+* `app_id`: the application ID to which the device is registered
+* `dev_id`: the ID of the device
+* `port`: the port number on which the message was sent
+* `payload_raw`: a buffer which contains the payload in hexadecimal
+* `metadata`: this field is another object which contains all the metadata of the message. Such as: the date, the frequency, the data rate and the list of gateways.
 
 
 ## ApplicationClient
@@ -142,7 +142,7 @@ ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [di
 The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
-Gives back the **Application** object with the id given to the constructor. See the [Application](#application) section to get more informations about its attributes.
+Gives back the [**Application**](#application) object with the id given to the constructor.
 ```python
 client.get()
 ```
@@ -159,17 +159,17 @@ Set the payload functions of the application.
 ```python
 client.set_custom_payload_functions([decoder], [encoder], [validator], [converter])
 ```
-- decoder: **string**  decoder function that must be written in javascript, it needs to be provided as a `decoder=value` argument when calling the method.
-- encoder: **string**  encoder function that must be written in javascript, it needs to be provided as a `encoder=value` argument when calling the method.
-- validator: **string**  validator function that must be written in javascript, it needs to be provided as a `validator=value` argument when calling the method.
-- converter: **string**  converter function that must be written in javascript, it needs to be provided as a `converter=value` argument when calling the method.
+- `decoder`: **string**  decoder function that must be written in javascript, it needs to be provided as a `decoder=value` argument when calling the method.
+- `encoder`: **string**  encoder function that must be written in javascript, it needs to be provided as a `encoder=value` argument when calling the method.
+- `validator`: **string**  validator function that must be written in javascript, it needs to be provided as a `validator=value` argument when calling the method.
+- `converter`: **string**  converter function that must be written in javascript, it needs to be provided as a `converter=value` argument when calling the method.
 
 ### set_register_on_join_access_key
 Set the register on join access key of the application.
 ```python
 client.set_register_on_join_access_key(register_on_join)
 ```
-- register_on_join: **string**  the `register_on_join` access key.
+- `register_on_join`: **string**  the `register_on_join` access key.
 
 ### unregister
 Unregisters the application of the id provided to the constructor on creation of the client.
@@ -182,15 +182,15 @@ Registers a new device to the application.
 ```python
 client.register_device(dev_id, device)
 ```
-- dev_id: **string**  the id of the device to be registered.
-- device: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device) section to know the structure of the dictionary.
+- `dev_id`: **string**  the id of the device to be registered.
+- `device`: **dictionary**  the dictionary with fields to be set as a new device of the application. See the [Device](#device) section to know the structure of the dictionary that should be passed and the name of the fields.
 
 ### device
-Gives back the **Device** object of the given id.
+Gives back the [**Device**](#device) object of the given id.
 ```python
 client.device(dev_id)
 ```
-- dev_id: **string**  the id of the device which is given back by the method.
+- `dev_id`: **string**  the id of the device which is given back by the method.
 
 ### devices
 Gives back the list of all the devices registered to the application.
@@ -203,48 +203,50 @@ Updates an already existing device of the application.
 ```python
 client.update_device(dev_id, updates)
 ```
-- dev_id: **string**  the id of the device to be updated.
-- updates: **dictionary**  a dictionary with the fields to be updated in the device.
+- `dev_id`: **string**  the id of the device to be updated.
+- `updates`: **dictionary**  a dictionary with the fields to be updated in the device.
 
 ### delete_device
 Deletes the device with the given id.
 ```python
 client.delete_device(dev_id)
 ```
-- dev_id: **string**  the id of the device to be deleted.
+- `dev_id`: **string**  the id of the device to be deleted.
 
 ### Device
-* app_id: **string**
-* dev_id: **string**
-* latitude: **float**
-* longitude: **float**
-* altitude: **float**
-* description: **string**
-* attributes: **dictionary**
-* lorawan_device: **dictionary**
-    * app_eui: **string**  8 bytes in hexadecimal
-    * dev_eui: **string**  8 bytes in hexadecimal
-    * dev_addr: **string**  4 bytes in hexadecimal
-    * nwk_s_key: **string**  16 bytes in hexadecimal
-    * app_s_key: **string**  16 bytes in hexadecimal
-    * app_key: **string**  16 bytes in hexadecimal
-    * f_cnt_up: **int**
-    * f_cnt_down: **int**
-    * disable_f_cnt_check: **boolean**
-    * uses32_bit_f_cnt: **boolean**
+This objet is returned by the method `device()` of the ApplicationClient class. Here are its attributes:
+* `app_id`: **string**
+* `dev_id`: **string**
+* `latitude`: **float**
+* `longitude`: **float**
+* `altitude`: **float**
+* `description`: **string**
+* `attributes`: **dictionary**
+* `lorawan_device`: **dictionary**
+    * `app_eui`: **string**  8 bytes in hexadecimal
+    * `dev_eui`: **string**  8 bytes in hexadecimal
+    * `dev_addr`: **string**  4 bytes in hexadecimal
+    * `nwk_s_key`: **string**  16 bytes in hexadecimal
+    * `app_s_key`: **string**  16 bytes in hexadecimal
+    * `app_key`: **string**  16 bytes in hexadecimal
+    * `f_cnt_up`: **int**
+    * `f_cnt_down`: **int**
+    * `disable_f_cnt_check`: **boolean**
+    * `uses32_bit_f_cnt`: **boolean**
 
 ### Application
-* app_id: **string**
-* payload_format: **string**
-* decoder: **string**
-* encoder: **string**
-* converter: **string**
-* validator: **string**
-* register_on_join_access_key: **string**
+This object is returned by the method `get()` of the ApplicationClient class. Here are its attributes:
+* `app_id`: **string**
+* `payload_format`: **string**
+* `decoder`: **string**
+* `encoder`: **string**
+* `converter`: **string**
+* `validator`: **string**
+* `register_on_join_access_key`: **string**
 
 
 ## Errors
-Errors can happen on connection or on some ApplicationClient actions, for different reasons:
+Errors can happen on connection or on some ApplicationClient's methods call, for different reasons:
 * Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
 * The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection.
 * The client process doesn't have system capabilities to open a socket
