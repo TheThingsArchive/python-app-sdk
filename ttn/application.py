@@ -1,3 +1,9 @@
+# coding: Latin-1
+# Copyright © 2017 The Things Network
+# Use of this source code is governed by the
+# MIT license that can be found in the LICENSE file.
+
+
 import grpc
 import os
 import base64
@@ -12,7 +18,11 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
 from jose import jwt
 from utils import is_token, read_key, stubs
 
-os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+if os.getenv("GRPC_SSL_CIPHER_SUITES"):
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + os.pathsep.join(
+                                                stubs.MODERN_CIPHER_SUITES)
+else:
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
 
 
 class ApplicationClient:
