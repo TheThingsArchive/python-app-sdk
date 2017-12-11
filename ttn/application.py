@@ -12,14 +12,16 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
 import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
 import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
 
 from jose import jwt
+from discovery import DiscoveryClient
 from utils import is_token, read_key, stubs
 
 
-os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+if os.getenv("GRPC_SSL_CIPHER_SUITES"):
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
+else:
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
 
 class ApplicationClient:
@@ -43,12 +45,8 @@ class ApplicationClient:
             self.app_access_key = token_or_key
 
         if not hasattr(self, "net_address"):
-            discocreds = grpc.ssl_channel_credentials()
-            channel = grpc.secure_channel(self.discovery_address, discocreds)
-            discoStub = disco.DiscoveryStub(channel)
-            req = discovery_pb2.GetByAppIDRequest()
-            req.app_id = self.app_id
-            announcement = discoStub.GetByAppID(req)
+            discovery = DiscoveryClient(self.discovery_address)
+            announcement = discovery.get_by_app_id(self.app_id)
             self.net_address = announcement.net_address
             self.credentials = announcement.certificate
         elif not hasattr(self, "credentials"):

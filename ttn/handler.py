@@ -9,7 +9,10 @@ from discovery import DiscoveryClient
 from utils import stubs
 import os
 
-os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+if os.getenv("GRPC_SSL_CIPHER_SUITES"):
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
+else:
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
 
 class HandlerClient:
