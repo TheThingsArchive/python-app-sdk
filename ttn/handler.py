@@ -7,23 +7,19 @@ from  application import ApplicationClient
 from ttnmqtt import MQTTClient
 from discovery import DiscoveryClient
 from utils import stubs
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
+import os
 
-if os.getenv("GRPC_SSL_CIPHER_SUITES"):
-    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + os.pathsep.join(
-                                                stubs.MODERN_CIPHER_SUITES)
-else:
-    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
 
 
-class HanderClient:
+class HandlerClient:
 
     def __init__(self, app_id, app_access_key, discovery_address=None, certificate=None):
         self.app_id = app_id
         self.app_access_key = app_access_key
         self.discovery_address = discovery_address
         self.certificate = certificate
+        self.open()
 
     def open(self):
         if not hasattr(self, 'announcement'):
