@@ -11,26 +11,41 @@ import grpc
 import os
 from utils import stubs
 
-os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+if os.getenv("GRPC_SSL_CIPHER_SUITES"):
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
+else:
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
 
 class DiscoveryClient:
 
     def __init__(self, discovery_address=None, certificate=None):
+        self.discovery_address=discovery_address
         if discovery_address is None:
             self.discovery_address = "discovery.thethings.network:1900"
 
         if not certificate is None:
             self.certificate = certificate
-
-
-    def get_by_app_id(self, app_id):
-        req = proto.GetByAppIDRequest()
-        req.app_id = app_id
         if hasattr(self, "certificate"):
             creds = grpc.ssl_channel_credentials(self.certificate)
         else:
             creds = grpc.ssl_channel_credentials()
         channel = grpc.secure_channel(self.discovery_address, creds)
-        stub = disco.DiscoveryStub(channel)
-        return stub.GetByAppID(req)
+        self.client = disco.DiscoveryStub(channel)
+
+    def get_all(self, service_name):
+        req = proto.GetServiceRequest()
+        req.service_name = service_name
+        res = self.client.GetAll(req)
+        return res.services
+
+    def get(self, serviceName, ID):
+        req = proto.GetRequest()
+        req.service_name = service_name
+        req.id = ID
+        return self.client.Get(req)
+
+    def get_by_app_id(self, app_id):
+        req = proto.GetByAppIDRequest()
+        req.app_id = app_id
+        return self.client.GetByAppID(req)
