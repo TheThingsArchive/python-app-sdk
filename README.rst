@@ -262,7 +262,7 @@ given to the constructor.
 set\_payload\_format
 ~~~~~~~~~~~~~~~~~~~~
 
-Set the payload format of the application.
+Sets the payload format of the application.
 
 .. code:: python
 
@@ -273,7 +273,7 @@ Set the payload format of the application.
 set\_custom\_payload\_functions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Set the payload functions of the application.
+Sets the payload functions of the application.
 
 .. code:: python
 
@@ -295,7 +295,7 @@ Set the payload functions of the application.
 set\_register\_on\_join\_access\_key
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Set the register on join access key of the application.
+Sets the register on join access key of the application.
 
 .. code:: python
 

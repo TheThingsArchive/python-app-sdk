@@ -148,14 +148,14 @@ client.get()
 ```
 
 ### set_payload_format
-Set the payload format of the application.
+Sets the payload format of the application.
 ```python
 client.set_payload_format(payload_format)
 ```
 - payload_format: **string**  the new payload format.
 
 ### set_custom_payload_functions
-Set the payload functions of the application.
+Sets the payload functions of the application.
 ```python
 client.set_custom_payload_functions([decoder], [encoder], [validator], [converter])
 ```
@@ -165,7 +165,7 @@ client.set_custom_payload_functions([decoder], [encoder], [validator], [converte
 - `converter`: **string**  converter function that must be written in javascript, it needs to be provided as a `converter=value` argument when calling the method.
 
 ### set_register_on_join_access_key
-Set the register on join access key of the application.
+Sets the register on join access key of the application.
 ```python
 client.set_register_on_join_access_key(register_on_join)
 ```
