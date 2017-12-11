@@ -14,7 +14,7 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
 
 from jose import jwt
-from discovery import DiscoveryClient
+from .discovery import DiscoveryClient
 from utils import is_token, read_key, stubs
 
 
