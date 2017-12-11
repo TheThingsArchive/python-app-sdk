@@ -8,13 +8,10 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
 import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
 
 import grpc
+import os
 from utils import stubs
 
-if os.getenv("GRPC_SSL_CIPHER_SUITES"):
-    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + os.pathsep.join(
-                                                stubs.MODERN_CIPHER_SUITES)
-else:
-    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
 
 
 class DiscoveryClient:
@@ -27,13 +24,13 @@ class DiscoveryClient:
             self.certificate = certificate
 
 
-        def get_by_app_id(self, app_id):
-            req = proto.GetByAppIDRequest()
-            req.app_id = app_id
-            if hasattr(self, "certificate"):
-                creds = grpc.ssl_channel_credentials(self.certificate)
-            else:
-                creds = grpc.ssl_channel_credentials()
-            channel = grpc.secure_channel(self.__discovery_address, creds)
-            stub = disco.DiscoveryStub(channel)
-            return res = stub.GetByAppID(req)
+    def get_by_app_id(self, app_id):
+        req = proto.GetByAppIDRequest()
+        req.app_id = app_id
+        if hasattr(self, "certificate"):
+            creds = grpc.ssl_channel_credentials(self.certificate)
+        else:
+            creds = grpc.ssl_channel_credentials()
+        channel = grpc.secure_channel(self.discovery_address, creds)
+        stub = disco.DiscoveryStub(channel)
+        return stub.GetByAppID(req)
