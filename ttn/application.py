@@ -18,11 +18,8 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as discovery_pb2
 from jose import jwt
 from utils import is_token, read_key, stubs
 
-if os.getenv("GRPC_SSL_CIPHER_SUITES"):
-    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + os.pathsep.join(
-                                                stubs.MODERN_CIPHER_SUITES)
-else:
-    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+
+os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
 
 
 class ApplicationClient:
