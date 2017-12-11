@@ -20,11 +20,11 @@ else:
 class DiscoveryClient:
 
     def __init__(self, discovery_address=None, certificate=None):
-        self.discovery_address=discovery_address
+        self.discovery_address = discovery_address
         if discovery_address is None:
             self.discovery_address = "discovery.thethings.network:1900"
 
-        if not certificate is None:
+        if certificate is not None:
             self.certificate = certificate
         if hasattr(self, "certificate"):
             creds = grpc.ssl_channel_credentials(self.certificate)
