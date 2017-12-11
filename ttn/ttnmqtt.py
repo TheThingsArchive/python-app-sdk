@@ -14,7 +14,7 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
 
 import grpc
 import os
-from discovery import DiscoveryClient
+from .discovery import DiscoveryClient
 from utils import stubs, json2obj, split_address
 
 
