@@ -39,7 +39,7 @@ class DiscoveryClient:
         res = self.client.GetAll(req)
         return res.services
 
-    def get(self, serviceName, ID):
+    def get(self, service_name, ID):
         req = proto.GetRequest()
         req.service_name = service_name
         req.id = ID
