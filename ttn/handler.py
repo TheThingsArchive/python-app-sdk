@@ -3,15 +3,9 @@
 # Use of this source code is governed by the
 # MIT license that can be found in the LICENSE file.
 
-<<<<<<< HEAD
-from application import ApplicationClient
-from ttnmqtt import MQTTClient
-from discovery import DiscoveryClient
-=======
 from .application import ApplicationClient
 from .ttnmqtt import MQTTClient
 from .discovery import DiscoveryClient
->>>>>>> src: Made correction to follow pep8 guidelines
 from utils import stubs
 import os
 
