@@ -35,6 +35,9 @@ Table of Contents
 -  `delete\_device <#delete_device>`__
 -  `Device <#device>`__
 -  `Application <#application>`__
+-  `HandlerClient <#handlerclient>`__
+-  `data <#data>`__
+-  `application <#application>`__
 -  `Errors <#errors>`__
 
 Description
@@ -397,6 +400,50 @@ class. Here are its attributes: \* ``app_id``: **string** \*
 ``payload_format``: **string** \* ``decoder``: **string** \*
 ``encoder``: **string** \* ``converter``: **string** \* ``validator``:
 **string** \* ``register_on_join_access_key``: **string**
+
+HandlerClient
+-------------
+
+The class constructor can be called following this scheme:
+
+.. code:: python
+
+    HandlerClient(app_id, access_key_or_token, [discovery_address], [certificate])
+
+-  ``app_id``: **string** this the name given to the application when it
+   was created. |Screenshot of the console with app section|
+-  ``app_access_key``: **string** this can be found at the bottom of the
+   application page under **ACCESS KEYS**. You will need a key allowing
+   you to change the settings if you wish to update your application.
+-  ``discovery_address``: **string** this is the address of the
+   discovery server to use in order to find back the address of the
+   handler to which the application in registered. Default to ``None``.
+-  ``certificate``: **string** this is the certificate used to connect
+   in a secure way to the discovery server. Default to ``None``.
+
+data
+~~~~
+
+Opens an MQTT client that can be used to receive uplink from devices
+registered to an application or send downlink to those same devices.
+
+.. code:: python
+
+    handler.data()
+
+Returns an `**MQTTClient** <#mqttclient>`__ object.
+
+application
+~~~~~~~~~~~
+
+Opens anapplication manager that can be used to manage settings and
+devices of the application with the ID you provided to the constructor.
+
+.. code:: python
+
+    handler.application()
+
+Returns an `**ApplicationClient** <#applicationclient>`__ object.
 
 Errors
 ------
