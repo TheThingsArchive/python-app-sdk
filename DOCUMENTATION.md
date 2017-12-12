@@ -25,6 +25,9 @@
   * [delete_device](#delete_device)
   * [Device](#device)
   * [Application](#application)
+* [HandlerClient](#handlerclient)
+  * [data](#data)
+  * [application](#application)
 * [Errors](#errors)
 
 
@@ -244,6 +247,30 @@ This object is returned by the method `get()` of the ApplicationClient class. He
 * `validator`: **string**
 * `register_on_join_access_key`: **string**
 
+## HandlerClient
+The class constructor can be called following this scheme:
+```python
+HandlerClient(app_id, access_key_or_token, [discovery_address], [certificate])
+```
+- `app_id`: **string**  this the name given to the application when it was created.
+![Screenshot of the console with app section](./images/app-console.png?raw=true)
+- `app_access_key`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**. You will need a key allowing you to change the settings if you wish to update your application.
+- `discovery_address`: **string**  this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. Default to `None`.
+- `certificate`: **string**  this is the certificate used to connect in a secure way to the discovery server. Default to `None`.
+
+### data
+Opens an MQTT client that can be used to receive uplink from devices registered to an application or send downlink to those same devices.
+```python
+handler.data()
+```
+Returns an [**MQTTClient**](#mqttclient) object.
+
+### application
+Opens anapplication manager that can be used to manage settings and devices of the application with the ID you provided to the constructor.
+```python
+handler.application()
+```
+Returns an [**ApplicationClient**](#applicationclient) object.
 
 ## Exceptions
 Errors can happen on connection or on some ApplicationClient's methods call, for different reasons:
