@@ -4,6 +4,7 @@ python:
   - "3.5"
 
 sudo: required
+group: deprecated-2017Q4
 
 services:
   - docker
@@ -26,7 +27,7 @@ before_script:
 script:
   - pep8 --first ttn
   - pep8 --first utils
-  - pytest
+  - py.test
 
 before_deploy:
   - python setup.py sdist
