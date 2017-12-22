@@ -1,13 +1,5 @@
 version: '2'
 services:
-  redis:
-    image: redis
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./.env/redis:/data
-
   rabbitmq:
     image: thethingsnetwork/rabbitmq
     hostname: rabbitserver
