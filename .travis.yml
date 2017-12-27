@@ -28,7 +28,10 @@ script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest utils
-  - pytest test_*.py
+  - pytest test_ttnmqtt.py
+  - pytest test_discovery.py
+  - pytest test_handler.py
+  - pytest test_application.py
 
 before_deploy:
   - python setup.py sdist
