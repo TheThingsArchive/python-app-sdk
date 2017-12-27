@@ -125,8 +125,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-pip-selfcheck.json
-pyvenv.cfg
 .venv
 pip-selfcheck.json
 pyvenv.cfg
