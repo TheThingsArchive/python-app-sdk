@@ -3,41 +3,47 @@ Table of Contents
 
 -  `Description <#description>`__
 -  `MQTTClient <#mqttclient>`__
--  `connect <#connect>`__
--  `close <#close>`__
--  `set\_uplink\_callback <#set_uplink_callback>`__
 
-   -  `uplink\_callback <#uplink_callback>`__
+   -  `connect <#connect>`__
+   -  `close <#close>`__
+   -  `set_uplink_callback <#set_uplink_callback>`__
 
--  `set\_connect\_callback <#set_connect_callback>`__
+      -  `uplink_callback <#uplink_callback>`__
 
-   -  `connect\_callback <#connect_callback>`__
+   -  `set_connect_callback <#set_connect_callback>`__
 
--  `set\_downlink\_callback <#set_downlink_callback>`__
+      -  `connect_callback <#connect_callback>`__
 
-   -  `downlink\_callback <#downlink_callback>`__
+   -  `set_downlink_callback <#set_downlink_callback>`__
 
--  `set\_close\_callback <#set_close_callback>`__
+      -  `downlink_callback <#downlink_callback>`__
 
-   -  `close\_callback <#close_callback>`__
+   -  `set_close_callback <#set_close_callback>`__
 
--  `send <#send>`__
--  `UplinkMessage <#uplinkmessage>`__
+      -  `close_callback <#close_callback>`__
+
+   -  `send <#send>`__
+   -  `UplinkMessage <#uplinkmessage>`__
+
 -  `ApplicationClient <#applicationclient>`__
--  `get <#get>`__
--  `set\_payload\_format <#set_payload_format>`__
--  `set\_custom\_payload\_functions <#set_custom_payload_functions>`__
--  `set\_register\_on\_join\_access\_key <#set_register_on_join_access_key>`__
--  `unregister <#unregister>`__
--  `device <#device>`__
--  `devices <#devices>`__
--  `update\_device <#update_device>`__
--  `delete\_device <#delete_device>`__
--  `Device <#device>`__
--  `Application <#application>`__
+
+   -  `get <#get>`__
+   -  `set_payload_format <#set_payload_format>`__
+   -  `set_custom_payload_functions <#set_custom_payload_functions>`__
+   -  `set_register_on_join_access_key <#set_register_on_join_access_key>`__
+   -  `unregister <#unregister>`__
+   -  `device <#device>`__
+   -  `devices <#devices>`__
+   -  `update_device <#update_device>`__
+   -  `delete_device <#delete_device>`__
+   -  `Device <#device>`__
+   -  `Application <#application>`__
+
 -  `HandlerClient <#handlerclient>`__
--  `data <#data>`__
--  `application <#application>`__
+
+   -  `data <#data>`__
+   -  `application <#application>`__
+
 -  `Errors <#errors>`__
 
 Description
@@ -74,7 +80,7 @@ connect
 ~~~~~~~
 
 Connects and starts the client in the background. This function also
-re-establishes the client's connection in case it was closed.
+re-establishes the client’s connection in case it was closed.
 
 .. code:: python
 
@@ -95,8 +101,8 @@ Using Callbacks
 The callback functions are functions which are executed when a trigger
 event happens.
 
-set\_uplink\_callback
-^^^^^^^^^^^^^^^^^^^^^
+set_uplink_callback
+^^^^^^^^^^^^^^^^^^^
 
 Add a callback function, to be called when an uplink message is
 received.
@@ -105,8 +111,8 @@ received.
 
     client.set_uplink_callback(uplink_callback)
 
-uplink\_callback
-''''''''''''''''
+uplink_callback
+'''''''''''''''
 
 The callback function must be declared in the script following this
 structure: \* ``uplink_callback(msg, client)`` \* ``msg``:
@@ -114,8 +120,8 @@ structure: \* ``uplink_callback(msg, client)`` \* ``msg``:
 ``client``: **MQTTClient object** the client from which the callback is
 executed.
 
-set\_connect\_callback
-^^^^^^^^^^^^^^^^^^^^^^
+set_connect_callback
+^^^^^^^^^^^^^^^^^^^^
 
 Add a connection callback function to be executed when the client
 connects to the broker.
@@ -124,18 +130,19 @@ connects to the broker.
 
     client.set_connect_callback(connect_callback)
 
-connect\_callback
-'''''''''''''''''
+connect_callback
+''''''''''''''''
 
 -  ``connect_callback(res, client)``: the function which will be
    executed on connection to the broker.
--  ``res``: **boolean** the result of the connection. If it's true, the
-   connection succeeded. If not, it means the connection failed.
--  ``client``: **MQTTClient object** the TTN client from which the
-   callback is called.
 
-set\_downlink\_callback
-^^^^^^^^^^^^^^^^^^^^^^^
+   -  ``res``: **boolean** the result of the connection. If it’s true,
+      the connection succeeded. If not, it means the connection failed.
+   -  ``client``: **MQTTClient object** the TTN client from which the
+      callback is called.
+
+set_downlink_callback
+^^^^^^^^^^^^^^^^^^^^^
 
 Add a downlink callback function, with actions to execute when a
 downlink message is sent.
@@ -144,18 +151,19 @@ downlink message is sent.
 
     client.set_downlink_callback(downlinkCallback)
 
-downlink\_callback
-''''''''''''''''''
+downlink_callback
+'''''''''''''''''
 
 -  ``downlink_callback(mid, client)``: the function which will be a new
    publish behavior for our MQTT client.
--  ``mid``: **int** this is the message ID for the downlink request. It
-   can be used to track the request.
--  ``client``: **MQTTClient object** the TTN client from which the
-   callback is called.
 
-set\_close\_callback
-^^^^^^^^^^^^^^^^^^^^
+   -  ``mid``: **int** this is the message ID for the downlink request.
+      It can be used to track the request.
+   -  ``client``: **MQTTClient object** the TTN client from which the
+      callback is called.
+
+set_close_callback
+^^^^^^^^^^^^^^^^^^
 
 Add a callback to be executed when the connection to the TTN broker is
 closed.
@@ -164,16 +172,17 @@ closed.
 
     client.set_close_callback(close_callback)
 
-close\_callback
-'''''''''''''''
+close_callback
+''''''''''''''
 
 -  ``close_callback(res, client)``: the function which will be executed
    when the connection is closed.
--  ``res``: **boolean** the result of the disconnection. If it's true,
-   it went all as expected. If not, it means the disconnection was
-   unexpected.
--  ``client``: **MQTTClient object** the TTN client from which we call
-   the callback.
+
+   -  ``res``: **boolean** the result of the disconnection. If it’s
+      true, it went all as expected. If not, it means the disconnection
+      was unexpected.
+   -  ``client``: **MQTTClient object** the TTN client from which we
+      call the callback.
 
 send
 ~~~~
@@ -192,22 +201,20 @@ Sends a downlink to the device.
    **dictionary** of JSON nature. Here is an example of a **dictionary**
    argument that could be passed to the method:
 
-   .. code:: json
+.. code:: json
 
-       {"led_state": "on", "counter": 1}
+    {"led_state": "on", "counter": 1}
 
-   In case it's a **dictionary** with fields, please make sure the
-   **encoder** function (Payload Formats section) of the application is
-   set to make sense of the informations transmitted in each field.
-   |Screenshot of an encoder function in the console|
--  ``port``: **int** the port of the device to which the message will be
-   sent. Default value to 1.
--  ``confirmation``: **boolean** this boolean indicates if you wish to
-   receive a confirmation after sending the downlink message. Default
-   value to False.
--  ``schedule``: **string** this string provides the type of schedule on
-   which the message should be sent. It can take values such as
-   ``first`` or ``last``. Default value to ``replace``.
+In case it’s a **dictionary** with fields, please make sure the
+**encoder** function (Payload Formats section) of the application is set
+to make sense of the informations transmitted in each field. |Screenshot
+of an encoder function in the console| - ``port``: **int** the port of
+the device to which the message will be sent. Default value to 1. -
+``confirmation``: **boolean** this boolean indicates if you wish to
+receive a confirmation after sending the downlink message. Default value
+to False. - ``schedule``: **string** this string provides the type of
+schedule on which the message should be sent. It can take values such as
+``first`` or ``last``. Default value to ``replace``.
 
 UplinkMessage
 ~~~~~~~~~~~~~
@@ -241,9 +248,10 @@ The class constructor can be called following this scheme:
 -  ``net_address``: **string** this is the address of the handler to
    which the application was registered. It needs to be provided as a
    ``net_address=value`` argument when calling the constructor.
--  ``certificate``: **string** this is the certificate used to connect
-   in a secure way to the handler. It needs to be provided as a
-   ``certificate=value`` argument when calling the constructor.
+-  ``certificate``: **string** this is the content of the certificate
+   used to connect in a secure way to the handler. It needs to be
+   provided as a ``certificate=value`` argument when calling the
+   constructor.
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
    handler to which the application in registered. It needs to be
@@ -262,8 +270,8 @@ given to the constructor.
 
     client.get()
 
-set\_payload\_format
-~~~~~~~~~~~~~~~~~~~~
+set_payload_format
+~~~~~~~~~~~~~~~~~~
 
 Sets the payload format of the application.
 
@@ -271,10 +279,10 @@ Sets the payload format of the application.
 
     client.set_payload_format(payload_format)
 
--  payload\_format: **string** the new payload format.
+-  payload_format: **string** the new payload format.
 
-set\_custom\_payload\_functions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set_custom_payload_functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sets the payload functions of the application.
 
@@ -295,8 +303,8 @@ Sets the payload functions of the application.
    javascript, it needs to be provided as a ``converter=value`` argument
    when calling the method.
 
-set\_register\_on\_join\_access\_key
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set_register_on_join_access_key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sets the register on join access key of the application.
 
@@ -316,8 +324,8 @@ creation of the client.
 
     client.unregister()
 
-register\_device
-~~~~~~~~~~~~~~~~
+register_device
+~~~~~~~~~~~~~~~
 
 Registers a new device to the application.
 
@@ -352,8 +360,8 @@ Gives back the list of all the devices registered to the application.
 
     client.devices()
 
-update\_device
-~~~~~~~~~~~~~~
+update_device
+~~~~~~~~~~~~~
 
 Updates an already existing device of the application.
 
@@ -365,8 +373,8 @@ Updates an already existing device of the application.
 -  ``updates``: **dictionary** a dictionary with the fields to be
    updated in the device.
 
-delete\_device
-~~~~~~~~~~~~~~
+delete_device
+~~~~~~~~~~~~~
 
 Deletes the device with the given id.
 
@@ -375,6 +383,8 @@ Deletes the device with the given id.
     client.delete_device(dev_id)
 
 -  ``dev_id``: **string** the id of the device to be deleted.
+
+.. device-1:
 
 Device
 ~~~~~~
@@ -433,6 +443,8 @@ registered to an application or send downlink to those same devices.
 
 Returns an `**MQTTClient** <#mqttclient>`__ object.
 
+.. application-1:
+
 application
 ~~~~~~~~~~~
 
@@ -445,20 +457,20 @@ devices of the application with the ID you provided to the constructor.
 
 Returns an `**ApplicationClient** <#applicationclient>`__ object.
 
-Errors
-------
+Exceptions
+----------
 
-Errors can happen on connection or on some ApplicationClient's methods
+Errors can happen on connection or on some ApplicationClient’s methods
 call, for different reasons: \* Wrong ``app_id``, ``access_key`` or
 ``mqtt_address`` were provided to the constructor. \* The machine may
 not have access to the network/The MQTT server could be down/Firewall
-restrictions could prevent connection. \* The client process doesn't
+restrictions could prevent connection. \* The client process doesn’t
 have system capabilities to open a socket \* The MQTT server uses MQTTS,
-but the client won't accept the TLS certificate. \* The Application
+but the client won’t accept the TLS certificate. \* The Application
 client is not able to get the application or a device. Errors could also
 happen when closing connection, in case the disconnection is unexpected.
-It's possible to catch those exceptions using ``except RuntimeError as``
-and print the error.
+This errors are the most common ones, there are also edges cases not
+mentioned in this section.
 
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true

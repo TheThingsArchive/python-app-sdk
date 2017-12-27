@@ -279,4 +279,4 @@ Errors can happen on connection or on some ApplicationClient's methods call, for
 * The client process doesn't have system capabilities to open a socket
 * The MQTT server uses MQTTS, but the client won't accept the TLS certificate.
 * The Application client is not able to get the application or a device.
-Errors could also happen when closing connection, in case the disconnection is unexpected. This errors are the most common ones, there are also edges cases not mentionned in this section.
+Errors could also happen when closing connection, in case the disconnection is unexpected. This errors are the most common ones, there are also edges cases not mentioned in this section.
