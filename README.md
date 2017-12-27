@@ -21,19 +21,21 @@ import ttn
 app_id = "foo"
 access_key = "ttn-account.eiPq8mEeYRL_PNBZsOpPy-O3ABJXYWulODmQGR5PZzg"
 
-# using mqtt client
 def uplink_callback(msg, client):
   print("Received uplink from ", msg.dev_id)
   print(msg)
 
-mqtt_client = ttn.MQTTClient(app_id, access_key)
+handler = ttn.HandlerClient(app_id, access_key)
+
+# using mqtt client
+mqtt_client = handler.data()
 mqtt_client.set_uplink_callback(uplink_callback)
 mqtt_client.connect()
 time.sleep(60)
 mqtt_client.close()
 
 # using application manager client
-app_client =  ttn.ApplicationClient(app_id, access_key)
+app_client =  handler.application()
 my_app = app_client.get()
 print(my_app)
 my_devices = app_client.devices()

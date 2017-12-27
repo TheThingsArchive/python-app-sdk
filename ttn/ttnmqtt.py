@@ -14,14 +14,14 @@ import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
 
 import grpc
 import os
+from .discovery import DiscoveryClient
 from utils import stubs, json2obj, split_address
 
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
-    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + os.pathsep.join(
-                                                stubs.MODERN_CIPHER_SUITES)
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
 else:
-    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER_SUITES
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
 
 class DownlinkMessage:
@@ -73,14 +73,10 @@ class MQTTClient:
         self.__client.username_pw_set(self.__app_id, self.__access_key)
 
         if self.__mqtt_address is None:
-            creds = grpc.ssl_channel_credentials()
             if self.__discovery_address is None:
                 self.__discovery_address = "discovery.thethings.network:1900"
-            channel = grpc.secure_channel(self.__discovery_address, creds)
-            stub = disco.DiscoveryStub(channel)
-            req = proto.GetByAppIDRequest()
-            req.app_id = self.__appID
-            res = stub.GetByAppID(req)
+            discovery = DiscoveryClient(self.__discovery_address)
+            res = discovery.get_by_app_id(self.__app_id)
             self.__mqtt_address = res.mqtt_address
         self._connect()
         self.start()
