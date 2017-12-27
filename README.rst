@@ -448,7 +448,7 @@ Returns an `**MQTTClient** <#mqttclient>`__ object.
 application
 ~~~~~~~~~~~
 
-Opens anapplication manager that can be used to manage settings and
+Opens an application manager that can be used to manage settings and
 devices of the application with the ID you provided to the constructor.
 
 .. code:: python
@@ -475,4 +475,3 @@ mentioned in this section.
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true
 .. |Screenshot of an encoder function in the console| image:: ./images/encoder-function.png?raw=true
-

@@ -266,7 +266,7 @@ handler.data()
 Returns an [**MQTTClient**](#mqttclient) object.
 
 ### application
-Opens anapplication manager that can be used to manage settings and devices of the application with the ID you provided to the constructor.
+Opens an application manager that can be used to manage settings and devices of the application with the ID you provided to the constructor.
 ```python
 handler.application()
 ```
