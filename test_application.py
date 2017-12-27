@@ -5,12 +5,11 @@ import binascii
 
 def test_application_constructor():
     appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
+                                  ("ttn-account-v2"))
     assert hasattr(appclient, "app_access_key")
 
 
-def test__application_constructor_token():
+def test_application_constructor_token():
     appclient = ApplicationClient(stubs.apptest["appId"],
                                   stubs.apptest["accessToken"])
     assert hasattr(appclient, "app_access_token")
