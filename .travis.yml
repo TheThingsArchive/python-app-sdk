@@ -24,11 +24,10 @@ before_script:
   - docker-compose up -d
 
 script:
-  - pep8 --first ttn
-  - pep8 --first utils
-  - pep8 --first test_application.py
-  - pep8 --first test_ttnmqtt.py
-  - pytest
+  - pycodestyle --first ttn
+  - pycodestyle --first utils
+  - pytest utils
+  - pytest test_*.py
 
 before_deploy:
   - python setup.py sdist
