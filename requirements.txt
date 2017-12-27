@@ -1,12 +1,8 @@
-redis
 paho-mqtt
 events
 python-jose
 pytest
-codecov
-coverage
-pytest-cov
-pep8
+pycodestyle
 grpcio
 protobuf
 google-api-python-client
