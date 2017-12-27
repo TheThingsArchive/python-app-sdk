@@ -128,6 +128,8 @@ celerybeat-schedule
 pip-selfcheck.json
 pyvenv.cfg
 .venv
+pip-selfcheck.json
+pyvenv.cfg
 env/
 venv/
 ENV/
