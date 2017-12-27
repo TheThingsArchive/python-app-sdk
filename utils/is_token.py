@@ -4,7 +4,7 @@
 # MIT license that can be found in the LICENSE file.
 
 
-from jose import jwt
+from jose import jwt, JWTError
 import utils.read_key as rk
 
 key = rk.read_key(".env/discovery/server.pub")
@@ -12,6 +12,6 @@ key = rk.read_key(".env/discovery/server.pub")
 
 def is_token(string):
     try:
-        return bool(jwt.decode(string, key))
-    except:
+         return bool(jwt.decode(string, key))
+    except JWTError:
         return False
