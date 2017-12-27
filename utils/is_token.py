@@ -12,6 +12,6 @@ key = rk.read_key(".env/discovery/server.pub")
 
 def is_token(string):
     try:
-         return bool(jwt.decode(string, key))
+        return bool(jwt.decode(string, key))
     except JWTError:
         return False
