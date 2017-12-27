@@ -26,14 +26,14 @@ def uplink_callback(msg, client):
   print("Received uplink from ", msg.dev_id)
   print(msg)
 
-mqtt_client = MQTTClient(app_id, access_key)
+mqtt_client = ttn.MQTTClient(app_id, access_key)
 mqtt_client.set_uplink_callback(uplink_callback)
 mqtt_client.connect()
 time.sleep(60)
 mqtt_client.close()
 
 # using application manager client
-app_client =  ApplicationClient(app_id, access_key)
+app_client =  ttn.ApplicationClient(app_id, access_key)
 my_app = app_client.get()
 print(my_app)
 my_devices = app_client.devices()

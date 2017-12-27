@@ -137,7 +137,7 @@ ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [di
 ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 - `access_key_or_token`: **string**  this can be found at the bottom of the application page under **ACCESS KEYS**. You will need a key allowing you to change the settings if you wish to update your application.
 - `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as a `net_address=value` argument when calling the constructor.
-- `certificate`: **string**  this is the certificate used to connect in a secure way to the handler. It needs to be provided as a `certificate=value` argument when calling the constructor.
+- `certificate`: **string**  this is the content of the certificate used to connect in a secure way to the handler. It needs to be provided as a `certificate=value` argument when calling the constructor.
 - `discovery_address`: **string**  this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. It needs to be provided as a `discovery_address=value` argument when calling the constructor.
 The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
 
@@ -245,12 +245,11 @@ This object is returned by the method `get()` of the ApplicationClient class. He
 * `register_on_join_access_key`: **string**
 
 
-## Errors
+## Exceptions
 Errors can happen on connection or on some ApplicationClient's methods call, for different reasons:
 * Wrong `app_id`, `access_key` or `mqtt_address` were provided to the constructor.
 * The machine may not have access to the network/The MQTT server could be down/Firewall restrictions could prevent connection.
 * The client process doesn't have system capabilities to open a socket
 * The MQTT server uses MQTTS, but the client won't accept the TLS certificate.
 * The Application client is not able to get the application or a device.
-Errors could also happen when closing connection, in case the disconnection is unexpected.
-It's possible to catch those exceptions using `except RuntimeError as` and print the error.
+Errors could also happen when closing connection, in case the disconnection is unexpected. This errors are the most common ones, there are also edges cases not mentionned in this section.
