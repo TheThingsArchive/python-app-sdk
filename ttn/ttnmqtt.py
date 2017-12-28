@@ -8,47 +8,20 @@ import paho.mqtt.client as mqtt
 from events import Events
 import json
 import base64
-from collections import namedtuple
-from .gRPCfiles import discovery_pb2_grpc
-from .gRPCfiles import discovery_pb2
+
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
+import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
+
 import grpc
 import os
+from .discovery import DiscoveryClient
+from utils import stubs, json2obj, split_address
 
-# Necessary to make gRPC work
-MODERN_CIPHER_SUITES = ("ECDHE-ECDSA-AES256-GCM-SHA384:"
-                        "ECDHE-RSA-AES256-GCM-SHA384:"
-                        "ECDHE-ECDSA-CHACHA20-POLY1305:"
-                        "ECDHE-RSA-CHACHA20-POLY1305:"
-                        "ECDHE-ECDSA-AES128-GCM-SHA256:"
-                        "ECDHE-RSA-AES128-GCM-SHA256:"
-                        "ECDHE-ECDSA-AES256-SHA384:"
-                        "ECDHE-RSA-AES256-SHA384:"
-                        "ECDHE-ECDSA-AES128-SHA256:"
-                        "ECDHE-RSA-AES128-SHA256")
 
-if os.getenv('GRPC_SSL_CIPHER_SUITES'):
-    os.environ['GRPC_SSL_CIPHER_SUITES'] += os.pathsep + os.pathsep.join(
-                                                MODERN_CIPHER_SUITES)
+if os.getenv("GRPC_SSL_CIPHER_SUITES"):
+    os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
 else:
-    os.environ['GRPC_SSL_CIPHER_SUITES'] = MODERN_CIPHER_SUITES
-
-
-def _json_object_hook(d):
-    return namedtuple('MSG', d.keys())(*d.values())
-
-
-def json2obj(data):
-    return json.loads(data, object_hook=_json_object_hook)
-
-
-def split_address(address):
-    if ':' in address:
-        split = address.split(':')
-        address = split[0]
-        port = int(split[1])
-        return {"address": address, "port": port}
-    else:
-        return {"address": address}
+    os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
 
 class DownlinkMessage:
@@ -87,8 +60,8 @@ class MQTTClient:
 
     def _connect(self):
         mqtt_addr = split_address(self.__mqtt_address)
-        addr = mqtt_addr['address']
-        port = mqtt_addr['port'] if 'port' in mqtt_addr else 1883
+        addr = mqtt_addr["address"]
+        port = mqtt_addr["port"] if "port" in mqtt_addr else 1883
         self.__client.connect(addr, port, 60)
 
     def connect(self):
@@ -100,14 +73,10 @@ class MQTTClient:
         self.__client.username_pw_set(self.__app_id, self.__access_key)
 
         if self.__mqtt_address is None:
-            creds = grpc.ssl_channel_credentials()
             if self.__discovery_address is None:
-                self.__discovery_address = 'discovery.thethings.network:1900'
-            channel = grpc.secure_channel(self.__discovery_address, creds)
-            stub = discovery_pb2_grpc.DiscoveryStub(channel)
-            req = discovery_pb2.GetByAppIDRequest()
-            req.app_id = self.__appID
-            res = stub.GetByAppID(req)
+                self.__discovery_address = "discovery.thethings.network:1900"
+            discovery = DiscoveryClient(self.__discovery_address)
+            res = discovery.get_by_app_id(self.__app_id)
             self.__mqtt_address = res.mqtt_address
         self._connect()
         self.start()
@@ -115,7 +84,7 @@ class MQTTClient:
     def _on_connect(self):
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
-                res = client.subscribe('{}/devices/+/up'.format(self.__app_id))
+                res = client.subscribe("{}/devices/+/up".format(self.__app_id))
                 if res[0] == "MQTT_ERR_NO_CONN":
                     raise RuntimeError("the client is not connected")
             if rc == 1:
@@ -147,7 +116,7 @@ class MQTTClient:
 
     def _on_message(self):
         def on_message(client, userdata, msg):
-            j_msg = str(json.dumps(json.loads(msg.payload.decode('utf-8'))))
+            j_msg = str(json.dumps(json.loads(msg.payload.decode("utf-8"))))
             obj = json2obj(j_msg)
             if self.__events.uplink_msg:
                 self.__events.uplink_msg(obj, client=self)
@@ -187,7 +156,7 @@ class MQTTClient:
 
         msg = message.obj2json()
         res = self.__client.publish(
-            '{}/devices/{}/down'.format(self.__app_id, dev_id),
+            "{}/devices/{}/down".format(self.__app_id, dev_id),
             msg)
         if res[0] == "MQTT_ERR_NO_CONN":
             raise RuntimeError("client not connected")
