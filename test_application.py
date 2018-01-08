@@ -1,96 +1,73 @@
+import unittest
+from mock import MockApplicationManager
 from ttn import ApplicationClient
+import github_com.TheThingsNetwork.api.handler.handler_pb2 as handler
+import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
 from utils import stubs
 import binascii
 
 
-def test_application_constructor():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2"))
-    assert hasattr(appclient, "app_access_key")
+class TestApplicationClient(unittest.TestCase):
 
+    def setUp(self):
+        self.mock = MockApplicationManager()
+        self.manager = ApplicationClient("test", "pswd")
+        self.manager.client = self.mock
 
-def test_application_constructor_token():
-    appclient = ApplicationClient(stubs.apptest["appId"],
-                                  stubs.apptest["accessToken"])
-    assert hasattr(appclient, "app_access_token")
+    def test_get(self):
+        self.mock.reset()
+        self.mock.application = handler.Application()
+        self.mock.application.app_id = "test"
+        res = self.manager.get()
+        assert res["application"].app_id == "test"
 
+    def test_payload_format(self):
+        self.mock.reset()
+        self.mock.application = handler.Application()
+        self.mock.application.payload_format = "custom"
+        res = self.manager.get()
+        assert res["application"].payload_format == "custom"
 
-def test_application_get():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    app = appclient.get()
-    assert app.app_id == "test-python-sdk"
+        self.manager.set_payload_format("other")
+        assert self.mock.application.payload_format == "other"
 
+    def test_custom_payload(self):
+        self.mock.reset()
+        self.mock.application = handler.Application()
+        self.mock.application.payload_format = "custom"
+        self.mock.application.decoder = "decoder"
+        self.mock.application.converter = "converter"
+        self.mock.application.validator ="validator"
+        self.mock.application.encoder = "encoder"
+        res = self.manager.get()
+        assert res["application"].payload_format == "custom" and \
+            res["application"].validator =="validator" and \
+                res["application"].decoder =="decoder"
 
-def test_application_devices():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    devices = appclient.devices()
-    assert not devices
+        self.manager.set_custom_payload_functions(validator="nvalidator",
+                                                        decoder="ndecoder")
+        res = self.manager.get()
+        assert res["application"].payload_format == "custom" and \
+            res["application"].validator =="nvalidator" and \
+                res["application"].decoder =="ndecoder"
 
+    def test_device(self):
+        self.mock.reset()
+        self.manager.register_device("foo", stubs.devicetest)
+        res = self.manager.device("foo")
+        assert res.dev_id == "foo"
 
-def test_set_payload_format():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient.set_payload_format("payloadformat")
-    app = appclient.get()
-    assert app.payload_format == "payloadformat"
+        res = self.manager.devices()
+        assert res is not None
 
+        update = {
+            "devEui": "1100223344556677",
+        }
+        self.manager.update_device("foo", update)
+        res = self.manager.device("foo")
+        assert res.lorawan_device.dev_eui == binascii.unhexlify("110022"
+                                                                "3344556677")
 
-def test_set_custom_payload():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient.set_custom_payload_functions(validator="validator",
-                                           decoder="decoder")
-    app = appclient.get()
-    assert app.payload_format == "custom" and app.decoder == "decoder" and \
-        app.validator == "validator"
-
-
-def test_set_register_on_join_access_key():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient.set_register_on_join_access_key("register")
-    app = appclient.get()
-    assert app.register_on_join_access_key == "register"
-
-
-def test_register_device():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient.register_device("foo", stubs.devicetest)
-
-
-def test_device():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    device = appclient.device("foo")
-    assert device.dev_id == "foo"
-
-
-def test_update_device():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    update = {
-        "devEui": "1100223344556677",
-    }
-    appclient.update_device("foo", update)
-    dev = appclient.device("foo")
-    assert dev.lorawan_device.dev_eui == binascii.unhexlify("1100223344556677")
-
-
-def test_delete_device():
-    appclient = ApplicationClient("test-python-sdk",
-                                  ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                   "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient.delete_device("foo")
-    devices = appclient.devices()
-    assert not devices
+        self.manager.delete_device("foo")
+        res = self.manager.device("foo")
+        assert res is None
