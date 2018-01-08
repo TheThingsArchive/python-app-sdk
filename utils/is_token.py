@@ -5,7 +5,7 @@
 
 
 from jose import jwt, JWTError
-import utils.read_key as rk
+from utils import read_key as rk
 
 key = rk.read_key(".env/discovery/server.pub")
 
