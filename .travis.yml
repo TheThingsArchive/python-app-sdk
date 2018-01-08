@@ -2,6 +2,8 @@ language: python
 
 python:
   - "3.5"
+  - "3.4"
+  - "2.7"
 
 sudo: required
 group: deprecated-2017Q4
@@ -9,29 +11,17 @@ group: deprecated-2017Q4
 services:
   - docker
 
-env:
-  - DOCKER_COMPOSE_VERSION=1.14.0
-
-before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
 install:
   - pip install -r requirements.txt
 
 before_script:
-  - docker-compose up -d
+  - docker run -d -p 127.0.0.1:1883:1883 thethingsnetwork/rabbitmq
 
 script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest utils
-  - pytest test_ttnmqtt.py
-  - pytest test_discovery.py
-  - pytest test_handler.py
-  - pytest test_application.py
+  - pytest test_*.py
 
 before_deploy:
   - python setup.py sdist

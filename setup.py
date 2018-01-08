@@ -17,7 +17,7 @@ setup(name="ttn",
       author="Emmanuelle Lejeail",
       author_email="emmanuelle@thethingsindustries.com",
       license="MIT",
-      packages=["ttn"],
+      packages=["ttn", "github_com"],
       install_requires=[
           "paho-mqtt",
           "events",
