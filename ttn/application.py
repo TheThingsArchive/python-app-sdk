@@ -1,5 +1,5 @@
 # coding: Latin-1
-# Copyright © 2017 The Things Network
+# Copyright © 2018 The Things Network
 # Use of this source code is governed by the
 # MIT license that can be found in the LICENSE file.
 
@@ -35,14 +35,18 @@ class ApplicationClient:
                 self.credentials = v
             if k == "discovery_address":
                 self.discovery_address = v
+            if k == "path_to_key":
+                self.path_to_key = v
 
         if not hasattr(self, "discovery_address"):
             self.discovery_address = "discovery.thethings.network:1900"
 
-        if is_token(token_or_key):
+        if not hasattr(self, "path_to_key"):
+            self.app_access_key = token_or_key
+        elif is_token(token_or_key, self.path_to_key):
             self.app_access_token = token_or_key
         else:
-            self.app_access_key = token_or_key
+            raise RuntimeError("The key or token provided is invalid")
 
         if not hasattr(self, "net_address"):
             discovery = DiscoveryClient(self.discovery_address)
