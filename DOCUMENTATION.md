@@ -142,6 +142,7 @@ ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [di
 - `net_address`: **string**  this  is the address of the handler to which the application was registered. It needs to be provided as a `net_address=value` argument when calling the constructor.
 - `certificate`: **string**  this is the content of the certificate used to connect in a secure way to the handler. It needs to be provided as a `certificate=value` argument when calling the constructor.
 - `discovery_address`: **string**  this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered. It needs to be provided as a `discovery_address=value` argument when calling the constructor.
+- `path_to_key=`: **string**  this is the absolute path to the file which contains the key from which the token you wish to use, is signed. It needs to be provided as a `path_to_key=value` argument when calling the constructor.
 The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
