@@ -1,5 +1,5 @@
 # coding: Latin-1
-# Copyright © 2017 The Things Network
+# Copyright © 2018 The Things Network
 # Use of this source code is governed by the
 # MIT license that can be found in the LICENSE file.
 
@@ -10,7 +10,7 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
 
 class MockApplicationManager:
-    
+
     def __inti__(self):
         self.application = proto.Application()
         self.applicationIdentifier = proto.ApplicationIdentifier()
