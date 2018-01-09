@@ -4,17 +4,21 @@
 # MIT license that can be found in the LICENSE file.
 
 
+import unittest
 import ttn
 import time
 from utils import stubs
 
+class TestHandlerClient(unittest.TestCase):
 
-def test_handler():
-    handler = ttn.HandlerClient("test-python-sdk",
-                                ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                 "_Na5O2Dm_IH8Up6BcrAY"))
-    appclient = handler.application()
-    mqttclient = handler.data()
-    assert isinstance(appclient,
-                      ttn.ApplicationClient) and \
-        isinstance(mqttclient, ttn.MQTTClient)
+    def setUp(self):
+        self.handler = ttn.HandlerClient("test-python-sdk",
+                                    ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
+                                     "_Na5O2Dm_IH8Up6BcrAY"))
+
+    def test_handler(self):
+        self.appclient = self.handler.application()
+        self.mqttclient = self.handler.data()
+        assert isinstance(self.appclient,
+                          ttn.ApplicationClient) and \
+            isinstance(self.mqttclient, ttn.MQTTClient)
