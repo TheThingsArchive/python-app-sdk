@@ -1,5 +1,5 @@
 # coding: Latin-1
-# Copyright © 2017 The Things Network
+# Copyright © 2018 The Things Network
 # Use of this source code is governed by the
 # MIT license that can be found in the LICENSE file.
 
@@ -64,14 +64,11 @@ appClaims = {
   },
 }
 
-serverkey = read_key(".env/discovery/server.key")
-token = jws.sign(claims, serverkey, algorithm="ES256")
 
 apptest = {
   "appId": "test",
   "appEui": "0011223344556677",
   "accessKey": "local.12345678",
-  "accessToken": jws.sign(appClaims, serverkey, algorithm="ES256"),
   "payloadFormat": "custom",
   "decoder": "",
   "converter": "",
@@ -80,21 +77,6 @@ apptest = {
   "registerOnJoinAccessKey": "",
 }
 
-handler = {
-  "id": "dev",
-  "serviceName": "handler",
-  "description": "",
-  "url": "",
-  "pb_public": False,
-  "netAddress": "handler:1904",
-  "publicKey": read_key(".env/handler/server.pub"),
-  "certificate": read_key(".env/handler/server.cert"),
-  "apiAddress": "http://handler:8084",
-  "mqttAddress": "handler:1883",
-  "amqpAddress": "handler:5672",
-}
-
-handlerAddress = "localhost:1904"
 mqttAddress = "localhost:1883"
 
 devicetest = {
@@ -115,9 +97,4 @@ devicetest = {
     },
     "disableFCntCheck": True,
     "uses32BitFCnt": True,
-}
-
-discovery = {
-  "address": "localhost:1900",
-  "certificate": read_key(".env/discovery/server.cert"),
 }
