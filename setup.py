@@ -1,6 +1,7 @@
 # coding: Latin-1
-# Copyright © 2017 The Things Network
-# Use of this source code is governed by the MIT license that can be found in the LICENSE file.
+# Copyright © 2018 The Things Network
+# Use of this source code is governed by the
+# MIT license that can be found in the LICENSE file.
 
 from setuptools import setup
 
@@ -17,7 +18,7 @@ setup(name="ttn",
       author="Emmanuelle Lejeail",
       author_email="emmanuelle@thethingsindustries.com",
       license="MIT",
-      packages=["ttn", "github_com"],
+      packages=["ttn", "github_com", "utils"],
       install_requires=[
           "paho-mqtt",
           "events",
