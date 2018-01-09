@@ -20,7 +20,6 @@ before_script:
 script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
-  - pytest utils
   - pytest test_*.py
 
 before_deploy:
@@ -29,8 +28,8 @@ before_deploy:
 
 deploy:
   provider: pypi
-  user: "emmlejeail"
+  user: "ttnci"
   password:
-      secure: btPNtswCa1ZWKlHVxfEspps+BehKXsz1xdpkW8VWNcaNjfo8dmEzbe3aBw7y/W5m27Sz/IvX6mpYxSfCCkgbq5pwXVE9qkB+IU3w59abXnAGID38YHldTcMoWhhnD67vmdYZHjyM0Q6QIr79+bJxG3jGCDABKd/aafBTLI/VfBDRdMXLwBL2k8b64WcnRStIb6m/4aEL0wk8MDTQF+46jG53UVJKkXRCaEQZnZeSTGrUcdxoor0ZW/h9if0nhTwDNmm07YzqblcvVyfiq0Fmup2sgP0+kZpFr5wpyI8HDuOa0VcM3WnZupCJY8c3J/HD1uy8Sn6el6nWxjWRlHzZFuI4z6U19nmVZY/0cu0Ns3dyJUv3bN0+9Du0NzSEm6sCfEXqaKa6yQLEmqDtGyLOs4odENYOlJ+SEp333is+FXidn03VLXCnxR9wu7ik928KponMlawV/40sRx+Dj5ZdT6eYJrHGiCf3aU60Zr4KvF+vI//qlk+SuN/BfHSOM6654K4aXYNxxcKfdFb5TzN15W75MRAPe40D+59ohnw6+1Y9w+ulaogwej1rAMhQukeGB5OY/J1mjkTbEkYMZE7TKbKP/YDQvW0MRvS+BchH931Tv2QmkF4schxliVYl8ynnORkkeA666MNyrfJhTPe6jHuDyhKRvEoD1O2UFQf1I7o=
+      secure: "LF1ut3DC2otjtdaT5fkjONJgz5ZfAEdlVu3r0lndBE6AysDxyrPpqYO7HgsMlcG/cuZeRU16xvAZ108f3bbSZi/aiSrHezd0c/Hnvq/eLFkxEXihTslokb8wIJz3fRQyaUJqc+Rzqe+po/y7f6PikoVoiccRs7ahqsJBx/92x5KtOip9VqsCjVNcVV6GXRZ2CIykCmqLqJ6J5VUMNge0xWMyk6I0thfH52RU5wpUmfsyji1khVjbwgs91LT2gmrYCrBOHPc3AKTiMkdKmxa9xlzHZW1fDw6l0r9J31R5AkwQvH43aOFqGggFnOZrlGNinn+XdPhWZY6Ux9NfhRqsdPgqcXHfTDjxcvYW9N83IfBEemHeSWQ9erVb3ICLP2gVleguFsSE84XIe9kKuwwUUY09/42ibkV9Gu+5gjjxVgyXOKnvKsGJu6YaHzy/d6DTfnw8ruORLdBwNCBjh8XsBpL5p6e4PsJj+Ux2eVAQDgJKQQHb/BuZ1nR8u68TfFFkSGSTVP1ZWlMZ/+WGujhdZaEayKVGLu72TfquSg/PMaNe2ksCYDM/weVgHhMlHAGUSPsF7EaJx71u4WQyFykNsPVMpHZriqG3PVyQnZLJofAzPHYlVXFuCBZVibW3H2Tj/71rJPsDVqhLIe+7m1KfHgetmrzdOBiqjOBpv1xEswY="
   branch: master
   tags: true
