@@ -11,7 +11,7 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
 class MockApplicationManager:
 
-    def __inti__(self):
+    def __init__(self):
         self.application = proto.Application()
         self.applicationIdentifier = proto.ApplicationIdentifier()
         self.device = proto.Device()
