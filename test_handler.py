@@ -12,9 +12,8 @@ from utils import stubs
 class TestHandlerClient(unittest.TestCase):
 
     def setUp(self):
-        self.handler = ttn.HandlerClient("test-python-sdk",
-                                    ("ttn-account-v2.suDG-8zvpIFL42r-f6qRcMj"
-                                     "_Na5O2Dm_IH8Up6BcrAY"))
+        self.handler = ttn.HandlerClient(stubs.apptest["appId"],
+                                         stubs.apptest["accessKey"])
 
     def test_handler(self):
         self.appclient = self.handler.application()

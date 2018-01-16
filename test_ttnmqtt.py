@@ -10,6 +10,8 @@ import json
 from ttn import MQTTClient as mqtt
 from utils import stubs
 
+MQTT_ADDR = "localhost:1883"
+
 class TestMQTTClient(unittest.TestCase):
 
     def test_connect_disconnect(self):
@@ -24,7 +26,7 @@ class TestMQTTClient(unittest.TestCase):
 
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
-                          mqtt_address=stubs.mqttAddress)
+                          mqtt_address=MQTT_ADDR)
         ttn_client.set_connect_callback(connectcallback)
         ttn_client.set_close_callback(closecallback)
         ttn_client.connect()
@@ -40,7 +42,7 @@ class TestMQTTClient(unittest.TestCase):
 
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
-                          mqtt_address=stubs.mqttAddress)
+                          mqtt_address=MQTT_ADDR)
         ttn_client.set_uplink_callback(uplinkcallback)
         ttn_client.connect()
         time.sleep(1)
@@ -75,7 +77,7 @@ class TestMQTTClient(unittest.TestCase):
 
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
-                          mqtt_address=stubs.mqttAddress)
+                          mqtt_address=MQTT_ADDR)
         ttn_client.set_downlink_callback(downlinkcallback)
         ttn_client.connect()
         time.sleep(1)
@@ -92,7 +94,7 @@ class TestMQTTClient(unittest.TestCase):
 
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
-                          mqtt_address=stubs.mqttAddress)
+                          mqtt_address=MQTT_ADDR)
         ttn_client.set_downlink_callback(downlinkcallback)
         ttn_client.connect()
         time.sleep(1)
@@ -109,7 +111,7 @@ class TestMQTTClient(unittest.TestCase):
 
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
-                          mqtt_address=stubs.mqttAddress)
+                          mqtt_address=MQTT_ADDR)
         ttn_client.set_downlink_callback(downlinkcallback)
         ttn_client.connect()
         time.sleep(1)
