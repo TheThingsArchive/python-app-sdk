@@ -47,23 +47,6 @@ uplink = {
   },
 }
 
-claims = {
-  "scope": ["apps"],
-}
-
-appClaims = {
-  "scope": ["apps:test"],
-  "iss": "local",
-  "iat": int(math.floor(time.time() / 1000) - 60),
-  "apps": {
-    "test": [
-      "settings",
-      "devices",
-      "delete",
-    ],
-  },
-}
-
 
 apptest = {
   "appId": "test",
@@ -77,7 +60,6 @@ apptest = {
   "registerOnJoinAccessKey": "",
 }
 
-mqttAddress = "localhost:1883"
 
 devicetest = {
     "description": "Description",
