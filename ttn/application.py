@@ -23,11 +23,14 @@ if os.getenv("GRPC_SSL_CIPHER_SUITES"):
 else:
     os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
+TIME_OUT = 60
+
 
 class ApplicationClient:
 
     def __init__(self, app_id, token_or_key, **kwargs):
         self.app_id = app_id
+        self.discovery_address = "discovery.thethings.network:1900"
         for k, v in kwargs.items():
             if k == "net_address":
                 self.net_address = v
@@ -37,9 +40,6 @@ class ApplicationClient:
                 self.discovery_address = v
             if k == "path_to_key":
                 self.path_to_key = v
-
-        if not hasattr(self, "discovery_address"):
-            self.discovery_address = "discovery.thethings.network:1900"
 
         if not hasattr(self, "path_to_key"):
             self.app_access_key = token_or_key
@@ -71,7 +71,7 @@ class ApplicationClient:
         req.app_id = self.app_id
         meta = self.__create_metadata()
         try:
-            app = self.client.GetApplication(req, 60, meta)
+            app = self.client.GetApplication(req, TIME_OUT, meta)
             return app
         except grpc.RpcError as err:
             raise RuntimeError(
@@ -92,17 +92,12 @@ class ApplicationClient:
             updates[k] = v
         self.__set(updates)
 
-    def set_register_on_join_access_key(self, to):
-        self.__set({
-            "register_on_join_access_key": to,
-        })
-
     def unregister(self):
         req = proto.ApplicationIdentifier()
         req.app_id = self.app_id
         meta = self.__create_metadata()
         try:
-            return self.client.DeleteApplication(req, 60, meta)
+            return self.client.DeleteApplication(req, TIME_OUT, meta)
         except grpc.RpcError as err:
             raise RuntimeError(
                 "Error while deleting the",
@@ -133,10 +128,10 @@ class ApplicationClient:
 
         meta = self.__create_metadata()
         try:
-            return self.client.SetApplication(req, 60, meta)
+            return self.client.SetApplication(req, TIME_OUT, meta)
         except grpc.RpcError as err:
             raise RuntimeError(
-                "Error while setting the",
+                "Error while updating the",
                 " application: {}".format(err.code().name))
 
     def register_device(self, devID, device):
@@ -146,10 +141,10 @@ class ApplicationClient:
         req = self.__deviceRequest(devID, device)
         meta = self.__create_metadata()
         try:
-            return self.client.SetDevice(req, 60, meta)
+            return self.client.SetDevice(req, TIME_OUT, meta)
         except grpc.RpcError as err:
             raise RuntimeError(
-                "Error while setting the",
+                "Error when updating the",
                 " device: {}".format(err.code().name))
 
     def devices(self):
@@ -157,7 +152,7 @@ class ApplicationClient:
         req.app_id = self.app_id
         meta = self.__create_metadata()
         try:
-            res = self.client.GetDevicesForApplication(req, 60, meta)
+            res = self.client.GetDevicesForApplication(req, TIME_OUT, meta)
             return res.devices
         except grpc.RpcError as err:
             raise RuntimeError(
@@ -170,7 +165,7 @@ class ApplicationClient:
         req.dev_id = devID
         meta = self.__create_metadata()
         try:
-            res = self.client.GetDevice(req, 60, meta)
+            res = self.client.GetDevice(req, TIME_OUT, meta)
             return res
         except grpc.RpcError as err:
             raise RuntimeError(
@@ -182,7 +177,7 @@ class ApplicationClient:
         req = self.__deviceRequest(dev_id, updates, True)
         meta = self.__create_metadata()
         try:
-            return self.client.SetDevice(req, 60, meta)
+            return self.client.SetDevice(req, TIME_OUT, meta)
         except grpc.RpcError as err:
             raise RuntimeError(
                 "Error while updating the",
