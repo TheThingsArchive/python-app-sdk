@@ -30,13 +30,12 @@ Table of Contents
    -  `get <#get>`__
    -  `set_payload_format <#set_payload_format>`__
    -  `set_custom_payload_functions <#set_custom_payload_functions>`__
-   -  `set_register_on_join_access_key <#set_register_on_join_access_key>`__
    -  `unregister <#unregister>`__
    -  `device <#device>`__
    -  `devices <#devices>`__
    -  `update_device <#update_device>`__
    -  `delete_device <#delete_device>`__
-   -  `Device <#device>`__
+   -  `DeviceObject <#deviceobject>`__
    -  `Application <#application>`__
 
 -  `HandlerClient <#handlerclient>`__
@@ -44,13 +43,13 @@ Table of Contents
    -  `data <#data>`__
    -  `application <#application>`__
 
--  `Errors <#errors>`__
+-  `Troubleshooting <#troubleshooting>`__
 
 Description
 -----------
 
-This package provides you an easy way to connect to The Things Network
-via MQTT or manage your applications.
+This package provides you an easy way to exchange traffic with The
+Things Network via MQTT and manage your applications.
 
 MQTTClient
 ----------
@@ -59,22 +58,21 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    MQTTClient(app_id, app_access_key, [mqtt_address], [discovery_address])
+    MQTTClient(app_id, app_access_key, **kwargs)
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
 -  ``app_access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. |Screenshot of the console
    with accesskey section|
--  ``mqtt_address``: **string** this is the address of the handler to
-   which the application was registered. It needs to be provided as an
-   ``mqtt_address=value`` argument when calling the constructor.
--  ``discovery_address``: **string** this is the address of the
-   discovery server to use in order to find back the address of the MQTT
-   handler. It needs to be provided as an ``discovery_address=value``
-   argument when calling the constructor. The constructor returns an
-   **MQTTClient object** set up with the application informations, ready
-   to be connected to The Things Network.
+
+The parameters **\**kwargs** can be the following: - ``mqtt_address``:
+**string** this is the address of the handler to which the application
+was registered. - ``discovery_address``: **string** this is the address
+of the discovery server to use in order to find back the address of the
+MQTT handler. The constructor returns an **MQTTClient object** set up
+with the application informations, ready to be connected to The Things
+Network.
 
 connect
 ~~~~~~~
@@ -212,16 +210,17 @@ of an encoder function in the console| - ``port``: **int** the port of
 the device to which the message will be sent. Default value to 1. -
 ``confirmation``: **boolean** this boolean indicates if you wish to
 receive a confirmation after sending the downlink message. Default value
-to False. - ``schedule``: **string** this string provides the type of
-schedule on which the message should be sent. It can take values such as
-``first`` or ``last``. Default value to ``replace``.
+to ``False``. - ``schedule``: **string** this string provides the type
+of schedule on which the message should be sent. It can take the
+following values: ``first``, ``last``, ``replace``. Default value to
+``replace``.
 
 UplinkMessage
 ~~~~~~~~~~~~~
 
 This type of object is constructed dynamically from the message received
 by the client, so this means some attributes can change from one message
-to another. However here are some constant attributes usually found in
+to another. Here are some constant attributes usually found in
 UplinkMessage objects: \* ``app_id``: the application ID to which the
 device is registered \* ``dev_id``: the ID of the device \* ``port``:
 the port number on which the message was sent \* ``payload_raw``: a
@@ -237,7 +236,7 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    ApplicationClient(app_id, access_key_or_token, [net_address], [certificate], [discovery_address])
+    ApplicationClient(app_id, access_key_or_token, **kwargs)
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
@@ -245,31 +244,43 @@ The class constructor can be called following this scheme:
    of the application page under **ACCESS KEYS**. You will need a key
    allowing you to change the settings if you wish to update your
    application.
--  ``net_address``: **string** this is the address of the handler to
-   which the application was registered. It needs to be provided as a
-   ``net_address=value`` argument when calling the constructor.
--  ``certificate``: **string** this is the content of the certificate
-   used to connect in a secure way to the handler. It needs to be
-   provided as a ``certificate=value`` argument when calling the
-   constructor.
+
+The parameters **\**kwargs** can be the following: - ``net_address``:
+**string** this is the address of the handler to which the application
+was registered. It’s composed by the hostname and the port number,
+example: ``handler.eu.thethings.network:1904``. - ``certificate``:
+**string** this is the content of the certificate used to connect in a
+secure way to the handler. For example:
+
+::
+
+    -----BEGIN CERTIFICATE-----
+    MIIBmjCCAUCgAwIBAgIRANKKhUVFRXhyx0gCX2h7EFwwCgYIKoZIzj0EAwIwHTEb
+    MBkGA1UEChMSVGhlIFRoaW5ncyBOZXR3b3JrMB4XDTE3MDgwMTA4MzQxMloXDTE4
+    MDgwMTA4MzQxMlowHTEbMBkGA1UEChMSVGhlIFRoaW5ncyBOZXR3b3JrMFkwEwYH
+    KoZIzj0CAQYIKoZIzj0DAQcDQgAEiXbWvyYjOMP4ebTYtVvdIsBwS+U3laWltR7V
+    ox4+kQWcGLLEg+suI9SRZyKK+frhw9JPKbVNIgEv/S50YKfMEaNhMF8wDgYDVR0P
+    AQH/BAQDAgKkMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAPBgNVHRMB
+    Af8EBTADAQH/MB0GA1UdEQQWMBSCB2hhbmRsZXKCCWxvY2FsaG9zdDAKBggqhkjO
+    PQQDAgNIADBFAiEA+vajlz7HDZ7x6KKi/uMlrwCePEcchZRYJPc/6kPyYogCIFSy
+    etQ54MyIOWtwYlxG+blnxT4PWCgas5rPiaK6VP/Z
+    -----END CERTIFICATE-----
+
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
-   handler to which the application in registered. It needs to be
-   provided as a ``discovery_address=value`` argument when calling the
-   constructor.
+   handler to which the application in registered. It’s composed by the
+   hostname and the port number, example:
+   ``discovery.thethings.network:1900``.
 -  ``path_to_key=``: **string** this is the absolute path to the file
    which contains the key from which the token you wish to use, is
-   signed. It needs to be provided as a ``path_to_key=value`` argument
-   when calling the constructor. The constructor returns an
-   **ApplicationClient** object set up with the application
-   informations, ready to get the application registered on The Things
-   Network.
+   signed. The constructor returns an **ApplicationClient** object set
+   up with the application informations, ready to get the application
+   registered on The Things Network.
 
 get
 ~~~
 
-Gives back the `**Application** <#application>`__ object with the id
-given to the constructor.
+Gives back the `**Application** <#application>`__.
 
 .. code:: python
 
@@ -293,37 +304,18 @@ Sets the payload functions of the application.
 
 .. code:: python
 
-    client.set_custom_payload_functions([decoder], [encoder], [validator], [converter])
+    client.set_custom_payload_functions(**kwargs)
 
--  ``decoder``: **string** decoder function that must be written in
-   javascript, it needs to be provided as a ``decoder=value`` argument
-   when calling the method.
--  ``encoder``: **string** encoder function that must be written in
-   javascript, it needs to be provided as a ``encoder=value`` argument
-   when calling the method.
--  ``validator``: **string** validator function that must be written in
-   javascript, it needs to be provided as a ``validator=value`` argument
-   when calling the method.
--  ``converter``: **string** converter function that must be written in
-   javascript, it needs to be provided as a ``converter=value`` argument
-   when calling the method.
-
-set_register_on_join_access_key
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Sets the register on join access key of the application.
-
-.. code:: python
-
-    client.set_register_on_join_access_key(register_on_join)
-
--  ``register_on_join``: **string** the ``register_on_join`` access key.
+The parameters (**\**kwargs**) can be any of the followings: -
+``decoder``: **string** Javascript decoder function. - ``encoder``:
+**string** Javascript encoder function. - ``validator``: **string**
+Javascript validator function. - ``converter``: **string** Javascript
+converter function.
 
 unregister
 ~~~~~~~~~~
 
-Unregisters the application of the id provided to the constructor on
-creation of the client.
+Unregisters the application.
 
 .. code:: python
 
@@ -340,21 +332,21 @@ Registers a new device to the application.
 
 -  ``dev_id``: **string** the id of the device to be registered.
 -  ``device``: **dictionary** the dictionary with fields to be set as a
-   new device of the application. See the `Device <#device>`__ section
-   to know the structure of the dictionary that should be passed and the
-   name of the fields.
+   new device of the application. See the `Device <#deviceobject>`__
+   section to know the structure of the dictionary that should be passed
+   and the name of the fields.
 
 device
 ~~~~~~
 
-Gives back the `**Device** <#device>`__ object of the given id.
+Gives back the `**DeviceObject** <#deviceobject>`__ object of the given
+id.
 
 .. code:: python
 
     client.device(dev_id)
 
--  ``dev_id``: **string** the id of the device which is given back by
-   the method.
+-  ``dev_id``: **string** the id of the device.
 
 devices
 ~~~~~~~
@@ -389,10 +381,8 @@ Deletes the device with the given id.
 
 -  ``dev_id``: **string** the id of the device to be deleted.
 
-.. device-1:
-
-Device
-~~~~~~
+DeviceObject
+~~~~~~~~~~~~
 
 This objet is returned by the method ``device()`` of the
 ApplicationClient class. Here are its attributes: \* ``app_id``:
@@ -428,19 +418,23 @@ The class constructor can be called following this scheme:
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
 -  ``app_access_key``: **string** this can be found at the bottom of the
-   application page under **ACCESS KEYS**. You will need a key allowing
-   you to change the settings if you wish to update your application.
+   application page under **ACCESS KEYS**. The key needs the
+   ``settings``\ authorization.
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
    handler to which the application in registered. Default to ``None``.
+   If the ``discovery_address`` is not set, the client will use the
+   address of The Things Network’s discovery server:
+   ``discovery.thethings.network:1900``.
 -  ``certificate``: **string** this is the certificate used to connect
-   in a secure way to the discovery server. Default to ``None``.
+   in a secure way to the discovery server. Default to ``None``. If a
+   discovery_address was provided, not providing the certificate will
+   raise an exception.
 
 data
 ~~~~
 
-Opens an MQTT client that can be used to receive uplink from devices
-registered to an application or send downlink to those same devices.
+Creates an `**MQTTClient** <#mqttclient>`__ object.
 
 .. code:: python
 
@@ -453,8 +447,7 @@ Returns an `**MQTTClient** <#mqttclient>`__ object.
 application
 ~~~~~~~~~~~
 
-Opens an application manager that can be used to manage settings and
-devices of the application with the ID you provided to the constructor.
+Creates an `**ApplicationClient** <#applicationclient>`__ object
 
 .. code:: python
 
@@ -462,8 +455,8 @@ devices of the application with the ID you provided to the constructor.
 
 Returns an `**ApplicationClient** <#applicationclient>`__ object.
 
-Exceptions
-----------
+Troubleshooting
+---------------
 
 Errors can happen on connection or on some ApplicationClient’s methods
 call, for different reasons: \* Wrong ``app_id``, ``access_key`` or
