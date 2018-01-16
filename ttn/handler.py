@@ -19,15 +19,15 @@ class HandlerClient:
 
     def __init__(self, app_id,
                  app_access_key,
-                 discovery_address=None,
+                 discovery_address="discovery.thethings.network:1900",
                  certificate=None):
         self.app_id = app_id
         self.app_access_key = app_access_key
         self.discovery_address = discovery_address
         self.certificate = certificate
-        self.open()
+        self.__open()
 
-    def open(self):
+    def __open(self):
         if not hasattr(self, 'announcement'):
             discovery = DiscoveryClient(self.discovery_address,
                                         self.certificate)
