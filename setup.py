@@ -11,7 +11,7 @@ with io.open("README.rst", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(name="ttn",
-      version="2.0.0",
+      version="2.1.0",
       description="The Things Network Client",
       long_description = long_description,
       url = "https://github.com/TheThingsNetwork/python-app-sdk",
