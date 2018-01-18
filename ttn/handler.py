@@ -6,7 +6,7 @@
 from .application import ApplicationClient
 from .ttnmqtt import MQTTClient
 from .discovery import DiscoveryClient
-from utils import stubs
+from utils import stubs, read_key
 import os
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
@@ -20,17 +20,22 @@ class HandlerClient:
     def __init__(self, app_id,
                  app_access_key,
                  discovery_address="discovery.thethings.network:1900",
-                 certificate=None):
+                 certificate=""):
         self.app_id = app_id
         self.app_access_key = app_access_key
         self.discovery_address = discovery_address
-        self.certificate = certificate
+        if certificate:
+            cert = read_key(certificate)
+            self.certificate = cert
         self.__open()
 
     def __open(self):
         if not hasattr(self, 'announcement'):
-            discovery = DiscoveryClient(self.discovery_address,
-                                        self.certificate)
+            if hasattr(self, 'certificate'):
+                discovery = DiscoveryClient(self.discovery_address,
+                                            self.certificate)
+            else:
+                discovery = DiscoveryClient(self.discovery_address)
             self.announcement = discovery.get_by_app_id(self.app_id)
 
     def data(self):

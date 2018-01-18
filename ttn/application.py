@@ -23,32 +23,29 @@ if os.getenv("GRPC_SSL_CIPHER_SUITES"):
 else:
     os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
-TIME_OUT = 60
+TIME_OUT = 30 #seconds
 
 
 class ApplicationClient:
 
-    def __init__(self, app_id, token_or_key, **kwargs):
+    def __init__(self, app_id, token_or_key,
+                 net_address="", certificate="",
+                 discovery_address="discovery.thethings.network:1900",
+                 path_to_key=""):
         self.app_id = app_id
-        self.discovery_address = "discovery.thethings.network:1900"
-        for k, v in kwargs.items():
-            if k == "net_address":
-                self.net_address = v
-            if k == "certificate":
-                self.credentials = v
-            if k == "discovery_address":
-                self.discovery_address = v
-            if k == "path_to_key":
-                self.path_to_key = v
+        self.discovery_address = discovery_address
+        self.net_address = net_address
+        self.credentials = certificate
+        self.path_to_key = path_to_key
 
-        if not hasattr(self, "path_to_key"):
+        if not self.path_to_key:
             self.app_access_key = token_or_key
         elif is_token(token_or_key, self.path_to_key):
             self.app_access_token = token_or_key
         else:
             raise RuntimeError("The key or token provided is invalid")
 
-        if not hasattr(self, "net_address"):
+        if not self.net_address:
             discovery = DiscoveryClient(self.discovery_address)
             announcement = discovery.get_by_app_id(self.app_id)
             self.net_address = announcement.net_address

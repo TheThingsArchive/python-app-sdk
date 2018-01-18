@@ -45,18 +45,15 @@ class MyEvents(Events):
 
 class MQTTClient:
 
-    def __init__(self, app_id, app_access_key, **kwargs):
+    def __init__(self, app_id, app_access_key,
+                 mqtt_address="",
+                 discovery_address="discovery.thethings.network:1900"):
         self.__client = mqtt.Client()
         self.__app_id = app_id
         self.__access_key = app_access_key
         self.__events = MyEvents()
-        self.__mqtt_address = None
-        self.__discovery_address = "discovery.thethings.network:1900"
-        for k, v in kwargs.items():
-            if k == "mqtt_address":
-                self.__mqtt_address = v
-            if k == "discovery_address":
-                self.__discovery_address = v
+        self.__mqtt_address = mqtt_address
+        self.__discovery_address = discovery_address
 
     def _connect(self):
         mqtt_addr = split_address(self.__mqtt_address)
@@ -72,7 +69,7 @@ class MQTTClient:
 
         self.__client.username_pw_set(self.__app_id, self.__access_key)
 
-        if self.__mqtt_address is None:
+        if not self.__mqtt_address:
             discovery = DiscoveryClient(self.__discovery_address)
             res = discovery.get_by_app_id(self.__app_id)
             self.__mqtt_address = res.mqtt_address

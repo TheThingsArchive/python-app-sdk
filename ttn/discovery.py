@@ -21,9 +21,9 @@ class DiscoveryClient:
 
     def __init__(self,
                  discovery_address="discovery.thethings.network:1900",
-                 certificate=None):
+                 certificate=""):
         self.discovery_address = discovery_address
-        if certificate is not None:
+        if certificate:
             self.certificate = certificate
         if hasattr(self, "certificate"):
             creds = grpc.ssl_channel_credentials(self.certificate)
