@@ -35,7 +35,7 @@ Table of Contents
    -  `devices <#devices>`__
    -  `update_device <#update_device>`__
    -  `delete_device <#delete_device>`__
-   -  `DeviceObject <#deviceobject>`__
+   -  `Device <#deviceobject>`__
    -  `Application <#application>`__
 
 -  `HandlerClient <#handlerclient>`__
@@ -58,21 +58,21 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    MQTTClient(app_id, app_access_key, **kwargs)
+    MQTTClient(app_id, app_access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
 -  ``app_access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. |Screenshot of the console
    with accesskey section|
-
-The parameters **\**kwargs** can be the following: - ``mqtt_address``:
-**string** this is the address of the handler to which the application
-was registered. - ``discovery_address``: **string** this is the address
-of the discovery server to use in order to find back the address of the
-MQTT handler. The constructor returns an **MQTTClient object** set up
-with the application informations, ready to be connected to The Things
-Network.
+-  ``mqtt_address``: **string** this is the address of the handler to
+   which the application was registered, in the ``{hostname}:{port}``
+   format.
+-  ``discovery_address``: **string** this is the address of the
+   discovery server to use in order to find back the address of the MQTT
+   handler, in the ``{hostname}:{port}`` format. The constructor returns
+   an **MQTTClient object** set up with the application informations,
+   ready to be connected to The Things Network.
 
 connect
 ~~~~~~~
@@ -113,10 +113,14 @@ uplink_callback
 '''''''''''''''
 
 The callback function must be declared in the script following this
-structure: \* ``uplink_callback(msg, client)`` \* ``msg``:
-**UplinkMessage object** the message received by the client. \*
-``client``: **MQTTClient object** the client from which the callback is
-executed.
+structure:
+
+-  ``uplink_callback(msg, client)``
+
+   -  ``msg``: **UplinkMessage object** the message received by the
+      client.
+   -  ``client``: **MQTTClient object** the client from which the
+      callback is executed.
 
 set_connect_callback
 ^^^^^^^^^^^^^^^^^^^^
@@ -189,7 +193,7 @@ Sends a downlink to the device.
 
 .. code:: python
 
-    client.send(dev_id, payload, [port], [confirmation], [schedule])
+    client.send(dev_id, payload, port=1, confirmation=False, schedule="replace")
 
 -  ``dev_id``: **string** the ID of the device which will receive the
    message.
@@ -201,19 +205,20 @@ Sends a downlink to the device.
 
 .. code:: json
 
-    {"led_state": "on", "counter": 1}
+    { "led_state": "on", "counter": 1 }
 
 In case it’s a **dictionary** with fields, please make sure the
 **encoder** function (Payload Formats section) of the application is set
 to make sense of the informations transmitted in each field. |Screenshot
-of an encoder function in the console| - ``port``: **int** the port of
-the device to which the message will be sent. Default value to 1. -
-``confirmation``: **boolean** this boolean indicates if you wish to
-receive a confirmation after sending the downlink message. Default value
-to ``False``. - ``schedule``: **string** this string provides the type
-of schedule on which the message should be sent. It can take the
-following values: ``first``, ``last``, ``replace``. Default value to
-``replace``.
+of an encoder function in the console|
+
+-  ``port``: **int** the port of the device to which the message will be
+   sent.
+-  ``confirmation``: **boolean** this boolean indicates if you wish to
+   receive a confirmation after sending the downlink message.
+-  ``schedule``: **string** this string provides the type of schedule on
+   which the message should be sent. It can take the following values:
+   ``first``, ``last``, ``replace``.
 
 UplinkMessage
 ~~~~~~~~~~~~~
@@ -221,13 +226,15 @@ UplinkMessage
 This type of object is constructed dynamically from the message received
 by the client, so this means some attributes can change from one message
 to another. Here are some constant attributes usually found in
-UplinkMessage objects: \* ``app_id``: the application ID to which the
-device is registered \* ``dev_id``: the ID of the device \* ``port``:
-the port number on which the message was sent \* ``payload_raw``: a
-buffer which contains the payload in hexadecimal \* ``metadata``: this
-field is another object which contains all the metadata of the message.
-Such as: the date, the frequency, the data rate and the list of
-gateways.
+UplinkMessage objects:
+
+-  ``app_id``: the application ID to which the device is registered
+-  ``dev_id``: the ID of the device
+-  ``port``: the port number on which the message was sent
+-  ``payload_raw``: a buffer which contains the payload in hexadecimal
+-  ``metadata``: this field is another object which contains all the
+   metadata of the message. Such as: the date, the frequency, the data
+   rate and the list of gateways.
 
 ApplicationClient
 -----------------
@@ -236,7 +243,7 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    ApplicationClient(app_id, access_key_or_token, **kwargs)
+    ApplicationClient(app_id, access_key_or_token, net_address="", certificate="", discovery_address="discovery.thethings.network:1900", path_to_key="")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
@@ -244,13 +251,12 @@ The class constructor can be called following this scheme:
    of the application page under **ACCESS KEYS**. You will need a key
    allowing you to change the settings if you wish to update your
    application.
-
-The parameters **\**kwargs** can be the following: - ``net_address``:
-**string** this is the address of the handler to which the application
-was registered. It’s composed by the hostname and the port number,
-example: ``handler.eu.thethings.network:1904``. - ``certificate``:
-**string** this is the content of the certificate used to connect in a
-secure way to the handler. For example:
+-  ``net_address``: **string** this is the address of the handler to
+   which the application was registered, in the ``{hostname}:{port}``
+   format. Example: ``handler.eu.thethings.network:1904``.
+-  ``certificate``: **string** this is the content of the certificate
+   used to connect in a secure way to the handler. Here is a certificate
+   example:
 
 ::
 
@@ -268,8 +274,8 @@ secure way to the handler. For example:
 
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
-   handler to which the application in registered. It’s composed by the
-   hostname and the port number, example:
+   handler to which the application in registered, in the
+   ``{hostname}:{port}`` format. Example:
    ``discovery.thethings.network:1900``.
 -  ``path_to_key=``: **string** this is the absolute path to the file
    which contains the key from which the token you wish to use, is
@@ -304,13 +310,12 @@ Sets the payload functions of the application.
 
 .. code:: python
 
-    client.set_custom_payload_functions(**kwargs)
+    client.set_custom_payload_functions(encoder="", decoder="", validator="", converter="")
 
-The parameters (**\**kwargs**) can be any of the followings: -
-``decoder``: **string** Javascript decoder function. - ``encoder``:
-**string** Javascript encoder function. - ``validator``: **string**
-Javascript validator function. - ``converter``: **string** Javascript
-converter function.
+-  ``decoder``: **string** Javascript decoder function.
+-  ``encoder``: **string** Javascript encoder function.
+-  ``validator``: **string** Javascript validator function.
+-  ``converter``: **string** Javascript converter function.
 
 unregister
 ~~~~~~~~~~
@@ -339,8 +344,7 @@ Registers a new device to the application.
 device
 ~~~~~~
 
-Gives back the `**DeviceObject** <#deviceobject>`__ object of the given
-id.
+Gives back the `**Device** <#deviceobject>`__ object of the given id.
 
 .. code:: python
 
@@ -381,30 +385,47 @@ Deletes the device with the given id.
 
 -  ``dev_id``: **string** the id of the device to be deleted.
 
-DeviceObject
-~~~~~~~~~~~~
+.. device-1:
+
+Device
+~~~~~~
 
 This objet is returned by the method ``device()`` of the
-ApplicationClient class. Here are its attributes: \* ``app_id``:
-**string** \* ``dev_id``: **string** \* ``latitude``: **float** \*
-``longitude``: **float** \* ``altitude``: **float** \* ``description``:
-**string** \* ``attributes``: **dictionary** \* ``lorawan_device``:
-**dictionary** \* ``app_eui``: **string** 8 bytes in hexadecimal \*
-``dev_eui``: **string** 8 bytes in hexadecimal \* ``dev_addr``:
-**string** 4 bytes in hexadecimal \* ``nwk_s_key``: **string** 16 bytes
-in hexadecimal \* ``app_s_key``: **string** 16 bytes in hexadecimal \*
-``app_key``: **string** 16 bytes in hexadecimal \* ``f_cnt_up``: **int**
-\* ``f_cnt_down``: **int** \* ``disable_f_cnt_check``: **boolean** \*
-``uses32_bit_f_cnt``: **boolean**
+ApplicationClient class. Here are its attributes:
+
+-  ``app_id``: **string**
+-  ``dev_id``: **string**
+-  ``latitude``: **float**
+-  ``longitude``: **float**
+-  ``altitude``: **float**
+-  ``description``: **string**
+-  ``attributes``: **dictionary**
+-  ``lorawan_device``: **dictionary**
+
+   -  ``app_eui``: **string** 8 bytes in hexadecimal
+   -  ``dev_eui``: **string** 8 bytes in hexadecimal
+   -  ``dev_addr``: **string** 4 bytes in hexadecimal
+   -  ``nwk_s_key``: **string** 16 bytes in hexadecimal
+   -  ``app_s_key``: **string** 16 bytes in hexadecimal
+   -  ``app_key``: **string** 16 bytes in hexadecimal
+   -  ``f_cnt_up``: **int**
+   -  ``f_cnt_down``: **int**
+   -  ``disable_f_cnt_check``: **boolean**
+   -  ``uses32_bit_f_cnt``: **boolean**
 
 Application
 ~~~~~~~~~~~
 
 This object is returned by the method ``get()`` of the ApplicationClient
-class. Here are its attributes: \* ``app_id``: **string** \*
-``payload_format``: **string** \* ``decoder``: **string** \*
-``encoder``: **string** \* ``converter``: **string** \* ``validator``:
-**string** \* ``register_on_join_access_key``: **string**
+class. Here are its attributes:
+
+-  ``app_id``: **string**
+-  ``payload_format``: **string**
+-  ``decoder``: **string**
+-  ``encoder``: **string**
+-  ``converter``: **string**
+-  ``validator``: **string**
+-  ``register_on_join_access_key``: **string**
 
 HandlerClient
 -------------
@@ -413,7 +434,7 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    HandlerClient(app_id, access_key_or_token, [discovery_address], [certificate])
+    HandlerClient(app_id, access_key_or_token, discovery_address="discovery.thethings.network:1900", certificate="")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
@@ -422,14 +443,10 @@ The class constructor can be called following this scheme:
    ``settings``\ authorization.
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
-   handler to which the application in registered. Default to ``None``.
-   If the ``discovery_address`` is not set, the client will use the
-   address of The Things Network’s discovery server:
-   ``discovery.thethings.network:1900``.
--  ``certificate``: **string** this is the certificate used to connect
-   in a secure way to the discovery server. Default to ``None``. If a
-   discovery_address was provided, not providing the certificate will
-   raise an exception.
+   handler to which the application in registered, in the
+   ``{hostname}:{port}`` format.
+-  ``certificate``: **string** this is the path to the certificate used
+   to connect in a secure way to the discovery server.
 
 data
 ~~~~
@@ -459,16 +476,19 @@ Troubleshooting
 ---------------
 
 Errors can happen on connection or on some ApplicationClient’s methods
-call, for different reasons: \* Wrong ``app_id``, ``access_key`` or
-``mqtt_address`` were provided to the constructor. \* The machine may
-not have access to the network/The MQTT server could be down/Firewall
-restrictions could prevent connection. \* The client process doesn’t
-have system capabilities to open a socket \* The MQTT server uses MQTTS,
-but the client won’t accept the TLS certificate. \* The Application
-client is not able to get the application or a device. Errors could also
-happen when closing connection, in case the disconnection is unexpected.
-This errors are the most common ones, there are also edges cases not
-mentioned in this section.
+call, for different reasons:
+
+-  Wrong ``app_id``, ``access_key`` or ``mqtt_address`` were provided to
+   the constructor.
+-  The machine may not have access to the network/The MQTT server could
+   be down/Firewall restrictions could prevent connection.
+-  The client process doesn’t have system capabilities to open a socket
+-  The MQTT server uses MQTTS, but the client won’t accept the TLS
+   certificate.
+-  The Application client is not able to get the application or a
+   device. Errors could also happen when closing connection, in case the
+   disconnection is unexpected. This errors are the most common ones,
+   there are also edges cases not mentioned in this section.
 
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true
