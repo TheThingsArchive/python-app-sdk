@@ -23,7 +23,9 @@ if os.getenv("GRPC_SSL_CIPHER_SUITES"):
 else:
     os.environ["GRPC_SSL_CIPHER_SUITES"] = stubs.MODERN_CIPHER
 
-TIME_OUT = 30 #seconds
+
+# time out in seconds
+TIME_OUT = 30
 
 
 class ApplicationClient:
