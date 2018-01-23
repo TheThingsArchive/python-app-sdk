@@ -20,22 +20,24 @@ class HandlerClient:
     def __init__(self, app_id,
                  app_access_key,
                  discovery_address="discovery.thethings.network:1900",
-                 certificate=""):
+                 certificate_path=""):
         self.app_id = app_id
         self.app_access_key = app_access_key
         self.discovery_address = discovery_address
-        if certificate:
-            cert = read_key(certificate)
+        if certificate_path:
+            cert = read_key(certificate_path)
             self.certificate = cert
-        self.__open()
+            self.__open(discovery_address, cert)
+        else:
+            self.__open(discovery_address)
 
-    def __open(self):
+    def __open(self, discovery_address, certificate=""):
         if not hasattr(self, 'announcement'):
-            if hasattr(self, 'certificate'):
-                discovery = DiscoveryClient(self.discovery_address,
-                                            self.certificate)
+            if certificate:
+                discovery = DiscoveryClient(discovery_address,
+                                            certificate)
             else:
-                discovery = DiscoveryClient(self.discovery_address)
+                discovery = DiscoveryClient(discovery_address)
             self.announcement = discovery.get_by_app_id(self.app_id)
 
     def data(self):
@@ -54,4 +56,4 @@ class HandlerClient:
         return ApplicationClient(self.app_id,
                                  self.app_access_key,
                                  net_address=self.announcement.net_address,
-                                 certificate=self.announcement.certificate)
+                                 certificate_content=self.announcement.certificate)

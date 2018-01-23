@@ -22,14 +22,11 @@ class DiscoveryClient:
     def __init__(self,
                  discovery_address="discovery.thethings.network:1900",
                  certificate=""):
-        self.discovery_address = discovery_address
         if certificate:
-            self.certificate = certificate
-        if hasattr(self, "certificate"):
-            creds = grpc.ssl_channel_credentials(self.certificate)
+            creds = grpc.ssl_channel_credentials(certificate)
         else:
             creds = grpc.ssl_channel_credentials()
-        channel = grpc.secure_channel(self.discovery_address, creds)
+        channel = grpc.secure_channel(discovery_address, creds)
         self.client = disco.DiscoveryStub(channel)
 
     def get_all(self, service_name):

@@ -31,32 +31,28 @@ TIME_OUT = 30
 class ApplicationClient:
 
     def __init__(self, app_id, token_or_key,
-                 net_address="", certificate="",
+                 net_address="", certificate_content="",
                  discovery_address="discovery.thethings.network:1900",
                  path_to_key=""):
         self.app_id = app_id
-        self.discovery_address = discovery_address
-        self.net_address = net_address
-        self.credentials = certificate
-        self.path_to_key = path_to_key
 
-        if not self.path_to_key:
+        if not path_to_key:
             self.app_access_key = token_or_key
-        elif is_token(token_or_key, self.path_to_key):
+        elif is_token(token_or_key, path_to_key):
             self.app_access_token = token_or_key
         else:
             raise RuntimeError("The key or token provided is invalid")
 
-        if not self.net_address:
-            discovery = DiscoveryClient(self.discovery_address)
+        if not net_address:
+            discovery = DiscoveryClient(discovery_address)
             announcement = discovery.get_by_app_id(self.app_id)
-            self.net_address = announcement.net_address
-            self.credentials = announcement.certificate
-        elif not hasattr(self, "credentials"):
+            net_address = announcement.net_address
+            certificate_content = announcement.certificate
+        elif not certificate_content:
             raise RuntimeError("You need to provide credentials")
 
-        creds = grpc.ssl_channel_credentials(self.credentials)
-        channel = grpc.secure_channel(self.net_address, creds)
+        creds = grpc.ssl_channel_credentials(certificate_content)
+        channel = grpc.secure_channel(net_address, creds)
         self.client = handler.ApplicationManagerStub(channel)
 
     def __create_metadata(self):
