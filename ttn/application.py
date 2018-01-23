@@ -15,7 +15,7 @@ import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
 from jose import jwt
 from .discovery import DiscoveryClient
-from utils import is_token, read_key, stubs
+from utils import read_key, stubs
 
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
