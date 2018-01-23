@@ -74,10 +74,9 @@ The class constructor can be called following this scheme:
 
    If the ``mqtt_address`` is set, the ``discovery_address`` doesn’t
    need to be set as it is only used to retrieve the ``mqtt_address``
-   from the discovery server. The mqtt_address will be used to open a
-   data connection with the application. The constructor returns an
-   **MQTTClient object** set up with the application informations, ready
-   to be connected to The Things Network.
+   from the discovery server. The constructor returns an **MQTTClient
+   object** set up with the application informations, ready to be
+   connected to The Things Network.
 
 connect
 ~~~~~~~
@@ -248,14 +247,13 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    ApplicationClient(app_id, access_key_or_token, net_address="", certificate_content="", discovery_address="discovery.thethings.network:1900", path_to_key="")
+    ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900", path_to_key="")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
--  ``access_key_or_token``: **string** this can be found at the bottom
-   of the application page under **ACCESS KEYS**. You will need a key
-   allowing you to change the settings if you wish to update your
-   application.
+-  ``access_key``: **string** this can be found at the bottom of the
+   application page under **ACCESS KEYS**. You will need a key allowing
+   you to change the settings if you wish to update your application.
 -  ``net_address``: **string** this is the address of the handler to
    which the application was registered, in the ``{hostname}:{port}``
    format. Example: ``handler.eu.thethings.network:1904``.
@@ -282,9 +280,6 @@ The class constructor can be called following this scheme:
    handler to which the application in registered, in the
    ``{hostname}:{port}`` format. Example:
    ``discovery.thethings.network:1900``.
--  ``path_to_key=``: **string** this is the absolute path to the file
-   which contains the key from which the token you wish to use, is
-   signed.
 
    The constructor returns an **ApplicationClient** object set up with
    the application informations, ready to get the application registered
@@ -327,11 +322,12 @@ Sets the payload functions of the application.
 
    Arguments left empty are ignored and won’t be updated. Example:
 
-::
+.. code:: python
 
-    function Decoder(payload) {
+    decoder_fn = """function Decoder(payload) {
        return { led: 1 };
-    }
+    }"""
+    client.set_custom_payload_functions(decoder=decoder_fn)
 
 unregister
 ~~~~~~~~~~
@@ -450,11 +446,11 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    HandlerClient(app_id, access_key_or_token, discovery_address="discovery.thethings.network:1900", certificate_path="")
+    HandlerClient(app_id, access_key, discovery_address="discovery.thethings.network:1900", cert_path="")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
--  ``app_access_key``: **string** this can be found at the bottom of the
+-  ``access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. The key needs the
    ``settings``\ authorization.
 -  ``discovery_address``: **string** this is the address of the
