@@ -30,18 +30,11 @@ TIME_OUT = 30
 
 class ApplicationClient:
 
-    def __init__(self, app_id, token_or_key,
+    def __init__(self, app_id, access_key,
                  net_address="", cert_content="",
-                 discovery_address="discovery.thethings.network:1900",
-                 path_to_key=""):
+                 discovery_address="discovery.thethings.network:1900"):
         self.app_id = app_id
-
-        if not path_to_key:
-            self.app_access_key = token_or_key
-        elif is_token(token_or_key, path_to_key):
-            self.app_access_token = token_or_key
-        else:
-            raise RuntimeError("The key or token provided is invalid")
+        self.app_access_key = access_key
 
         if not net_address:
             discovery = DiscoveryClient(discovery_address)
@@ -56,10 +49,7 @@ class ApplicationClient:
         self.client = handler.ApplicationManagerStub(channel)
 
     def __create_metadata(self):
-        if hasattr(self, "app_access_token"):
-            return [("token", self.app_access_token)]
-        elif hasattr(self, "app_access_key"):
-            return [("key", self.app_access_key)]
+        return [("key", self.app_access_key)]
 
     def get(self):
         req = proto.ApplicationIdentifier()

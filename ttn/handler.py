@@ -23,7 +23,6 @@ class HandlerClient:
                  cert_path=""):
         self.app_id = app_id
         self.app_access_key = app_access_key
-        self.discovery_address = discovery_address
         if cert_path:
             cert = read_key(certificate_path)
             self.__open(discovery_address, cert)
