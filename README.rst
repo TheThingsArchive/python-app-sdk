@@ -58,11 +58,11 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    MQTTClient(app_id, app_access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
+    MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
--  ``app_access_key``: **string** this can be found at the bottom of the
+-  ``access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. |Screenshot of the console
    with accesskey section|
 -  ``mqtt_address``: **string** this is the address of the handler to
@@ -247,7 +247,7 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900", path_to_key="")
+    ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
@@ -452,7 +452,7 @@ The class constructor can be called following this scheme:
    was created. |Screenshot of the console with app section|
 -  ``access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. The key needs the
-   ``settings``\ authorization.
+   ``settings`` authorization.
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the
    handler to which the application in registered, in the

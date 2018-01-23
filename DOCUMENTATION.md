@@ -39,12 +39,12 @@ This package provides you an easy way to exchange traffic with The Things Networ
 The class constructor can be called following this scheme:
 
 ```python
-MQTTClient(app_id, app_access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
+MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
-* `app_access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**.
+* `access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**.
   ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 * `mqtt_address`: **string** this is the address of the handler to which the application was registered, in the `{hostname}:{port}` format.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler, in the `{hostname}:{port}` format.
@@ -167,7 +167,7 @@ This type of object is constructed dynamically from the message received by the 
 The class constructor can be called following this scheme:
 
 ```python
-ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900", path_to_key="")
+ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900")
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
@@ -339,7 +339,7 @@ HandlerClient(app_id, access_key, discovery_address="discovery.thethings.network
 
 * `app_id`: **string** this the name given to the application when it was created.
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
-* `access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. The key needs the `settings`authorization.
+* `access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. The key needs the `settings` authorization.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered, in the `{hostname}:{port}` format.
 * `cert_path`: **string** this is the path to the certificate used to connect in a secure way to the discovery server.
 
