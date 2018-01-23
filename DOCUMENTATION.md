@@ -174,7 +174,7 @@ ApplicationClient(app_id, access_key_or_token, net_address="", certificate_conte
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 * `access_key_or_token`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. You will need a key allowing you to change the settings if you wish to update your application.
 * `net_address`: **string** this is the address of the handler to which the application was registered, in the `{hostname}:{port}` format. Example: `handler.eu.thethings.network:1904`.
-* `certificate_content`: **string** this is the content of the certificate used to connect in a secure way to the handler. Here is a certificate example:
+* `cert_content`: **string** this is the content of the certificate used to connect in a secure way to the handler. Here is a certificate example:
 
 ```
 -----BEGIN CERTIFICATE-----
@@ -341,7 +341,7 @@ HandlerClient(app_id, access_key_or_token, discovery_address="discovery.thething
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 * `app_access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. The key needs the `settings`authorization.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered, in the `{hostname}:{port}` format.
-* `certificate_path`: **string** this is the path to the certificate used to connect in a secure way to the discovery server.
+* `cert_path`: **string** this is the path to the certificate used to connect in a secure way to the discovery server.
 
 ### data
 

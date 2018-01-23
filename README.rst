@@ -259,9 +259,9 @@ The class constructor can be called following this scheme:
 -  ``net_address``: **string** this is the address of the handler to
    which the application was registered, in the ``{hostname}:{port}``
    format. Example: ``handler.eu.thethings.network:1904``.
--  ``certificate_content``: **string** this is the content of the
-   certificate used to connect in a secure way to the handler. Here is a
-   certificate example:
+-  ``cert_content``: **string** this is the content of the certificate
+   used to connect in a secure way to the handler. Here is a certificate
+   example:
 
 ::
 
@@ -461,8 +461,8 @@ The class constructor can be called following this scheme:
    discovery server to use in order to find back the address of the
    handler to which the application in registered, in the
    ``{hostname}:{port}`` format.
--  ``certificate_path``: **string** this is the path to the certificate
-   used to connect in a secure way to the discovery server.
+-  ``cert_path``: **string** this is the path to the certificate used to
+   connect in a secure way to the discovery server.
 
 data
 ~~~~
