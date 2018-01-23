@@ -48,7 +48,9 @@ MQTTClient(app_id, app_access_key, mqtt_address="", discovery_address="discovery
   ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 * `mqtt_address`: **string** this is the address of the handler to which the application was registered, in the `{hostname}:{port}` format.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler, in the `{hostname}:{port}` format.
-  The constructor returns an **MQTTClient object** set up with the application informations, ready to be connected to The Things Network.
+
+    If the `mqtt_address` is set, the `discovery_address` doesn't need to be set as it is only used to retrieve the `mqtt_address` from the discovery server. The mqtt_address will be used to open a data connection with the application.
+    The constructor returns an **MQTTClient object** set up with the application informations, ready to be connected to The Things Network.
 
 ### connect
 
@@ -165,14 +167,14 @@ This type of object is constructed dynamically from the message received by the 
 The class constructor can be called following this scheme:
 
 ```python
-ApplicationClient(app_id, access_key_or_token, net_address="", certificate="", discovery_address="discovery.thethings.network:1900", path_to_key="")
+ApplicationClient(app_id, access_key_or_token, net_address="", certificate_content="", discovery_address="discovery.thethings.network:1900", path_to_key="")
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 * `access_key_or_token`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. You will need a key allowing you to change the settings if you wish to update your application.
 * `net_address`: **string** this is the address of the handler to which the application was registered, in the `{hostname}:{port}` format. Example: `handler.eu.thethings.network:1904`.
-* `certificate`: **string** this is the content of the certificate used to connect in a secure way to the handler. Here is a certificate example:
+* `certificate_content`: **string** this is the content of the certificate used to connect in a secure way to the handler. Here is a certificate example:
 
 ```
 -----BEGIN CERTIFICATE-----
@@ -190,7 +192,8 @@ etQ54MyIOWtwYlxG+blnxT4PWCgas5rPiaK6VP/Z
 
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered, in the `{hostname}:{port}` format. Example: `discovery.thethings.network:1900`.
 * `path_to_key=`: **string** this is the absolute path to the file which contains the key from which the token you wish to use, is signed.
-  The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
+
+    The constructor returns an **ApplicationClient** object set up with the application informations, ready to get the application registered on The Things Network.
 
 ### get
 
@@ -209,6 +212,7 @@ client.set_payload_format(payload_format)
 ```
 
 * payload_format: **string** the new payload format.
+  Example: `custom`
 
 ### set_custom_payload_functions
 
@@ -222,6 +226,15 @@ client.set_custom_payload_functions(encoder="", decoder="", validator="", conver
 * `encoder`: **string** Javascript encoder function.
 * `validator`: **string** Javascript validator function.
 * `converter`: **string** Javascript converter function.
+
+    Arguments left empty are ignored and won't be updated.
+    Example:
+
+```
+function Decoder(payload) {
+   return { led: 1 };
+}
+```
 
 ### unregister
 
@@ -321,14 +334,14 @@ This object is returned by the method `get()` of the ApplicationClient class. He
 The class constructor can be called following this scheme:
 
 ```python
-HandlerClient(app_id, access_key_or_token, discovery_address="discovery.thethings.network:1900", certificate="")
+HandlerClient(app_id, access_key_or_token, discovery_address="discovery.thethings.network:1900", certificate_path="")
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
   ![Screenshot of the console with app section](./images/app-console.png?raw=true)
 * `app_access_key`: **string** this can be found at the bottom of the application page under **ACCESS KEYS**. The key needs the `settings`authorization.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the handler to which the application in registered, in the `{hostname}:{port}` format.
-* `certificate`: **string** this is the path to the certificate used to connect in a secure way to the discovery server.
+* `certificate_path`: **string** this is the path to the certificate used to connect in a secure way to the discovery server.
 
 ### data
 
