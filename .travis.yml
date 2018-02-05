@@ -1,8 +1,8 @@
 language: python
 
 python:
+  - "3.6"
   - "3.5"
-  - "3.4"
   - "2.7"
 
 sudo: required
@@ -17,6 +17,18 @@ before_script:
   - docker run -d -p 127.0.0.1:1883:1883 thethingsnetwork/rabbitmq
 
 script:
-  - pep8 --first ttn/ttnmqtt.py
-  - pep8 --first test_ttnmqtt.py
+  - pycodestyle --first ttn
+  - pycodestyle --first utils
   - pytest test_*.py
+
+before_deploy:
+  - python setup.py sdist
+  - python setup.py bdist_wheel --universal
+
+deploy:
+  provider: pypi
+  user: "ttnci"
+  password:
+      secure: "LF1ut3DC2otjtdaT5fkjONJgz5ZfAEdlVu3r0lndBE6AysDxyrPpqYO7HgsMlcG/cuZeRU16xvAZ108f3bbSZi/aiSrHezd0c/Hnvq/eLFkxEXihTslokb8wIJz3fRQyaUJqc+Rzqe+po/y7f6PikoVoiccRs7ahqsJBx/92x5KtOip9VqsCjVNcVV6GXRZ2CIykCmqLqJ6J5VUMNge0xWMyk6I0thfH52RU5wpUmfsyji1khVjbwgs91LT2gmrYCrBOHPc3AKTiMkdKmxa9xlzHZW1fDw6l0r9J31R5AkwQvH43aOFqGggFnOZrlGNinn+XdPhWZY6Ux9NfhRqsdPgqcXHfTDjxcvYW9N83IfBEemHeSWQ9erVb3ICLP2gVleguFsSE84XIe9kKuwwUUY09/42ibkV9Gu+5gjjxVgyXOKnvKsGJu6YaHzy/d6DTfnw8ruORLdBwNCBjh8XsBpL5p6e4PsJj+Ux2eVAQDgJKQQHb/BuZ1nR8u68TfFFkSGSTVP1ZWlMZ/+WGujhdZaEayKVGLu72TfquSg/PMaNe2ksCYDM/weVgHhMlHAGUSPsF7EaJx71u4WQyFykNsPVMpHZriqG3PVyQnZLJofAzPHYlVXFuCBZVibW3H2Tj/71rJPsDVqhLIe+7m1KfHgetmrzdOBiqjOBpv1xEswY="
+  branch: master
+  tags: true
