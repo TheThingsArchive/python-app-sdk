@@ -6,10 +6,6 @@ python:
   - "2.7"
 
 sudo: required
-
-env:
-  global:
-    - TWINE_USERNAME=ttnci
     
 services:
   - docker
@@ -24,10 +20,17 @@ script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest test_*.py
-  # https://pypi.python.org/pypi/twine for twine documentation
-  - pip install twine
-  - python setup.py sdist bdist_wheel
-  - |
-    if [[ $TRAVIS_TAG ]]; then
-      python -m twine upload dist/*
-    fi
+  
+ before_deploy:
+  - python setup.py sdist
+  - python setup.py bdist_wheel --universal
+  
+ deploy:
+  provider: pypi
+  user: ttnci
+  password:
+    secure: LoXGB4La1hnTSc0ffKGbLbom1g6+Vye+NlDvTznRWk3dMWT92c/Zbxffr4noADcWhal1/OzJmKkXDbYgR2yt45nC0uKbEVy9Yie8KTwkIso/kAhwdzCZqwhkjqz/ntHtTsmogulf4+6LQm/tqEnTbavUUZEekVgbQtBqtQ2wO/AC+C0H7viBYUP5gOTsPOLk+2FEEY88egXVaOpDG5/WbO39IoCNidQrwNmWj63qS/lNL49AByiT5ChjXo0Qacn1GRk7a8hEBQfvchB/jqnJApajAZPyXXPqifXj/I8dxMkqA+8oMBiXqG7RL6BuTvrCSjK2fGx2RuqzayJvgGquA+JES+Y7Lka69g2gA2EpZqQyE8GhdOT9umzIA5jNbph5g7xrwabdgCcc5066brRPRmDwYtenqytLhjkVGwlU7Cr8JtSVd0uUDlQ7W45XMZEHOye6PS1MAtUVmQ1M0rrWkVbBzHzszuTZMlVU80pHPzqxVhrn43kyQVfzdtynIGam69SNvwH1vJUXtufRnMTnuF74IxJOAwtgKA+Av0sz3QrNfw4LDB3VBSMgyUrW1p0K/lYmBrOnKS8Gzu1aWYSN4HRDM2pZgokY9UUPA1cKG0BswDTNOv2dZhD22XIS+TfesW1Z1xEBuvDvuyxkjv4RxvJDL8M7DJ1ji5HPb/ybSr8=
+  on:
+    branch: master
+    python: "3.6"
+    tags: true
