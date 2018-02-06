@@ -24,7 +24,7 @@ script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest test_*.py
-  - pip install cibuildwheel==x.x.x
+  - pip install cibuildwheel
   - cibuildwheel --output-dir wheelhouse
   - |
     if [[ $TRAVIS_TAG ]]; then
