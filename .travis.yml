@@ -24,6 +24,7 @@ script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest test_*.py
+  # https://pypi.python.org/pypi/twine for twine documentation
   - pip install twine
   - python setup.py sdist bdist_wheel
   - |
