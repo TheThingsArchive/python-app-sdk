@@ -24,10 +24,9 @@ script:
   - pycodestyle --first ttn
   - pycodestyle --first utils
   - pytest test_*.py
-  - pip install cibuildwheel
-  - cibuildwheel --output-dir wheelhouse
+  - pip install twine
+  - python setup.py sdist bdist_wheel
   - |
     if [[ $TRAVIS_TAG ]]; then
-      python -m pip install twine
-      python -m twine upload wheelhouse/*.whl
+      python -m twine upload dist/*
     fi
