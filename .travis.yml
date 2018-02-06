@@ -21,11 +21,11 @@ script:
   - pycodestyle --first utils
   - pytest test_*.py
   
- before_deploy:
+before_deploy:
   - python setup.py sdist
   - python setup.py bdist_wheel --universal
   
- deploy:
+deploy:
   provider: pypi
   user: ttnci
   password:
