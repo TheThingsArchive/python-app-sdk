@@ -7,15 +7,15 @@
 import grpc
 import os
 import base64
-import json
-import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
-import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
-import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
 
 
-from jose import jwt
+import ttn.github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
+import ttn.github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 \
+    as lorawan
+import ttn.github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
+from ttn.utils import stubs
+
 from .discovery import DiscoveryClient
-from utils import read_key, stubs
 
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
@@ -38,13 +38,13 @@ class ApplicationClient:
 
         if not net_address:
             discovery = DiscoveryClient(discovery_address)
-            announcement = discovery.get_by_app_id(self.app_id)
+            announcement = discovery.get_by_app_id(self.app_id.encode())
             net_address = announcement.net_address
             cert_content = announcement.certificate
         elif not cert_content:
             raise RuntimeError("You need to provide credentials")
 
-        creds = grpc.ssl_channel_credentials(cert_content)
+        creds = grpc.ssl_channel_credentials(cert_content.encode())
         channel = grpc.secure_channel(net_address, creds)
         self.client = handler.ApplicationManagerStub(channel)
 
@@ -53,7 +53,7 @@ class ApplicationClient:
 
     def get(self):
         req = proto.ApplicationIdentifier()
-        req.app_id = self.app_id
+        req.app_id = self.app_id.encode()
         meta = self.__create_metadata()
         try:
             app = self.client.GetApplication(req, TIME_OUT, meta)

@@ -6,8 +6,7 @@
 
 import unittest
 import ttn
-import time
-from utils import stubs
+from ttn.utils import stubs
 
 class TestHandlerClient(unittest.TestCase):
 

@@ -7,9 +7,8 @@
 import unittest
 from mock import MockApplicationManager
 from ttn import ApplicationClient
-import github_com.TheThingsNetwork.api.handler.handler_pb2 as handler
-import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
-from utils import stubs
+import ttn.github_com.TheThingsNetwork.api.handler.handler_pb2 as handler
+from ttn.utils import stubs
 import binascii
 
 

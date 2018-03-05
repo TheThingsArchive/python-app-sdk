@@ -5,7 +5,6 @@
 
 import unittest
 from ttn import DiscoveryClient
-from utils import stubs
 
 class TestDiscoveryClient(unittest.TestCase):
 

@@ -4,11 +4,10 @@
 # MIT license that can be found in the LICENSE file.
 
 import unittest
-import os
 import time
 import json
 from ttn import MQTTClient as mqtt
-from utils import stubs
+from ttn.utils import stubs
 
 MQTT_ADDR = "localhost:1883"
 

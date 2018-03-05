@@ -17,8 +17,8 @@ before_script:
   - docker run -d -p 127.0.0.1:1883:1883 thethingsnetwork/rabbitmq
 
 script:
-  - pycodestyle --first ttn
-  - pycodestyle --first utils
+  - pycodestyle --first ttn/*.py
+  - pycodestyle --first ttn/utils
   - pytest test_*.py
   
 before_deploy:

@@ -4,12 +4,13 @@
 # MIT license that can be found in the LICENSE file.
 
 
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
+import ttn.github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc \
+    as disco
+import ttn.github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
 
 import grpc
 import os
-from utils import stubs
+from ttn.utils import stubs
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
     os.environ["GRPC_SSL_CIPHER_SUITES"] += os.pathsep + stubs.MODERN_CIPHER
