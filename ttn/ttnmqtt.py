@@ -7,15 +7,10 @@
 import paho.mqtt.client as mqtt
 from events import Events
 import json
-import base64
 
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2_grpc as disco
-import github_com.TheThingsNetwork.api.discovery.discovery_pb2 as proto
-
-import grpc
 import os
 from .discovery import DiscoveryClient
-from utils import stubs, json2obj, split_address
+from .utils import stubs, json2obj, split_address
 
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
