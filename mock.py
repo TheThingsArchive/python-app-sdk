@@ -4,9 +4,8 @@
 # MIT license that can be found in the LICENSE file.
 
 
-import github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
-import github_com.TheThingsNetwork.api.protocol.lorawan.device_pb2 as lorawan
-import github_com.TheThingsNetwork.api.handler.handler_pb2_grpc as handler
+
+import ttn.github_com.TheThingsNetwork.api.handler.handler_pb2 as proto
 
 
 class MockApplicationManager:

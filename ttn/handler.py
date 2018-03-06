@@ -6,7 +6,7 @@
 from .application import ApplicationClient
 from .ttnmqtt import MQTTClient
 from .discovery import DiscoveryClient
-from utils import stubs, read_key
+from ttn.utils import stubs, read_key
 import os
 
 if os.getenv("GRPC_SSL_CIPHER_SUITES"):
