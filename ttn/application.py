@@ -38,7 +38,7 @@ class ApplicationClient:
 
         if not net_address:
             discovery = DiscoveryClient(discovery_address)
-            announcement = discovery.get_by_app_id(self.app_id)
+            announcement = discovery.get_by_app_id(self.app_id.encode())
             net_address = announcement.net_address
             cert_content = announcement.certificate
         elif not cert_content:
