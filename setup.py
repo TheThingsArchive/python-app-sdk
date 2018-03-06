@@ -27,6 +27,5 @@ setup(name="ttn",
           # packages which need to be imported to make gRPC work
           "protobuf",
           "google-api-python-client",
-          "google-cloud"
       ],
       zip_safe=False)

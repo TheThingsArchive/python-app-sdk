@@ -6,4 +6,3 @@ pycodestyle
 grpcio==1.7.3
 protobuf
 google-api-python-client
-google-cloud
