@@ -33,20 +33,30 @@ class ApplicationClient:
     def __init__(self, app_id, access_key,
                  net_address="", cert_content="",
                  discovery_address="discovery.thethings.network:1900"):
+        print("application-1")
         self.app_id = app_id
+        print("application-2")
         self.app_access_key = access_key
+        print("application-3")
 
         if not net_address:
             discovery = DiscoveryClient(discovery_address)
+            print("application-4")
             announcement = discovery.get_by_app_id(self.app_id.encode())
+            print("application-5")
             net_address = announcement.net_address
+            print("application-6")
             cert_content = announcement.certificate
+            print("application-7")
         elif not cert_content:
             raise RuntimeError("You need to provide credentials")
 
-        creds = grpc.ssl_channel_credentials(cert_content)
+        creds = grpc.ssl_channel_credentials(cert_content.encode())
+        print("application-8")
         channel = grpc.secure_channel(net_address, creds)
+        print("application-9")
         self.client = handler.ApplicationManagerStub(channel)
+        print("application-10")
 
     def __create_metadata(self):
         return [("key", self.app_access_key)]
