@@ -53,5 +53,5 @@ class HandlerClient:
                                "before it can create a data client.")
         return ApplicationClient(self.app_id,
                                  self.app_access_key,
-                                 net_address=self.announcement.net_address,
+                                 handler_address=self.announcement.net_address,
                                  cert_content=self.announcement.certificate)

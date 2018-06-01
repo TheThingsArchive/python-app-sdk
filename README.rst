@@ -247,14 +247,14 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    ApplicationClient(app_id, access_key, net_address="", cert_content="", discovery_address="discovery.thethings.network:1900")
+    ApplicationClient(app_id, access_key, handler_address="", cert_content="", discovery_address="discovery.thethings.network:1900")
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
 -  ``access_key``: **string** this can be found at the bottom of the
    application page under **ACCESS KEYS**. You will need a key allowing
    you to change the settings if you wish to update your application.
--  ``net_address``: **string** this is the address of the handler to
+-  ``handler_address``: **string** this is the address of the handler to
    which the application was registered, in the ``{hostname}:{port}``
    format. Example: ``handler.eu.thethings.network:1904``.
 -  ``cert_content``: **string** this is the content of the certificate
