@@ -31,21 +31,21 @@ TIME_OUT = 30
 class ApplicationClient:
 
     def __init__(self, app_id, access_key,
-                 net_address="", cert_content="",
+                 handler_address="", cert_content="",
                  discovery_address="discovery.thethings.network:1900"):
         self.app_id = app_id
         self.app_access_key = access_key
 
-        if not net_address:
+        if not handler_address:
             discovery = DiscoveryClient(discovery_address)
             announcement = discovery.get_by_app_id(self.app_id.encode())
-            net_address = announcement.net_address
+            handler_address = announcement.net_address
             cert_content = announcement.certificate
         elif not cert_content:
             raise RuntimeError("You need to provide credentials")
 
         creds = grpc.ssl_channel_credentials(cert_content.encode())
-        channel = grpc.secure_channel(net_address, creds)
+        channel = grpc.secure_channel(handler_address, creds)
         self.client = handler.ApplicationManagerStub(channel)
 
     def __create_metadata(self):
