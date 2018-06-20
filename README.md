@@ -11,7 +11,7 @@ This is the Python Application SDK for [The Things Network](https://www.thething
 $ pip install ttn
 ```
 ## Documentation
-* [API Reference](./DOCUMENTATION.md)
+* [API Reference](https://github.com/TheThingsNetwork/docs/blob/master/_content/applications/python/api-reference.md)
 
 ## Example
 ```python
