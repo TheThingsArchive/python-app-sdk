@@ -4,11 +4,7 @@
 # MIT license that can be found in the LICENSE file.
 
 
-from jose import jwt, jws
-from .read_key import read_key
-import math
 import binascii
-import time
 import os
 
 MODERN_CIPHER = ("ECDHE-ECDSA-AES256-GCM-SHA384:"
@@ -23,41 +19,41 @@ MODERN_CIPHER = ("ECDHE-ECDSA-AES256-GCM-SHA384:"
                  "ECDHE-RSA-AES128-SHA256")
 
 uplink = {
-  "dev_id": "guest",
-  "port": 1,
-  "counter": 5,
-  "payload_raw": "AQ==",
-  "payload_fields": {
-    "led": True,
-  },
-  "metadata": {
-    "time": "2016-09-14T14:19:20.272552952Z",
-    "frequency": 868.1,
-    "modulation": "LORA",
-    "data_rate": "SF7BW125",
-    "coding_rate": "4/5",
-    "gateways": [{
-      "eui": "B827EBFFFE87BD22",
-      "timestamp": 1960494347,
-      "time": "2016-09-14T14:19:20.258723Z",
-      "rssi": -49,
-      "snr": 9.5,
-      "rf_chain": 1,
-    }],
-  },
+    "dev_id": "guest",
+    "port": 1,
+    "counter": 5,
+    "payload_raw": "AQ==",
+    "payload_fields": {
+        "led": True,
+    },
+    "metadata": {
+        "time": "2016-09-14T14:19:20.272552952Z",
+        "frequency": 868.1,
+        "modulation": "LORA",
+        "data_rate": "SF7BW125",
+        "coding_rate": "4/5",
+        "gateways": [{
+            "eui": "B827EBFFFE87BD22",
+            "timestamp": 1960494347,
+            "time": "2016-09-14T14:19:20.258723Z",
+            "rssi": -49,
+            "snr": 9.5,
+            "rf_chain": 1,
+        }],
+    },
 }
 
 
 apptest = {
-  "appId": "test",
-  "appEui": "0011223344556677",
-  "accessKey": "local.12345678",
-  "payloadFormat": "custom",
-  "decoder": "",
-  "converter": "",
-  "validator": "",
-  "encoder": "",
-  "registerOnJoinAccessKey": "",
+    "appId": "test",
+    "appEui": "0011223344556677",
+    "accessKey": "local.12345678",
+    "payloadFormat": "custom",
+    "decoder": "",
+    "converter": "",
+    "validator": "",
+    "encoder": "",
+    "registerOnJoinAccessKey": "",
 }
 
 
@@ -75,7 +71,7 @@ devicetest = {
     "longitude": 200,
     "altitude": 300,
     "attributes": {
-      "foo": "bar",
+        "foo": "bar",
     },
     "disableFCntCheck": True,
     "uses32BitFCnt": True,
