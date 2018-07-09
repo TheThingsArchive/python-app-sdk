@@ -119,8 +119,8 @@ class ApplicationClient:
                 "Error while updating the",
                 " application: {}".format(err.code().name))
 
-    def register_device(self, devID, device):
-        return self.__setDevice(devID, device)
+    def register_device(self, dev_id, device):
+        return self.__setDevice(dev_id, device)
 
     def __setDevice(self, devID, device):
         req = self.__deviceRequest(devID, device)
