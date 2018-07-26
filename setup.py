@@ -23,10 +23,8 @@ setup(name="ttn",
           "paho-mqtt",
           "events",
           "grpcio",
-          "python-jose",
           # packages which need to be imported to make gRPC work
           "protobuf",
-          "google-api-python-client",
-          "google-cloud"
+          "googleapis-common-protos"
       ],
       zip_safe=False)
