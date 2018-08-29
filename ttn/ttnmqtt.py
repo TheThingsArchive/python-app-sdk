@@ -42,13 +42,15 @@ class MQTTClient:
 
     def __init__(self, app_id, app_access_key,
                  mqtt_address="",
-                 discovery_address="discovery.thethings.network:1900"):
+                 discovery_address="discovery.thethings.network:1900",
+                 reconnect=False):
         self.__client = mqtt.Client()
         self.__app_id = app_id
         self.__access_key = app_access_key
         self.__events = MyEvents()
         self.__mqtt_address = mqtt_address
         self.__discovery_address = discovery_address
+        self.__reconnect = reconnect
 
     def _connect(self):
         mqtt_addr = split_address(self.__mqtt_address)
@@ -99,7 +101,11 @@ class MQTTClient:
     def _on_close(self):
         def on_disconnect(client, userdata, rc):
             if rc != 0:
-                raise RuntimeError("unexpected disconnection")
+                if self.__reconnect:
+                    self.__client.reconnect()
+                    self.start()
+                else:
+                    raise RuntimeError("unexpected disconnection")
             if self.__events.close:
                 self.__events.close(rc == 0, client=self)
         return on_disconnect
