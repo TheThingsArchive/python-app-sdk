@@ -8,8 +8,9 @@ This is the Python Application SDK for [The Things Network](https://www.thething
 
 ## Installation
 ```
-$ pip install ttn
+$ pip install 'ttn<3'
 ```
+*In anticipation of the release of the v3 LoRaWAN stack, we recommend restricting versions with `ttn<3`.*
 ## Documentation
 * [API Reference](./DOCUMENTATION.md)
 
