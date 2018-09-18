@@ -58,7 +58,7 @@ The class constructor can be called following this scheme:
 
 .. code:: python
 
-    MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
+    MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900", reconnect=True)
 
 -  ``app_id``: **string** this the name given to the application when it
    was created. |Screenshot of the console with app section|
@@ -71,6 +71,9 @@ The class constructor can be called following this scheme:
 -  ``discovery_address``: **string** this is the address of the
    discovery server to use in order to find back the address of the MQTT
    handler, in the ``{hostname}:{port}`` format.
+-  ``reconnect``: **boolean** whether to automatically reconnect to
+   the MQTT server on unexpected disconnect (useful if you'd like to
+   keep the connection alive for several hours)
 
    If the ``mqtt_address`` is set, the ``discovery_address`` doesn’t
    need to be set as it is only used to retrieve the ``mqtt_address``
@@ -467,7 +470,11 @@ Creates an `**MQTTClient** <#mqttclient>`__ object.
 
 .. code:: python
 
-    handler.data()
+    handler.data(reconnect=True)
+
+-  ``reconnect``: **boolean** whether to automatically reconnect to
+   the MQTT server on unexpected disconnect (useful if you'd like to
+   keep the connection alive for several hours)
 
 Returns an `**MQTTClient** <#mqttclient>`__ object.
 
@@ -505,4 +512,3 @@ call, for different reasons:
 .. |Screenshot of the console with app section| image:: ./images/app-console.png?raw=true
 .. |Screenshot of the console with accesskey section| image:: ./images/accesskey-console.png?raw=true
 .. |Screenshot of an encoder function in the console| image:: ./images/encoder-function.png?raw=true
-

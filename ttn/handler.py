@@ -38,14 +38,15 @@ class HandlerClient:
                 discovery = DiscoveryClient(discovery_address)
             self.announcement = discovery.get_by_app_id(self.app_id)
 
-    def data(self):
+    def data(self, reconnect=True):
         if not hasattr(self, "announcement"):
             raise RuntimeError("HandlerClient needs to be open before"
                                "it can create a data client.")
 
         return MQTTClient(self.app_id,
                           self.app_access_key,
-                          mqtt_address=self.announcement.mqtt_address)
+                          mqtt_address=self.announcement.mqtt_address,
+                          reconnect=reconnect)
 
     def application(self):
         if not hasattr(self, "announcement"):

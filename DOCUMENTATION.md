@@ -39,7 +39,7 @@ This package provides you an easy way to exchange traffic with The Things Networ
 The class constructor can be called following this scheme:
 
 ```python
-MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900")
+MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900", reconnect=True)
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
@@ -48,6 +48,7 @@ MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.the
   ![Screenshot of the console with accesskey section](./images/accesskey-console.png?raw=true)
 * `mqtt_address`: **string** this is the address of the handler to which the application was registered, in the `{hostname}:{port}` format.
 * `discovery_address`: **string** this is the address of the discovery server to use in order to find back the address of the MQTT handler, in the `{hostname}:{port}` format.
+* `reconnect`: **boolean** whether to automatically reconnect to the MQTT server on unexpected disconnect (useful if you'd like to keep the connection alive for several hours)
 
     If the `mqtt_address` is set, the `discovery_address` doesn't need to be set as it is only used to retrieve the `mqtt_address` from the discovery server.
     The constructor returns an **MQTTClient object** set up with the application informations, ready to be connected to The Things Network.
@@ -348,8 +349,10 @@ HandlerClient(app_id, access_key, discovery_address="discovery.thethings.network
 Creates an [**MQTTClient**](#mqttclient) object.
 
 ```python
-handler.data()
+handler.data(reconnect=True)
 ```
+
+* `reconnect`: **boolean** whether to automatically reconnect to the MQTT server on unexpected disconnect (useful if you'd like to keep the connection alive for several hours)
 
 Returns an [**MQTTClient**](#mqttclient) object.
 
