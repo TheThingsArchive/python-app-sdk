@@ -38,7 +38,7 @@ class HandlerClient:
                 discovery = DiscoveryClient(discovery_address)
             self.announcement = discovery.get_by_app_id(self.app_id)
 
-    def data(self, reconnect=False):
+    def data(self, reconnect=True):
         if not hasattr(self, "announcement"):
             raise RuntimeError("HandlerClient needs to be open before"
                                "it can create a data client.")

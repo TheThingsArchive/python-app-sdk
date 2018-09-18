@@ -43,7 +43,7 @@ class MQTTClient:
     def __init__(self, app_id, app_access_key,
                  mqtt_address="",
                  discovery_address="discovery.thethings.network:1900",
-                 reconnect=False):
+                 reconnect=True):
         self.__client = mqtt.Client()
         self.__app_id = app_id
         self.__access_key = app_access_key

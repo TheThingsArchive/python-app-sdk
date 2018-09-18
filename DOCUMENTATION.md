@@ -39,7 +39,7 @@ This package provides you an easy way to exchange traffic with The Things Networ
 The class constructor can be called following this scheme:
 
 ```python
-MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900", reconnect=False)
+MQTTClient(app_id, access_key, mqtt_address="", discovery_address="discovery.thethings.network:1900", reconnect=True)
 ```
 
 * `app_id`: **string** this the name given to the application when it was created.
@@ -349,7 +349,7 @@ HandlerClient(app_id, access_key, discovery_address="discovery.thethings.network
 Creates an [**MQTTClient**](#mqttclient) object.
 
 ```python
-handler.data(reconnect=False)
+handler.data(reconnect=True)
 ```
 
 * `reconnect`: **boolean** whether to automatically reconnect to the MQTT server on unexpected disconnect (useful if you'd like to keep the connection alive for several hours)
