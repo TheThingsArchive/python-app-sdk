@@ -33,6 +33,7 @@ class DownlinkMessage:
 class MyEvents(Events):
     __events__ = (
         "uplink_msg",
+        "uplink_raw_msg",
         "downlink_msg",
         "connect",
         "close")
@@ -116,6 +117,8 @@ class MQTTClient:
             obj = json2obj(j_msg)
             if self.__events.uplink_msg:
                 self.__events.uplink_msg(obj, client=self)
+            if self.__events.uplink_raw_msg:
+                self.__events.uplink_raw_msg(msg, client=self)
         return on_message
 
     def _on_downlink(self):
@@ -126,6 +129,9 @@ class MQTTClient:
 
     def set_uplink_callback(self, callback):
         self.__events.uplink_msg += callback
+
+    def set_uplink_raw_callback(self, callback):
+        self.__events.uplink_raw_msg += callback
 
     def set_downlink_callback(self, callback):
         self.__events.downlink_msg += callback
