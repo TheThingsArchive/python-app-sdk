@@ -6,6 +6,8 @@
     * [close](#close)
     * [set_uplink_callback](#set_uplink_callback)
         * [uplink_callback](#uplink_callback)
+    * [set_uplink_callback_raw](#set_uplink_callback_raw)
+        * [uplink_callback_raw](#uplink_callback_raw)
     * [set_connect_callback](#set_connect_callback)
         * [connect_callback](#connect_callback)
     * [set_downlink_callback](#set_downlink_callback)
@@ -87,6 +89,23 @@ The callback function must be declared in the script following this structure:
 
 * `uplink_callback(msg, client)`
     * `msg`: **UplinkMessage object** the message received by the client.
+    * `client`: **MQTTClient object** the client from which the callback is executed.
+
+#### set_uplink_callback_raw
+
+Add a callback function, to be called when an uplink message is received.
+This function provides compatibility with existing paho.mqtt.client implementations. 
+
+```python
+client.set_uplink_callback_raw(uplink_callback_raw)
+```
+
+##### uplink_callback_raw
+
+The callback function must be declared in the script following this structure:
+
+* `uplink_callback_raw(msg, client)`
+    * `msg`: **paho.mqtt.client.MQTTMessage object** the message received by the client.
     * `client`: **MQTTClient object** the client from which the callback is executed.
 
 #### set_connect_callback
