@@ -39,10 +39,16 @@ class TestMQTTClient(unittest.TestCase):
             print(message)
             assert message.payload_raw == "AQ=="
 
+        def uplinkcallback_raw(message, client):
+            print(message)
+            json_message = json.loads(message.payload.decode('utf-8'))
+            assert json_message["payload_raw"] == "AQ=="
+
         ttn_client = mqtt(stubs.apptest["appId"],
                           stubs.apptest["accessKey"],
                           mqtt_address=MQTT_ADDR)
         ttn_client.set_uplink_callback(uplinkcallback)
+        ttn_client.set_uplink_raw_callback(uplinkcallback_raw)
         ttn_client.connect()
         time.sleep(1)
         ttn_client._MQTTClient__client.publish(
