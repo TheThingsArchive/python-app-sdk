@@ -4,7 +4,7 @@
 # MIT license that can be found in the LICENSE file.
 
 import unittest
-from unittest.mock import patch
+from mock import patch
 
 from ttn import DiscoveryClient
 
@@ -15,15 +15,15 @@ class TestDiscoveryClient(unittest.TestCase):
         self.discovery = DiscoveryClient()
         assert hasattr(self.discovery, "client")
 
-    def test_default_insecure_channel_set_to_false(self):
-        with patch("grpc.secure_channel") as mock_grpc_secure_channel:
-            self.discovery = DiscoveryClient()
-            assert mock_grpc_secure_channel.call_count == 1
+    @patch("grpc.secure_channel")
+    def test_default_insecure_channel_set_to_false(self, mock_grpc_secure_channel):
+        self.discovery = DiscoveryClient()
+        assert mock_grpc_secure_channel.call_count == 1
 
-    def test_insecure_channel_called(self):
-        with patch("grpc.insecure_channel") as mock_grpc_insecure_channel:
-            self.discovery = DiscoveryClient(insecure_channel=True)
-            assert mock_grpc_insecure_channel.call_count == 1
+    @patch("grpc.insecure_channel")
+    def test_insecure_channel_called(self,mock_grpc_insecure_channel):
+        self.discovery = DiscoveryClient(insecure_channel=True)
+        assert mock_grpc_insecure_channel.call_count == 1
 
     def test_get_by_app_id(self):
         self.discovery = DiscoveryClient()
