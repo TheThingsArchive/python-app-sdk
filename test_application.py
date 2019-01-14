@@ -5,7 +5,7 @@
 
 
 import unittest
-from mock import MockApplicationManager
+from app_mock import MockApplicationManager
 from ttn import ApplicationClient
 import ttn.github_com.TheThingsNetwork.api.handler.handler_pb2 as handler
 from ttn.utils import stubs

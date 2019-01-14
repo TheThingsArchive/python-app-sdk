@@ -20,6 +20,7 @@ script:
   - pycodestyle --first ttn/*.py
   - pycodestyle --first ttn/utils
   - pytest test_*.py
+
   
 before_deploy:
   - python setup.py sdist

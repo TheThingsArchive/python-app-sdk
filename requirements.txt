@@ -5,3 +5,4 @@ pycodestyle
 grpcio==1.7.3
 protobuf
 googleapis-common-protos
+mock==2.0.0
