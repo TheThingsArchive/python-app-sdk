@@ -11,12 +11,12 @@ with io.open("README.rst", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(name="ttn",
-      version="2.1.4",
+      version="2.1.5",
       description="The Things Network Client",
       long_description = long_description,
       url = "https://github.com/TheThingsNetwork/python-app-sdk",
-      author="Emmanuelle Lejeail",
-      author_email="emmanuelle@thethingsindustries.com",
+      author="Johan Stokking",
+      author_email="johan@thethingsnetwork.org",
       license="MIT",
       packages=find_packages(),
       install_requires=[
