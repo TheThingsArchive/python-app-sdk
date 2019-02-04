@@ -160,5 +160,5 @@ class MQTTClient:
         res = self.__client.publish(
             "{}/devices/{}/down".format(self.__app_id, dev_id),
             msg)
-        if res[0] == "MQTT_ERR_NO_CONN":
+        if res[0] != 0:
             raise RuntimeError("client not connected")
