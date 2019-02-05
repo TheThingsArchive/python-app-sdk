@@ -159,7 +159,7 @@ client.send(dev_id, payload, port=1, confirmation=False, schedule="replace")
 ```
 
 * `dev_id`: **string** the ID of the device which will receive the message.
-* `payload`: the payload of the message to be published to the broker. It can be an hexadecimal **string**, a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or a **dictionary** of JSON nature. Here is an example of a **dictionary** argument that could be passed to the method:
+* `payload`: the payload of the message to be published to the broker. It can be a base64 **string** like `AQ==` (this will send the raw payload `01` to your device) or a **dictionary** of JSON nature. Here is an example of a **dictionary** argument that could be passed to the method:
 
 ```json
 { "led_state": "on", "counter": 1 }
