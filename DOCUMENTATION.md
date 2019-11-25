@@ -21,6 +21,7 @@
     * [set_payload_format](#set_payload_format)
     * [set_custom_payload_functions](#set_custom_payload_functions)
     * [unregister](#unregister)
+    * [register_device](#register_device)
     * [device](#device)
     * [devices](#devices)
     * [update_device](#update_device)
