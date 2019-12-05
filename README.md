@@ -1,6 +1,10 @@
-# The Things Network Python SDK
+# The Things Network Python SDK [![Build Status](https://travis-ci.org/TheThingsNetwork/python-app-sdk.svg?branch=master)](https://travis-ci.org/TheThingsNetwork/python-app-sdk)
 
-[![Build Status](https://travis-ci.org/TheThingsNetwork/python-app-sdk.svg?branch=master)](https://travis-ci.org/TheThingsNetwork/python-app-sdk)
+**⚠️ This SDK has been discontinued and will not be further supported.**
+
+**For The Things Stack V3 based networks, use MQTT, HTTP or Pub/Sub integrations for streaming data, and gRPC and HTTP for application and device management. See [The Things Stack documentation](https://www.thethingsstack.io) for more information.**
+
+---
 
 ![The Things Network](https://thethings.blob.core.windows.net/ttn/logo.svg)
 
